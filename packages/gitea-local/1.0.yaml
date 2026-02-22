@@ -1,17 +1,15 @@
 image: gitea/gitea:latest
 environment:
   GITEA__server__DOMAIN: "@domain@"
-  GITEA__server__SSH_DOMAIN: "@domain@"
+  GITEA__server__SSH_SERVER: false
   GITEA__server__ROOT_URL: "http://@domain@:@httpport@/"
   GITEA__database__DB_TYPE: sqlite3
   GITEA__database__PATH: /database/gitea.db
   GITEA__repository__ROOT: /repositories
-  GITEA__server__SSH_PORT: 2222
 network:
   external: {}
   internal:
     "@httpport@": "3000"
-    "@sshport@": "2222"
 volumes:
   database:
     mountpoint: /database
@@ -24,9 +22,5 @@ questions:
   httpport:
     query: "What port should the web interface listen on?"
     type: port
-  sshport:
-    query: "What port should SSH listen on?"
-    type: port
 notes:
   URL: "http://@domain@:@httpport@"
-  SSH: "ssh://git@@domain@:@sshport@"
