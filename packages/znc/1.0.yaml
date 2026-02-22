@@ -12,5 +12,5 @@ questions:
     query: "What external port should ZNC listen on?"
     type: port
 notes:
-  URL: "https://localhost:@port@"
+  URL: "localhost:@port@"
   Setup: "Run 'docker run -it -v znc-data:/znc-data znc --makeconf' first to create initial configuration"
