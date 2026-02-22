@@ -1,0 +1,15 @@
+image: jetty:latest
+environment: {}
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  webapps:
+    mountpoint: /var/lib/jetty/webapps
+questions:
+  port:
+    query: "What external port should Jetty listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

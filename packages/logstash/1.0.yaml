@@ -1,0 +1,20 @@
+image: logstash:8.16.0
+environment: {}
+network:
+  external:
+    "@beatsport@": "5044"
+    "@apiport@": "9600"
+  internal: {}
+volumes:
+  pipeline:
+    mountpoint: /usr/share/logstash/pipeline
+questions:
+  beatsport:
+    query: "What external port should Logstash Beats input listen on?"
+    type: port
+  apiport:
+    query: "What external port should the Logstash monitoring API listen on?"
+    type: port
+notes:
+  Beats: "localhost:@beatsport@"
+  API: "http://localhost:@apiport@"

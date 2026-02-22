@@ -1,0 +1,25 @@
+image: aerospike:latest
+environment:
+  NAMESPACE: "@namespace@"
+  MEM_GB: "@memgb@"
+network:
+  external:
+    "@port@": "3000"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/aerospike/data
+  config:
+    mountpoint: /opt/aerospike/etc
+questions:
+  namespace:
+    query: "What namespace name should Aerospike use?"
+    type:
+  memgb:
+    query: "How many GB of memory should Aerospike allocate (e.g. 1, 2, 4)?"
+    type:
+  port:
+    query: "What external port should Aerospike listen on?"
+    type: port
+notes:
+  Service: "localhost:@port@"

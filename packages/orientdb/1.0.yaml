@@ -1,0 +1,26 @@
+image: orientdb:latest
+environment:
+  ORIENTDB_ROOT_PASSWORD: "@password@"
+network:
+  external:
+    "@binaryport@": "2424"
+    "@httpport@": "2480"
+  internal: {}
+volumes:
+  databases:
+    mountpoint: /orientdb/databases
+  backup:
+    mountpoint: /orientdb/backup
+questions:
+  password:
+    query: "What root password should be set for OrientDB?"
+    type:
+  binaryport:
+    query: "What external port should the OrientDB binary protocol listen on?"
+    type: port
+  httpport:
+    query: "What external port should the OrientDB Studio interface listen on?"
+    type: port
+notes:
+  Studio: "http://localhost:@httpport@"
+  Binary: "localhost:@binaryport@"

@@ -1,0 +1,19 @@
+image: unit:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /docker-entrypoint.d
+  state:
+    mountpoint: /var/lib/unit
+  webroot:
+    mountpoint: /www
+questions:
+  port:
+    query: "What external port should NGINX Unit listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

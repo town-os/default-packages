@@ -1,0 +1,25 @@
+image: couchdb:latest
+environment:
+  COUCHDB_USER: "@user@"
+  COUCHDB_PASSWORD: "@password@"
+network:
+  external:
+    "@port@": "5984"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/couchdb/data
+  config:
+    mountpoint: /opt/couchdb/etc/local.d
+questions:
+  user:
+    query: "What should the CouchDB admin username be?"
+    type:
+  password:
+    query: "What should the CouchDB admin password be?"
+    type:
+  port:
+    query: "What external port should CouchDB listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@/_utils"

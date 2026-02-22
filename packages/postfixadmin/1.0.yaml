@@ -1,0 +1,23 @@
+image: postfixadmin:latest
+environment:
+  POSTFIXADMIN_DB_TYPE: "sqlite"
+  POSTFIXADMIN_DB_NAME: "/var/www/html/data/postfixadmin.db"
+  POSTFIXADMIN_SETUP_PASSWORD: "@setuppass@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/www/html/data
+questions:
+  setuppass:
+    query: "What setup password should Postfix Admin use?"
+    type:
+  port:
+    query: "What external port should Postfix Admin listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Setup: "http://localhost:@port@/setup.php"
+  Info: "Using SQLite database"

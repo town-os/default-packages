@@ -1,0 +1,32 @@
+image: wordpress:latest
+environment:
+  WORDPRESS_DB_HOST: "@dbhost@"
+  WORDPRESS_DB_USER: "@dbuser@"
+  WORDPRESS_DB_PASSWORD: "@dbpass@"
+  WORDPRESS_DB_NAME: "@dbname@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  html:
+    mountpoint: /var/www/html
+questions:
+  dbhost:
+    query: "What is the MySQL/MariaDB database host (host:port)?"
+    type: hostname
+  dbuser:
+    query: "What MySQL/MariaDB user should WordPress use?"
+    type:
+  dbpass:
+    query: "What is the MySQL/MariaDB password?"
+    type:
+  dbname:
+    query: "What is the MySQL/MariaDB database name?"
+    type:
+  port:
+    query: "What external port should WordPress listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MySQL or MariaDB server"

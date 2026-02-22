@@ -1,0 +1,19 @@
+image: eclipse-mosquitto:latest
+environment: {}
+network:
+  external:
+    "@port@": "1883"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /mosquitto/config
+  data:
+    mountpoint: /mosquitto/data
+  log:
+    mountpoint: /mosquitto/log
+questions:
+  port:
+    query: "What external port should Mosquitto MQTT listen on?"
+    type: port
+notes:
+  MQTT: "mqtt://localhost:@port@"

@@ -1,0 +1,15 @@
+image: haproxy:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /usr/local/etc/haproxy
+questions:
+  port:
+    query: "What external port should HAProxy listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

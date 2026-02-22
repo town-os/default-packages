@@ -1,0 +1,32 @@
+image: monica:latest
+environment:
+  APP_KEY: "@appkey@"
+  DB_HOST: "@dbhost@"
+  DB_USERNAME: "@dbuser@"
+  DB_PASSWORD: "@dbpass@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  storage:
+    mountpoint: /var/www/html/storage
+questions:
+  appkey:
+    query: "What is the APP_KEY (generate with: echo base64:$(openssl rand -base64 32))?"
+    type:
+  dbhost:
+    query: "What is the MySQL/MariaDB server hostname?"
+    type: hostname
+  dbuser:
+    query: "What is the MySQL database username?"
+    type:
+  dbpass:
+    query: "What is the MySQL database password?"
+    type:
+  port:
+    query: "What external port should Monica listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MySQL/MariaDB server"

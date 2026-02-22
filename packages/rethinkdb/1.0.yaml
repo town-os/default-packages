@@ -1,0 +1,20 @@
+image: rethinkdb:latest
+environment: {}
+network:
+  external:
+    "@webport@": "8080"
+    "@driverport@": "28015"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /data
+questions:
+  webport:
+    query: "What external port should the RethinkDB admin console listen on?"
+    type: port
+  driverport:
+    query: "What external port should the RethinkDB driver protocol listen on?"
+    type: port
+notes:
+  Admin: "http://localhost:@webport@"
+  Driver: "localhost:@driverport@"

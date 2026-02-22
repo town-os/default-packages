@@ -1,0 +1,21 @@
+image: storm:latest
+environment: {}
+network:
+  external:
+    "@uiport@": "8080"
+    "@nimbusport@": "6627"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /data
+  logs:
+    mountpoint: /logs
+questions:
+  uiport:
+    query: "What external port should the Storm UI listen on?"
+    type: port
+  nimbusport:
+    query: "What external port should Storm Nimbus listen on?"
+    type: port
+notes:
+  UI: "http://localhost:@uiport@"

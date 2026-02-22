@@ -1,0 +1,21 @@
+image: bitnami/cassandra:latest
+environment:
+  CASSANDRA_USER: "cassandra"
+  CASSANDRA_PASSWORD: "@password@"
+  CASSANDRA_PASSWORD_SEEDER: "yes"
+network:
+  external:
+    "@port@": "9042"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/cassandra
+questions:
+  password:
+    query: "What should the Cassandra password be?"
+    type:
+  port:
+    query: "What external port should Cassandra CQL listen on?"
+    type: port
+notes:
+  CQL: "localhost:@port@"

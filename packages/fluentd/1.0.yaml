@@ -1,0 +1,15 @@
+image: fluentd:latest
+environment: {}
+network:
+  external:
+    "@port@": "24224"
+  internal: {}
+volumes:
+  log:
+    mountpoint: /fluentd/log
+questions:
+  port:
+    query: "What external port should Fluentd forward input listen on?"
+    type: port
+notes:
+  Forward: "tcp://localhost:@port@"

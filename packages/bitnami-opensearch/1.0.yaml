@@ -1,0 +1,18 @@
+image: bitnami/opensearch:latest
+environment:
+  OPENSEARCH_CLUSTER_NAME: "opensearch"
+  OPENSEARCH_NODE_NAME: "opensearch-node"
+  OPENSEARCH_CLUSTER_HOSTS: "localhost"
+network:
+  external:
+    "@port@": "9200"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/opensearch/data
+questions:
+  port:
+    query: "What external port should OpenSearch listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

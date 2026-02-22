@@ -1,0 +1,15 @@
+image: cassandra:latest
+environment: {}
+network:
+  external:
+    "@port@": "9042"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/lib/cassandra
+questions:
+  port:
+    query: "What external port should Cassandra CQL listen on?"
+    type: port
+notes:
+  CQL: "localhost:@port@"

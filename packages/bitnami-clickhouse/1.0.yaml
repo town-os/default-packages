@@ -1,0 +1,25 @@
+image: bitnami/clickhouse:latest
+environment:
+  CLICKHOUSE_ADMIN_USER: "default"
+  CLICKHOUSE_ADMIN_PASSWORD: "@password@"
+network:
+  external:
+    "@httpport@": "8123"
+    "@nativeport@": "9000"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/clickhouse
+questions:
+  password:
+    query: "What password should be set for the ClickHouse default user?"
+    type:
+  httpport:
+    query: "What external port should the ClickHouse HTTP interface listen on?"
+    type: port
+  nativeport:
+    query: "What external port should the ClickHouse native protocol listen on?"
+    type: port
+notes:
+  HTTP: "http://localhost:@httpport@"
+  Native: "localhost:@nativeport@"

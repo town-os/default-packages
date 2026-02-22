@@ -1,0 +1,23 @@
+image: convertigo:latest
+environment:
+  CONVERTIGO_ADMIN_USER: "@adminuser@"
+  CONVERTIGO_ADMIN_PASSWORD: "@adminpass@"
+network:
+  external:
+    "@port@": "28080"
+  internal: {}
+volumes:
+  workspace:
+    mountpoint: /workspace
+questions:
+  adminuser:
+    query: "What admin username should Convertigo use?"
+    type:
+  adminpass:
+    query: "What admin password should Convertigo use?"
+    type:
+  port:
+    query: "What external port should Convertigo listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@/convertigo"

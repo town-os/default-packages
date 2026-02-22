@@ -1,0 +1,16 @@
+image: telegraf:latest
+environment: {}
+network:
+  external:
+    "@port@": "8125"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /etc/telegraf
+questions:
+  port:
+    query: "What external port should Telegraf StatsD listener use?"
+    type: port
+notes:
+  StatsD: "udp://localhost:@port@"
+  Info: "Mount a telegraf.conf into /etc/telegraf/telegraf.conf to configure inputs and outputs"

@@ -1,0 +1,18 @@
+image: bitnami/consul:latest
+environment:
+  CONSUL_AGENT_MODE: "server"
+  CONSUL_BOOTSTRAP_EXPECT: "1"
+  CONSUL_ENABLE_UI: "true"
+network:
+  external:
+    "@port@": "8500"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/consul
+questions:
+  port:
+    query: "What external port should the Consul UI/API listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

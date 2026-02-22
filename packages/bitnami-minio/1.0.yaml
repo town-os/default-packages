@@ -1,0 +1,28 @@
+image: bitnami/minio:latest
+environment:
+  MINIO_ROOT_USER: "@user@"
+  MINIO_ROOT_PASSWORD: "@password@"
+network:
+  external:
+    "@apiport@": "9000"
+    "@consoleport@": "9001"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/minio/data
+questions:
+  user:
+    query: "What root username should MinIO use?"
+    type:
+  password:
+    query: "What root password should MinIO use?"
+    type:
+  apiport:
+    query: "What external port should the MinIO API listen on?"
+    type: port
+  consoleport:
+    query: "What external port should the MinIO console listen on?"
+    type: port
+notes:
+  API: "http://localhost:@apiport@"
+  Console: "http://localhost:@consoleport@"

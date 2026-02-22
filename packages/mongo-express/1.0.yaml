@@ -1,0 +1,26 @@
+image: mongo-express:latest
+environment:
+  ME_CONFIG_MONGODB_SERVER: "@mongohost@"
+  ME_CONFIG_BASICAUTH_USERNAME: "@adminuser@"
+  ME_CONFIG_BASICAUTH_PASSWORD: "@adminpass@"
+network:
+  external:
+    "@port@": "8081"
+  internal: {}
+volumes: {}
+questions:
+  mongohost:
+    query: "What is the MongoDB server hostname?"
+    type: hostname
+  adminuser:
+    query: "What username should protect the mongo-express web interface?"
+    type:
+  adminpass:
+    query: "What password should protect the mongo-express web interface?"
+    type:
+  port:
+    query: "What external port should mongo-express listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Info: "Requires an external MongoDB server"

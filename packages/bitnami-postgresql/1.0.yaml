@@ -1,0 +1,27 @@
+image: bitnami/postgresql:latest
+environment:
+  POSTGRESQL_PASSWORD: "@password@"
+  POSTGRESQL_USERNAME: "@user@"
+  POSTGRESQL_DATABASE: "@database@"
+network:
+  external:
+    "@port@": "5432"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/postgresql
+questions:
+  password:
+    query: "What should the PostgreSQL password be?"
+    type:
+  user:
+    query: "What should the PostgreSQL username be? (default: postgres)"
+    type:
+  database:
+    query: "What should the default database be named?"
+    type:
+  port:
+    query: "What external port should PostgreSQL listen on?"
+    type: port
+notes:
+  Connection: "postgresql://@user@:@password@@localhost:@port@/@database@"

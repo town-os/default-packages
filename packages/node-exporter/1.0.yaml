@@ -1,0 +1,17 @@
+image: prom/node-exporter:latest
+command: ["--path.rootfs=/host"]
+environment: {}
+network:
+  external:
+    "@port@": "9100"
+  internal: {}
+volumes:
+  host:
+    mountpoint: /host
+questions:
+  port:
+    query: "What external port should node_exporter listen on?"
+    type: port
+notes:
+  Metrics: "http://localhost:@port@/metrics"
+  Info: "Requires --net=host, --pid=host, and a read-only bind mount of / to /host for accurate host metrics"

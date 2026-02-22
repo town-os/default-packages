@@ -1,0 +1,22 @@
+image: emqx:latest
+environment: {}
+network:
+  external:
+    "@mqttport@": "1883"
+    "@dashboardport@": "18083"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/emqx/data
+  log:
+    mountpoint: /opt/emqx/log
+questions:
+  mqttport:
+    query: "What external port should EMQX MQTT listen on?"
+    type: port
+  dashboardport:
+    query: "What external port should the EMQX dashboard listen on?"
+    type: port
+notes:
+  MQTT: "mqtt://localhost:@mqttport@"
+  Dashboard: "http://localhost:@dashboardport@"

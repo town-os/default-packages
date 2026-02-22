@@ -1,0 +1,27 @@
+image: bitnami/openldap:latest
+environment:
+  LDAP_ROOT: "@rootdn@"
+  LDAP_ADMIN_USERNAME: "@user@"
+  LDAP_ADMIN_PASSWORD: "@password@"
+network:
+  external:
+    "@port@": "1389"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/openldap
+questions:
+  rootdn:
+    query: "What should the LDAP root DN be? (e.g. dc=example,dc=org)"
+    type:
+  user:
+    query: "What admin username should OpenLDAP use?"
+    type:
+  password:
+    query: "What admin password should OpenLDAP use?"
+    type:
+  port:
+    query: "What external port should OpenLDAP listen on?"
+    type: port
+notes:
+  URL: "ldap://localhost:@port@"

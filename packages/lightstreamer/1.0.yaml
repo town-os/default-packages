@@ -1,0 +1,15 @@
+image: lightstreamer:latest
+environment: {}
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  adapters:
+    mountpoint: /lightstreamer/adapters
+questions:
+  port:
+    query: "What external port should Lightstreamer listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

@@ -1,0 +1,25 @@
+image: teamspeak:latest
+environment:
+  TS3SERVER_LICENSE: "accept"
+network:
+  external:
+    "@voiceport@": "9987"
+    "@queryport@": "10011"
+    "@filetransferport@": "30033"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/ts3server
+questions:
+  voiceport:
+    query: "What external port should TeamSpeak use for voice (UDP)?"
+    type: port
+  queryport:
+    query: "What external port should TeamSpeak ServerQuery listen on?"
+    type: port
+  filetransferport:
+    query: "What external port should TeamSpeak file transfer use?"
+    type: port
+notes:
+  Voice: "ts3server://localhost?port=@voiceport@"
+  ServerQuery: "telnet localhost @queryport@"

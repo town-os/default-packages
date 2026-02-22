@@ -1,0 +1,30 @@
+image: odoo:latest
+environment:
+  HOST: "@dbhost@"
+  USER: "@dbuser@"
+  PASSWORD: "@dbpass@"
+network:
+  external:
+    "@port@": "8069"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/lib/odoo
+  addons:
+    mountpoint: /mnt/extra-addons
+questions:
+  dbhost:
+    query: "What is the PostgreSQL server hostname?"
+    type: hostname
+  dbuser:
+    query: "What is the PostgreSQL username?"
+    type:
+  dbpass:
+    query: "What is the PostgreSQL password?"
+    type:
+  port:
+    query: "What external port should Odoo listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external PostgreSQL server"

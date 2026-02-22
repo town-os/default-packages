@@ -1,0 +1,19 @@
+image: spiped:latest
+environment: {}
+command: ["-d", "-s", "[0.0.0.0]:8080", "-t", "@target@"]
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  key:
+    mountpoint: /spiped/key
+questions:
+  target:
+    query: "What is the target address to forward decrypted traffic to (e.g. backend:8080)?"
+    type:
+  port:
+    query: "What external port should spiped listen on?"
+    type: port
+notes:
+  Info: "Place your symmetric key file in the key volume. Generate one with: dd if=/dev/urandom bs=32 count=1 of=keyfile"

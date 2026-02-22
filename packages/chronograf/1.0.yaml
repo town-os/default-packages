@@ -1,0 +1,15 @@
+image: chronograf:latest
+environment: {}
+network:
+  external:
+    "@port@": "8888"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/lib/chronograf
+questions:
+  port:
+    query: "What external port should Chronograf listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

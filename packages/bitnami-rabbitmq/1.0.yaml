@@ -1,0 +1,29 @@
+image: bitnami/rabbitmq:latest
+environment:
+  RABBITMQ_USERNAME: "@user@"
+  RABBITMQ_PASSWORD: "@password@"
+  RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS: "true"
+network:
+  external:
+    "@port@": "5672"
+    "@mgmtport@": "15672"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/rabbitmq/mnesia
+questions:
+  user:
+    query: "What username should RabbitMQ use?"
+    type:
+  password:
+    query: "What password should RabbitMQ use?"
+    type:
+  port:
+    query: "What external port should RabbitMQ AMQP listen on?"
+    type: port
+  mgmtport:
+    query: "What external port should the RabbitMQ management UI listen on?"
+    type: port
+notes:
+  AMQP: "amqp://localhost:@port@"
+  Management: "http://localhost:@mgmtport@"

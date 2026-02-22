@@ -1,0 +1,21 @@
+image: ghost:latest
+environment:
+  database__client: sqlite3
+  database__connection__filename: /var/lib/ghost/content/data/ghost.db
+  database__useNullAsDefault: "true"
+  url: "http://localhost:@port@"
+  NODE_ENV: development
+network:
+  external:
+    "@port@": "2368"
+  internal: {}
+volumes:
+  content:
+    mountpoint: /var/lib/ghost/content
+questions:
+  port:
+    query: "What external port should Ghost listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Admin: "http://localhost:@port@/ghost"

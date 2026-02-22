@@ -1,0 +1,20 @@
+image: spark:latest
+environment: {}
+network:
+  external:
+    "@webuiport@": "8080"
+    "@masterport@": "7077"
+  internal: {}
+volumes:
+  work:
+    mountpoint: /opt/spark/work-dir
+questions:
+  webuiport:
+    query: "What external port should the Spark web UI listen on?"
+    type: port
+  masterport:
+    query: "What external port should the Spark master listen on?"
+    type: port
+notes:
+  UI: "http://localhost:@webuiport@"
+  Master: "spark://localhost:@masterport@"

@@ -1,0 +1,19 @@
+image: phpmyadmin:latest
+environment:
+  PMA_HOST: "@dbhost@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  sessions:
+    mountpoint: /sessions
+questions:
+  dbhost:
+    query: "What is the MySQL/MariaDB server hostname or IP?"
+    type: hostname
+  port:
+    query: "What external port should phpMyAdmin listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

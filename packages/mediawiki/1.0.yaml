@@ -1,0 +1,18 @@
+image: mediawiki:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  images:
+    mountpoint: /var/www/html/images
+  data:
+    mountpoint: /var/www/data
+questions:
+  port:
+    query: "What external port should MediaWiki listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Setup: "Complete the web-based installer. Select SQLite and set data directory to /var/www/data."

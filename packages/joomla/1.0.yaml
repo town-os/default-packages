@@ -1,0 +1,32 @@
+image: joomla:latest
+environment:
+  JOOMLA_DB_HOST: "@dbhost@"
+  JOOMLA_DB_USER: "@dbuser@"
+  JOOMLA_DB_PASSWORD: "@dbpass@"
+  JOOMLA_DB_NAME: "@dbname@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  html:
+    mountpoint: /var/www/html
+questions:
+  dbhost:
+    query: "What is the MySQL/MariaDB database host (host:port)?"
+    type: hostname
+  dbuser:
+    query: "What MySQL/MariaDB user should Joomla use?"
+    type:
+  dbpass:
+    query: "What is the MySQL/MariaDB password?"
+    type:
+  dbname:
+    query: "What is the MySQL/MariaDB database name?"
+    type:
+  port:
+    query: "What external port should Joomla listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MySQL or MariaDB server"

@@ -1,0 +1,24 @@
+image: bitnami/couchdb:latest
+environment:
+  COUCHDB_USER: "@user@"
+  COUCHDB_PASSWORD: "@password@"
+  COUCHDB_CREATE_DATABASES: "yes"
+network:
+  external:
+    "@port@": "5984"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/couchdb
+questions:
+  user:
+    query: "What should the CouchDB admin username be? (default: admin)"
+    type:
+  password:
+    query: "What should the CouchDB admin password be?"
+    type:
+  port:
+    query: "What external port should CouchDB listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@/_utils"

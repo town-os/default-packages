@@ -1,0 +1,23 @@
+image: websphere-liberty:latest
+environment: {}
+network:
+  external:
+    "@httpport@": "9080"
+    "@httpsport@": "9443"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /config
+  logs:
+    mountpoint: /logs
+questions:
+  httpport:
+    query: "What external port should WebSphere Liberty HTTP listen on?"
+    type: port
+  httpsport:
+    query: "What external port should WebSphere Liberty HTTPS listen on?"
+    type: port
+notes:
+  HTTP: "http://localhost:@httpport@"
+  HTTPS: "https://localhost:@httpsport@"
+  Deploy: "Place WAR/EAR files in /config/dropins/"

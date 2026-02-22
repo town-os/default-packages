@@ -1,0 +1,32 @@
+image: xwiki:latest
+environment:
+  DB_HOST: "@dbhost@"
+  DB_USER: "@dbuser@"
+  DB_PASSWORD: "@dbpass@"
+  DB_DATABASE: "@dbname@"
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /usr/local/xwiki
+questions:
+  dbhost:
+    query: "What is the MySQL/MariaDB/PostgreSQL server hostname?"
+    type: hostname
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  dbname:
+    query: "What is the database name?"
+    type:
+  port:
+    query: "What external port should XWiki listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MySQL/MariaDB or PostgreSQL server"

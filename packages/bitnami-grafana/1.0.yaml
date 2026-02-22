@@ -1,0 +1,20 @@
+image: bitnami/grafana:latest
+environment:
+  GF_SECURITY_ADMIN_PASSWORD: "@adminpass@"
+network:
+  external:
+    "@port@": "3000"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/grafana
+questions:
+  adminpass:
+    query: "What password should the Grafana admin user have?"
+    type:
+  port:
+    query: "What external port should Grafana listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Login: "Default username is admin"

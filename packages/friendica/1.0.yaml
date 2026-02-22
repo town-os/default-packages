@@ -1,0 +1,37 @@
+image: friendica:latest
+environment:
+  FRIENDICA_URL: "http://localhost:@port@"
+  FRIENDICA_ADMIN_MAIL: "@adminmail@"
+  MYSQL_HOST: "@dbhost@"
+  MYSQL_USER: "@dbuser@"
+  MYSQL_PASSWORD: "@dbpass@"
+  MYSQL_DATABASE: "@dbname@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  html:
+    mountpoint: /var/www/html
+questions:
+  adminmail:
+    query: "What is the admin email address for Friendica?"
+    type:
+  dbhost:
+    query: "What is the MySQL/MariaDB server hostname?"
+    type: hostname
+  dbuser:
+    query: "What is the MySQL database username?"
+    type:
+  dbpass:
+    query: "What is the MySQL database password?"
+    type:
+  dbname:
+    query: "What is the MySQL database name?"
+    type:
+  port:
+    query: "What external port should Friendica listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MySQL/MariaDB server"

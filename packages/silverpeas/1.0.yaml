@@ -1,0 +1,35 @@
+image: silverpeas:latest
+environment:
+  DB_SERVERTYPE: "POSTGRESQL"
+  DB_SERVER: "@dbhost@"
+  DB_NAME: "@dbname@"
+  DB_USER: "@dbuser@"
+  DB_PASSWORD: "@dbpass@"
+network:
+  external:
+    "@port@": "8000"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/silverpeas/data
+  log:
+    mountpoint: /opt/silverpeas/log
+questions:
+  dbhost:
+    query: "What is the PostgreSQL server hostname?"
+    type: hostname
+  dbname:
+    query: "What is the PostgreSQL database name?"
+    type:
+  dbuser:
+    query: "What is the PostgreSQL database username?"
+    type:
+  dbpass:
+    query: "What is the PostgreSQL database password?"
+    type:
+  port:
+    query: "What external port should Silverpeas listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@/silverpeas"
+  Database: "Requires an external PostgreSQL server"

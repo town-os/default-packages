@@ -1,0 +1,13 @@
+image: bitnami/memcached:latest
+environment: {}
+network:
+  external:
+    "@port@": "11211"
+  internal: {}
+volumes: {}
+questions:
+  port:
+    query: "What external port should Memcached listen on?"
+    type: port
+notes:
+  Connection: "localhost:@port@"

@@ -1,0 +1,16 @@
+image: bitnami/zookeeper:latest
+environment:
+  ALLOW_ANONYMOUS_LOGIN: "yes"
+network:
+  external:
+    "@port@": "2181"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/zookeeper
+questions:
+  port:
+    query: "What external port should ZooKeeper client connections use?"
+    type: port
+notes:
+  Client: "localhost:@port@"

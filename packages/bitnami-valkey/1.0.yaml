@@ -1,0 +1,19 @@
+image: bitnami/valkey:latest
+environment:
+  VALKEY_PASSWORD: "@password@"
+network:
+  external:
+    "@port@": "6379"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/valkey
+questions:
+  password:
+    query: "What should the Valkey password be?"
+    type:
+  port:
+    query: "What external port should Valkey listen on?"
+    type: port
+notes:
+  Connection: "redis://:@password@@localhost:@port@"

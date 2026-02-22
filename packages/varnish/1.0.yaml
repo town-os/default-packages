@@ -1,0 +1,27 @@
+image: varnish:latest
+environment:
+  VARNISH_BACKEND_HOST: "@backendhost@"
+  VARNISH_BACKEND_PORT: "@backendport@"
+  VARNISH_SIZE: "@cachesize@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /etc/varnish
+questions:
+  backendhost:
+    query: "What is the backend hostname that Varnish should proxy to?"
+    type: hostname
+  backendport:
+    query: "What port is the backend listening on?"
+    type: port
+  cachesize:
+    query: "How much memory should Varnish use for caching (e.g. 256M, 1G)?"
+    type:
+  port:
+    query: "What external port should Varnish listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

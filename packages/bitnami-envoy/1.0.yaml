@@ -1,0 +1,21 @@
+image: bitnami/envoy:latest
+environment: {}
+network:
+  external:
+    "@port@": "10000"
+    "@adminport@": "9901"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /opt/bitnami/envoy/conf
+questions:
+  port:
+    query: "What external port should Envoy listen on?"
+    type: port
+  adminport:
+    query: "What external port should the Envoy admin interface listen on?"
+    type: port
+notes:
+  Proxy: "http://localhost:@port@"
+  Admin: "http://localhost:@adminport@"
+  Config: "Place envoy.yaml in the config volume"

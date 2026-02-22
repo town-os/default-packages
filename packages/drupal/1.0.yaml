@@ -1,0 +1,22 @@
+image: drupal:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  modules:
+    mountpoint: /var/www/html/modules
+  profiles:
+    mountpoint: /var/www/html/profiles
+  themes:
+    mountpoint: /var/www/html/themes
+  sites:
+    mountpoint: /var/www/html/sites
+questions:
+  port:
+    query: "What external port should Drupal listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Supports SQLite out of the box. Select SQLite during the web-based install wizard."

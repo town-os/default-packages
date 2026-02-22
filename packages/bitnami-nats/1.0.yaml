@@ -1,0 +1,24 @@
+image: bitnami/nats:latest
+environment: {}
+network:
+  external:
+    "@port@": "4222"
+    "@monitorport@": "8222"
+  internal:
+    "@routeport@": "6222"
+volumes:
+  data:
+    mountpoint: /bitnami/nats
+questions:
+  port:
+    query: "What external port should NATS client connections listen on?"
+    type: port
+  monitorport:
+    query: "What external port should the NATS monitoring endpoint listen on?"
+    type: port
+  routeport:
+    query: "What internal port should NATS cluster routing use?"
+    type: port
+notes:
+  URL: "nats://localhost:@port@"
+  Monitoring: "http://localhost:@monitorport@"

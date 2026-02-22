@@ -1,0 +1,21 @@
+image: bitnami/scylladb:latest
+environment:
+  SCYLLADB_USER: "cassandra"
+  SCYLLADB_PASSWORD: "@password@"
+  SCYLLADB_PASSWORD_SEEDER: "yes"
+network:
+  external:
+    "@port@": "9042"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/scylladb
+questions:
+  password:
+    query: "What should the ScyllaDB password be?"
+    type:
+  port:
+    query: "What external port should ScyllaDB CQL listen on?"
+    type: port
+notes:
+  CQL: "localhost:@port@"

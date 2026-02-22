@@ -1,0 +1,23 @@
+image: bonita:latest
+environment:
+  PLATFORM_PASSWORD: "@platformpass@"
+  DB_VENDOR: "h2"
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  temp:
+    mountpoint: /opt/bonita/server/temp
+  work:
+    mountpoint: /opt/bonita/server/work
+questions:
+  platformpass:
+    query: "What password should the Bonita platform admin use?"
+    type:
+  port:
+    query: "What external port should Bonita listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@/bonita"
+  Info: "Using embedded H2 database. For production, set DB_VENDOR to mysql or postgres."

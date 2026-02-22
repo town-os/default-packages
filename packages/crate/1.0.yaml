@@ -1,0 +1,24 @@
+image: crate:latest
+environment:
+  CRATE_HEAP_SIZE: "@heapsize@"
+network:
+  external:
+    "@httpport@": "4200"
+    "@pgport@": "5432"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /data
+questions:
+  heapsize:
+    query: "How much heap memory should CrateDB use (e.g. 1g, 2g)?"
+    type:
+  httpport:
+    query: "What external port should the CrateDB admin interface listen on?"
+    type: port
+  pgport:
+    query: "What external port should the CrateDB PostgreSQL protocol listen on?"
+    type: port
+notes:
+  Admin: "http://localhost:@httpport@"
+  PostgreSQL: "localhost:@pgport@"

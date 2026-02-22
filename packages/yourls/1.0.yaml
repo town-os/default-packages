@@ -1,0 +1,36 @@
+image: yourls:latest
+environment:
+  YOURLS_SITE: "http://localhost:@port@"
+  YOURLS_USER: "@adminuser@"
+  YOURLS_PASS: "@adminpass@"
+  YOURLS_DB_HOST: "@dbhost@"
+  YOURLS_DB_USER: "@dbuser@"
+  YOURLS_DB_PASS: "@dbpass@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes: {}
+questions:
+  adminuser:
+    query: "What admin username should YOURLS use?"
+    type:
+  adminpass:
+    query: "What admin password should YOURLS use?"
+    type:
+  dbhost:
+    query: "What is the MySQL/MariaDB server hostname?"
+    type: hostname
+  dbuser:
+    query: "What is the MySQL database username?"
+    type:
+  dbpass:
+    query: "What is the MySQL database password?"
+    type:
+  port:
+    query: "What external port should YOURLS listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Admin: "http://localhost:@port@/admin/"
+  Database: "Requires an external MySQL/MariaDB server"

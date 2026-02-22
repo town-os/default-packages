@@ -1,0 +1,19 @@
+image: bitnami/keydb:latest
+environment:
+  KEYDB_PASSWORD: "@password@"
+network:
+  external:
+    "@port@": "6379"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/keydb
+questions:
+  password:
+    query: "What should the KeyDB password be?"
+    type:
+  port:
+    query: "What external port should KeyDB listen on?"
+    type: port
+notes:
+  Connection: "redis://:@password@@localhost:@port@"

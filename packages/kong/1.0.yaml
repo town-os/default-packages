@@ -1,0 +1,24 @@
+image: kong:latest
+environment:
+  KONG_DATABASE: "off"
+  KONG_PROXY_LISTEN: "0.0.0.0:8000"
+  KONG_ADMIN_LISTEN: "0.0.0.0:8001"
+  KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yml"
+network:
+  external:
+    "@proxyport@": "8000"
+    "@adminport@": "8001"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /opt/kong
+questions:
+  proxyport:
+    query: "What external port should Kong proxy listen on?"
+    type: port
+  adminport:
+    query: "What external port should the Kong Admin API listen on?"
+    type: port
+notes:
+  Proxy: "http://localhost:@proxyport@"
+  Admin: "http://localhost:@adminport@"

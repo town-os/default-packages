@@ -1,0 +1,18 @@
+image: bitnami/alertmanager:latest
+environment: {}
+network:
+  external:
+    "@port@": "9093"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/bitnami/alertmanager/data
+  config:
+    mountpoint: /opt/bitnami/alertmanager/conf
+questions:
+  port:
+    query: "What external port should Alertmanager listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Config: "Place config.yml in the config volume"

@@ -1,0 +1,15 @@
+image: bitnami/vault:latest
+environment: {}
+network:
+  external:
+    "@port@": "8200"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/vault
+questions:
+  port:
+    query: "What external port should Vault listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

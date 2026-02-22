@@ -1,0 +1,28 @@
+image: rabbitmq:management
+environment:
+  RABBITMQ_DEFAULT_USER: "@user@"
+  RABBITMQ_DEFAULT_PASS: "@password@"
+network:
+  external:
+    "@port@": "5672"
+    "@mgmtport@": "15672"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/lib/rabbitmq
+questions:
+  user:
+    query: "What username should RabbitMQ use?"
+    type:
+  password:
+    query: "What password should RabbitMQ use?"
+    type:
+  port:
+    query: "What external port should RabbitMQ AMQP listen on?"
+    type: port
+  mgmtport:
+    query: "What external port should the RabbitMQ management UI listen on?"
+    type: port
+notes:
+  AMQP: "amqp://localhost:@port@"
+  Management: "http://localhost:@mgmtport@"

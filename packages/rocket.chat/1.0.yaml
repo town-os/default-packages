@@ -1,0 +1,23 @@
+image: rocket.chat:latest
+environment:
+  MONGO_URL: "@mongourl@"
+  MONGO_OPLOG_URL: "@mongooplogurl@"
+  ROOT_URL: "http://localhost:@port@"
+network:
+  external:
+    "@port@": "3000"
+  internal: {}
+volumes: {}
+questions:
+  mongourl:
+    query: "What is the MongoDB connection URL (e.g. mongodb://mongo:27017/rocketchat)?"
+    type:
+  mongooplogurl:
+    query: "What is the MongoDB oplog URL (e.g. mongodb://mongo:27017/local)?"
+    type:
+  port:
+    query: "What external port should Rocket.Chat listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MongoDB instance with replica set enabled"

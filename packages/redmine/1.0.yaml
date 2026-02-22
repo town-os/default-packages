@@ -1,0 +1,17 @@
+image: redmine:latest
+environment: {}
+network:
+  external:
+    "@port@": "3000"
+  internal: {}
+volumes:
+  files:
+    mountpoint: /usr/src/redmine/files
+questions:
+  port:
+    query: "What external port should Redmine listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Login: "Default admin credentials are admin/admin"
+  Database: "Uses SQLite by default"

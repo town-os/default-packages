@@ -1,0 +1,26 @@
+image: neo4j:latest
+environment:
+  NEO4J_AUTH: "neo4j/@password@"
+network:
+  external:
+    "@httpport@": "7474"
+    "@boltport@": "7687"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /data
+  logs:
+    mountpoint: /logs
+questions:
+  password:
+    query: "What password should be set for the neo4j admin user?"
+    type:
+  httpport:
+    query: "What external port should the Neo4j browser listen on?"
+    type: port
+  boltport:
+    query: "What external port should the Neo4j Bolt protocol listen on?"
+    type: port
+notes:
+  Browser: "http://localhost:@httpport@"
+  Bolt: "bolt://localhost:@boltport@"

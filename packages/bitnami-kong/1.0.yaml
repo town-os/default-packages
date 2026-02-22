@@ -1,0 +1,23 @@
+image: bitnami/kong:latest
+environment:
+  KONG_DATABASE: "off"
+  KONG_PROXY_LISTEN_ADDRESS: "0.0.0.0"
+  KONG_ADMIN_LISTEN_ADDRESS: "0.0.0.0"
+network:
+  external:
+    "@proxyport@": "8000"
+    "@adminport@": "8001"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /opt/bitnami/kong/conf
+questions:
+  proxyport:
+    query: "What external port should Kong proxy listen on?"
+    type: port
+  adminport:
+    query: "What external port should the Kong Admin API listen on?"
+    type: port
+notes:
+  Proxy: "http://localhost:@proxyport@"
+  Admin: "http://localhost:@adminport@"

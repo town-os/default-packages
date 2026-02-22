@@ -1,0 +1,28 @@
+image: nextcloud:latest
+environment:
+  SQLITE_DATABASE: nextcloud
+  NEXTCLOUD_ADMIN_USER: "@adminuser@"
+  NEXTCLOUD_ADMIN_PASSWORD: "@adminpass@"
+  NEXTCLOUD_TRUSTED_DOMAINS: "@domain@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  html:
+    mountpoint: /var/www/html
+questions:
+  adminuser:
+    query: "What username should the Nextcloud admin account use?"
+    type:
+  adminpass:
+    query: "What password should the Nextcloud admin account use?"
+    type:
+  domain:
+    query: "What domain or IP will Nextcloud be accessed from?"
+    type: hostname
+  port:
+    query: "What external port should Nextcloud listen on?"
+    type: port
+notes:
+  URL: "http://@domain@:@port@"

@@ -1,0 +1,19 @@
+image: flink:latest
+environment: {}
+network:
+  external:
+    "@webuiport@": "8081"
+    "@rpcport@": "6123"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/flink/data
+questions:
+  webuiport:
+    query: "What external port should the Flink web UI listen on?"
+    type: port
+  rpcport:
+    query: "What external port should the Flink JobManager RPC use?"
+    type: port
+notes:
+  UI: "http://localhost:@webuiport@"

@@ -1,0 +1,17 @@
+image: httpd:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  htdocs:
+    mountpoint: /usr/local/apache2/htdocs
+  config:
+    mountpoint: /usr/local/apache2/conf
+questions:
+  port:
+    query: "What external port should Apache HTTP Server listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

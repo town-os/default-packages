@@ -1,0 +1,19 @@
+image: arangodb:latest
+environment:
+  ARANGO_ROOT_PASSWORD: "@password@"
+network:
+  external:
+    "@port@": "8529"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /var/lib/arangodb3
+questions:
+  password:
+    query: "What root password should be set for ArangoDB?"
+    type:
+  port:
+    query: "What external port should ArangoDB listen on?"
+    type: port
+notes:
+  WebUI: "http://localhost:@port@"

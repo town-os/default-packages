@@ -1,0 +1,21 @@
+image: nats:latest
+command: ["nats-server", "--jetstream", "--store_dir", "/data"]
+environment: {}
+network:
+  external:
+    "@port@": "4222"
+    "@monitorport@": "8222"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /data
+questions:
+  port:
+    query: "What external port should NATS client connections listen on?"
+    type: port
+  monitorport:
+    query: "What external port should the NATS monitoring endpoint listen on?"
+    type: port
+notes:
+  URL: "nats://localhost:@port@"
+  Monitoring: "http://localhost:@monitorport@"

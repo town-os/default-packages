@@ -1,0 +1,19 @@
+image: sonarqube:latest
+environment: {}
+network:
+  external:
+    "@port@": "9000"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /opt/sonarqube/data
+  extensions:
+    mountpoint: /opt/sonarqube/extensions
+  logs:
+    mountpoint: /opt/sonarqube/logs
+questions:
+  port:
+    query: "What external port should SonarQube listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

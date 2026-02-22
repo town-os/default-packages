@@ -1,0 +1,17 @@
+image: tomee:latest
+environment: {}
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  webapps:
+    mountpoint: /usr/local/tomee/webapps
+  config:
+    mountpoint: /usr/local/tomee/conf
+questions:
+  port:
+    query: "What external port should TomEE listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

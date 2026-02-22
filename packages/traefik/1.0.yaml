@@ -1,0 +1,20 @@
+image: traefik:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+    "@dashport@": "8080"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /etc/traefik
+questions:
+  port:
+    query: "What external port should Traefik listen on for HTTP traffic?"
+    type: port
+  dashport:
+    query: "What external port should the Traefik dashboard listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Dashboard: "http://localhost:@dashport@"
