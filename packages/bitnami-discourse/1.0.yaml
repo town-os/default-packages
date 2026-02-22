@@ -1,0 +1,52 @@
+image: bitnami/discourse:latest
+environment:
+  DISCOURSE_HOST: "@domain@"
+  DISCOURSE_DATABASE_HOST: "@dbhost@"
+  DISCOURSE_DATABASE_NAME: "@dbname@"
+  DISCOURSE_DATABASE_USER: "@dbuser@"
+  DISCOURSE_DATABASE_PASSWORD: "@dbpass@"
+  DISCOURSE_REDIS_HOST: "@redishost@"
+  DISCOURSE_USERNAME: "@adminuser@"
+  DISCOURSE_PASSWORD: "@adminpass@"
+  DISCOURSE_EMAIL: "@adminemail@"
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/discourse
+questions:
+  domain:
+    query: "What hostname should Discourse use?"
+    type: hostname
+  dbhost:
+    query: "What is the PostgreSQL host for Discourse?"
+    type: hostname
+  dbname:
+    query: "What is the database name?"
+    type:
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  redishost:
+    query: "What is the Redis host for Discourse?"
+    type: hostname
+  adminuser:
+    query: "What admin username should Discourse use?"
+    type:
+  adminpass:
+    query: "What admin password should Discourse use?"
+    type:
+  adminemail:
+    query: "What email should the Discourse admin use?"
+    type:
+  port:
+    query: "What external port should Discourse listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires external PostgreSQL and Redis servers"

@@ -1,0 +1,42 @@
+image: bitnami/moodle:latest
+environment:
+  MOODLE_DATABASE_HOST: "@dbhost@"
+  MOODLE_DATABASE_NAME: "@dbname@"
+  MOODLE_DATABASE_USER: "@dbuser@"
+  MOODLE_DATABASE_PASSWORD: "@dbpass@"
+  MOODLE_USERNAME: "@adminuser@"
+  MOODLE_PASSWORD: "@adminpass@"
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/moodle
+  moodledata:
+    mountpoint: /bitnami/moodledata
+questions:
+  dbhost:
+    query: "What is the MariaDB/MySQL host for Moodle?"
+    type: hostname
+  dbname:
+    query: "What is the database name?"
+    type:
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  adminuser:
+    query: "What admin username should Moodle use?"
+    type:
+  adminpass:
+    query: "What admin password should Moodle use?"
+    type:
+  port:
+    query: "What external port should Moodle listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MariaDB or MySQL server"

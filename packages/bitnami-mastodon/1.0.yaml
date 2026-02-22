@@ -1,0 +1,48 @@
+image: bitnami/mastodon:latest
+environment:
+  MASTODON_DATABASE_HOST: "@dbhost@"
+  MASTODON_DATABASE_NAME: "@dbname@"
+  MASTODON_DATABASE_USERNAME: "@dbuser@"
+  MASTODON_DATABASE_PASSWORD: "@dbpass@"
+  MASTODON_REDIS_HOST: "@redishost@"
+  MASTODON_ADMIN_USERNAME: "@adminuser@"
+  MASTODON_ADMIN_PASSWORD: "@adminpass@"
+  MASTODON_ADMIN_EMAIL: "@adminemail@"
+network:
+  external:
+    "@port@": "3000"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/mastodon
+questions:
+  dbhost:
+    query: "What is the PostgreSQL host for Mastodon?"
+    type: hostname
+  dbname:
+    query: "What is the database name?"
+    type:
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  redishost:
+    query: "What is the Redis host for Mastodon?"
+    type: hostname
+  adminuser:
+    query: "What admin username should Mastodon use?"
+    type:
+  adminpass:
+    query: "What admin password should Mastodon use?"
+    type:
+  adminemail:
+    query: "What email should the Mastodon admin use?"
+    type:
+  port:
+    query: "What external port should Mastodon listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires external PostgreSQL and Redis servers"

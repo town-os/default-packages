@@ -1,0 +1,40 @@
+image: bitnami/wordpress:latest
+environment:
+  WORDPRESS_DATABASE_HOST: "@dbhost@"
+  WORDPRESS_DATABASE_NAME: "@dbname@"
+  WORDPRESS_DATABASE_USER: "@dbuser@"
+  WORDPRESS_DATABASE_PASSWORD: "@dbpass@"
+  WORDPRESS_USERNAME: "@adminuser@"
+  WORDPRESS_PASSWORD: "@adminpass@"
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/wordpress
+questions:
+  dbhost:
+    query: "What is the MariaDB/MySQL host for WordPress?"
+    type: hostname
+  dbname:
+    query: "What is the database name?"
+    type:
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  adminuser:
+    query: "What admin username should WordPress use?"
+    type:
+  adminpass:
+    query: "What admin password should WordPress use?"
+    type:
+  port:
+    query: "What external port should WordPress listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external MariaDB or MySQL server"

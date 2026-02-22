@@ -1,0 +1,23 @@
+image: bitnami/tomcat:latest
+environment:
+  TOMCAT_USERNAME: "@user@"
+  TOMCAT_PASSWORD: "@password@"
+network:
+  external:
+    "@port@": "8080"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/tomcat
+questions:
+  user:
+    query: "What admin username should Tomcat use?"
+    type:
+  password:
+    query: "What admin password should Tomcat use?"
+    type:
+  port:
+    query: "What external port should Tomcat listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

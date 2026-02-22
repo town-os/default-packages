@@ -1,0 +1,45 @@
+image: bitnami/ghost:latest
+environment:
+  GHOST_DATABASE_HOST: "@dbhost@"
+  GHOST_DATABASE_NAME: "@dbname@"
+  GHOST_DATABASE_USER: "@dbuser@"
+  GHOST_DATABASE_PASSWORD: "@dbpass@"
+  GHOST_USERNAME: "@adminuser@"
+  GHOST_PASSWORD: "@adminpass@"
+  GHOST_EMAIL: "@adminemail@"
+network:
+  external:
+    "@port@": "2368"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/ghost
+questions:
+  dbhost:
+    query: "What is the MySQL host for Ghost?"
+    type: hostname
+  dbname:
+    query: "What is the database name?"
+    type:
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  adminuser:
+    query: "What admin username should Ghost use?"
+    type:
+  adminpass:
+    query: "What admin password should Ghost use?"
+    type:
+  adminemail:
+    query: "What email should the Ghost admin use?"
+    type:
+  port:
+    query: "What external port should Ghost listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Admin: "http://localhost:@port@/ghost"
+  Database: "Requires an external MySQL server"

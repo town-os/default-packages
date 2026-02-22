@@ -1,0 +1,40 @@
+image: bitnami/odoo:latest
+environment:
+  ODOO_DATABASE_HOST: "@dbhost@"
+  ODOO_DATABASE_NAME: "@dbname@"
+  ODOO_DATABASE_USER: "@dbuser@"
+  ODOO_DATABASE_PASSWORD: "@dbpass@"
+  ODOO_EMAIL: "@adminemail@"
+  ODOO_PASSWORD: "@adminpass@"
+network:
+  external:
+    "@port@": "8069"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /bitnami/odoo
+questions:
+  dbhost:
+    query: "What is the PostgreSQL host for Odoo?"
+    type: hostname
+  dbname:
+    query: "What is the database name?"
+    type:
+  dbuser:
+    query: "What is the database username?"
+    type:
+  dbpass:
+    query: "What is the database password?"
+    type:
+  adminemail:
+    query: "What email should the Odoo admin use?"
+    type:
+  adminpass:
+    query: "What admin password should Odoo use?"
+    type:
+  port:
+    query: "What external port should Odoo listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
+  Database: "Requires an external PostgreSQL server"
