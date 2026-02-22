@@ -8,9 +8,17 @@ network:
   internal: {}
 volumes:
   data:
-    mountpoint: /mattermost
+    mountpoint: /mattermost/data
+  logs:
+    mountpoint: /mattermost/logs
+  config: 
+    mountpoint: /mattermost/config
+  plugins:
+    mountpoint: /mattermost/plugins
+  client-plugins:
+    mountpoint: /mattermost/client/plugins"
 questions:
   port:
     query: "What external port should Mattermost listen on?"
     type: port
-command: ["mattermost", "server"]
+command: ["/mattermost/bin/mattermost", "server"]
