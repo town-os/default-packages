@@ -91,24 +91,23 @@ This repository is included by default on every Town OS installation. If it was 
 
 Town OS stores its repository list in a `repositories.json` file inside its package data directory -- this is automatically created at first boot with this repository, but if it exists in advance you can pre-program it with your own fork of this that's private to you. You can add this repository by editing that file directly. This file exists in the btrfs filesystem TownOS depends on.
 
-The file contains a JSON array of repository objects. Add an entry like this:
+The file contains a JSON array of `[name, url]` pairs. Add an entry like this:
 
 ```json
 [
-    {
-        "Name": "default",
-        "URL": {
-            "Scheme": "https",
-            "Host": "github.com",
-            "Path": "/town-os/default-packages"
-        }
-    }
+    ["default", "https://github.com/town-os/default-packages"]
 ]
 ```
 
 After editing the file, restart Town OS or use the **Refresh** button on the Repositories tab for the changes to take effect.
 
-If the repository is private, include credentials via the `TOWN_OS_REPO_USERNAME` and `TOWN_OS_REPO_PASSWORD` environment variables, or add `Username` and `Password` fields to the repository entry.
+If the repository is private, embed credentials in the URL or use the `TOWN_OS_REPO_USERNAME` and `TOWN_OS_REPO_PASSWORD` environment variables:
+
+```json
+[
+    ["default", "https://user:token@github.com/town-os/default-packages"]
+]
+```
 
 ## Trust model
 
