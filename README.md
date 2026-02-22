@@ -91,6 +91,8 @@ This repository is included by default on every Town OS installation. If it was 
 
 Town OS stores its repository list in a `repositories.json` file inside its package data directory -- this is automatically created at first boot with this repository, but if it exists in advance you can pre-program it with your own fork of this that's private to you. You can add this repository by editing that file directly. This file exists in the btrfs filesystem TownOS depends on.
 
+The order is important -- packages in earlier members of the list are less important than later ones, allowing you to create your own repositories of packages.
+
 The file contains a JSON array of `[name, url]` pairs. Add an entry like this:
 
 ```json
