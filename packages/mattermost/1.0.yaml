@@ -1,0 +1,17 @@
+image: mattermost/mattermost-team-edition:latest
+environment:
+  MM_SQLSETTINGS_DRIVERNAME: sqlite3
+  MM_SQLSETTINGS_DATASOURCE: /mattermost/data/mattermost.db
+network:
+  external:
+    "@port@": "8065"
+  internal: {}
+volumes:
+  data:
+    mountpoint: /mattermost/data
+  config:
+    mountpoint: /mattermost/config
+questions:
+  port:
+    query: "What external port should Mattermost listen on?"
+    type: port

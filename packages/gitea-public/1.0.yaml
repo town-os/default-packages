@@ -1,0 +1,31 @@
+image: gitea/gitea:latest
+environment:
+  GITEA__server__DOMAIN: "@domain@"
+  GITEA__server__SSH_DOMAIN: "@domain@"
+  GITEA__server__ROOT_URL: "http://@domain@:@httpport@/"
+  GITEA__database__DB_TYPE: sqlite3
+  GITEA__database__PATH: /database/gitea.db
+  GITEA__repository__ROOT: /repositories
+network:
+  external:
+    "@httpport@": "3000"
+    "@sshport@": "22"
+  internal: {}
+volumes:
+  database:
+    mountpoint: /database
+  repositories:
+    mountpoint: /repositories
+questions:
+  domain:
+    query: "What domain should Gitea serve?"
+    type: hostname
+  httpport:
+    query: "What port should the web interface listen on?"
+    type: port
+  sshport:
+    query: "What port should SSH listen on?"
+    type: port
+notes:
+  URL: "http://@domain@:@httpport@"
+  SSH: "ssh://git@@domain@:@sshport@"

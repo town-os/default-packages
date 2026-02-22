@@ -1,0 +1,16 @@
+image: caddy:latest
+environment: {}
+command: ["caddy", "file-server", "--root", "/usr/share/caddy", "--listen", ":80"]
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  files:
+    mountpoint: /usr/share/caddy
+questions:
+  port:
+    query: "What external port should caddy listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"

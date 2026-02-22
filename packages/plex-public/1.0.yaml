@@ -1,0 +1,16 @@
+image: plexinc/pms-docker:latest
+environment: {}
+network:
+  external:
+    "32400": "32400"
+  internal: {}
+volumes:
+  media:
+    mountpoint: /data
+    quota: "@mediasize@"
+  config:
+    mountpoint: /config
+questions:
+  mediasize:
+    query: "How much storage should be allocated for media?"
+    type: bytes

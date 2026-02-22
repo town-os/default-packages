@@ -1,0 +1,15 @@
+image: nginx:latest
+environment: {}
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  files:
+    mountpoint: /usr/share/nginx/html
+questions:
+  port:
+    query: "What external port should nginx listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
