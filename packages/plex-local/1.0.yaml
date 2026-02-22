@@ -11,6 +11,11 @@ volumes:
   config:
     mountpoint: /config
 questions:
+  hostname: 
+    query: "What is your hostname?"
+    type: hostname
   mediasize:
     query: "How much storage should be allocated for media?"
     type: bytes
+notes:
+  url: "https://@hostname@:32400/web"
