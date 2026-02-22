@@ -1,0 +1,21 @@
+image: jitsi/web:latest
+environment:
+  ENABLE_HTTP_REDIRECT: "0"
+  PUBLIC_URL: "http://localhost:@port@"
+network:
+  external:
+    "@port@": "80"
+  internal: {}
+volumes:
+  config:
+    mountpoint: /config
+  crontabs:
+    mountpoint: /var/spool/cron/crontabs
+  transcripts:
+    mountpoint: /usr/share/jitsi-meet/transcripts
+questions:
+  port:
+    query: "What external port should Jitsi Meet listen on?"
+    type: port
+notes:
+  URL: "http://localhost:@port@"
