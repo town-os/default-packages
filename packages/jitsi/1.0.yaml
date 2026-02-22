@@ -1,3 +1,4 @@
+# FIXME: this package is probably really busted until we can figure out dependencies, which is on the way.
 image: jitsi/web:latest
 environment:
   ENABLE_HTTP_REDIRECT: "0"
