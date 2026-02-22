@@ -15,6 +15,10 @@ volumes:
     mountpoint: /database
   repositories:
     mountpoint: /repositories
+  data:
+    mountpoint: /data
+  log:
+    mountpoint: /data/gitea/log
 questions:
   domain:
     query: "What domain should Gitea serve?"
