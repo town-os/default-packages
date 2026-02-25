@@ -13,5 +13,8 @@ questions:
     query: "What external port should node_exporter listen on?"
     type: port
 notes:
-  Metrics: "http://localhost:@port@/metrics"
-  Info: "Requires --net=host, --pid=host, and a read-only bind mount of / to /host for accurate host metrics"
+  Metrics:
+    value: "http://localhost:@port@/metrics"
+    type: url
+  Info:
+    value: "Requires --net=host, --pid=host, and a read-only bind mount of / to /host for accurate host metrics"

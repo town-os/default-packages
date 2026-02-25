@@ -25,5 +25,9 @@ questions:
     query: "What external port should Gitea SSH listen on?"
     type: port
 notes:
-  URL: "http://localhost:@httpport@"
-  SSH: "ssh://git@localhost:@sshport@"
+  URL:
+    value: "http://localhost:@httpport@"
+    type: url
+  SSH:
+    value: "ssh://git@localhost:@sshport@"
+    type: url

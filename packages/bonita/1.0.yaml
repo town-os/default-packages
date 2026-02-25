@@ -19,5 +19,8 @@ questions:
     query: "What external port should Bonita listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@/bonita"
-  Info: "Using embedded H2 database. For production, set DB_VENDOR to mysql or postgres."
+  URL:
+    value: "http://localhost:@port@/bonita"
+    type: url
+  Info:
+    value: "Using embedded H2 database. For production, set DB_VENDOR to mysql or postgres."

@@ -40,6 +40,11 @@ questions:
     query: "What external port should Ghost listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Admin: "http://localhost:@port@/ghost"
-  Database: "Requires an external MySQL server"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Admin:
+    value: "http://localhost:@port@/ghost"
+    type: url
+  Database:
+    value: "Requires an external MySQL server"

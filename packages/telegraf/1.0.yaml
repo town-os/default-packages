@@ -12,5 +12,8 @@ questions:
     query: "What external port should Telegraf StatsD listener use?"
     type: port
 notes:
-  StatsD: "udp://localhost:@port@"
-  Info: "Mount a telegraf.conf into /etc/telegraf/telegraf.conf to configure inputs and outputs"
+  StatsD:
+    value: "udp://localhost:@port@"
+    type: url
+  Info:
+    value: "Mount a telegraf.conf into /etc/telegraf/telegraf.conf to configure inputs and outputs"

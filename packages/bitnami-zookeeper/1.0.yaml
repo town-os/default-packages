@@ -13,4 +13,5 @@ questions:
     query: "What external port should ZooKeeper client connections use?"
     type: port
 notes:
-  Client: "localhost:@port@"
+  Client:
+    value: "localhost:@port@"

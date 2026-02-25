@@ -20,4 +20,6 @@ questions:
     query: "What external port should MariaDB listen on?"
     type: port
 notes:
-  Connection: "mysql://root:@password@@localhost:@port@/@database@"
+  Connection:
+    value: "mysql://root:@password@@localhost:@port@/@database@"
+    type: url

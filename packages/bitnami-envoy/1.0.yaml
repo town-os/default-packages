@@ -16,6 +16,11 @@ questions:
     query: "What external port should the Envoy admin interface listen on?"
     type: port
 notes:
-  Proxy: "http://localhost:@port@"
-  Admin: "http://localhost:@adminport@"
-  Config: "Place envoy.yaml in the config volume"
+  Proxy:
+    value: "http://localhost:@port@"
+    type: url
+  Admin:
+    value: "http://localhost:@adminport@"
+    type: url
+  Config:
+    value: "Place envoy.yaml in the config volume"

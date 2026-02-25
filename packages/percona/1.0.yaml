@@ -16,4 +16,6 @@ questions:
     query: "What external port should Percona MySQL listen on?"
     type: port
 notes:
-  Connection: "mysql://root:@password@@localhost:@port@"
+  Connection:
+    value: "mysql://root:@password@@localhost:@port@"
+    type: url

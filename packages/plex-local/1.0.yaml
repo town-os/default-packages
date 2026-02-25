@@ -18,4 +18,6 @@ questions:
     query: "How much storage should be allocated for media?"
     type: bytes
 notes:
-  url: "http://@hostname@:32400/web"
+  url:
+    value: "http://@hostname@:32400/web"
+    type: url

@@ -18,4 +18,6 @@ questions:
     query: "What external port should the Kapacitor HTTP API listen on?"
     type: port
 notes:
-  API: "http://localhost:@port@"
+  API:
+    value: "http://localhost:@port@"
+    type: url

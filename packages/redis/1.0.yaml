@@ -12,4 +12,6 @@ questions:
     query: "What external port should Redis listen on?"
     type: port
 notes:
-  Connection: "redis://localhost:@port@"
+  Connection:
+    value: "redis://localhost:@port@"
+    type: url

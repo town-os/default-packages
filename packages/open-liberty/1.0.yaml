@@ -18,6 +18,11 @@ questions:
     query: "What external port should Open Liberty HTTPS listen on?"
     type: port
 notes:
-  HTTP: "http://localhost:@httpport@"
-  HTTPS: "https://localhost:@httpsport@"
-  Deploy: "Place WAR/EAR files in /config/dropins/"
+  HTTP:
+    value: "http://localhost:@httpport@"
+    type: url
+  HTTPS:
+    value: "https://localhost:@httpsport@"
+    type: url
+  Deploy:
+    value: "Place WAR/EAR files in /config/dropins/"

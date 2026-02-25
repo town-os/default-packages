@@ -16,4 +16,6 @@ questions:
     query: "What external port should Valkey listen on?"
     type: port
 notes:
-  Connection: "redis://:@password@@localhost:@port@"
+  Connection:
+    value: "redis://:@password@@localhost:@port@"
+    type: url

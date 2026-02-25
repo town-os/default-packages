@@ -17,5 +17,9 @@ questions:
     query: "What external port should the NATS monitoring endpoint listen on?"
     type: port
 notes:
-  URL: "nats://localhost:@port@"
-  Monitoring: "http://localhost:@monitorport@"
+  URL:
+    value: "nats://localhost:@port@"
+    type: url
+  Monitoring:
+    value: "http://localhost:@monitorport@"
+    type: url

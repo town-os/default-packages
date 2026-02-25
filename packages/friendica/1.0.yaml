@@ -33,5 +33,8 @@ questions:
     query: "What external port should Friendica listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Database: "Requires an external MySQL/MariaDB server"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Database:
+    value: "Requires an external MySQL/MariaDB server"

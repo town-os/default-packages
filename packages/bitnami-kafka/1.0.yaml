@@ -18,4 +18,5 @@ questions:
     query: "What external port should Kafka listen on?"
     type: port
 notes:
-  Broker: "localhost:@port@"
+  Broker:
+    value: "localhost:@port@"

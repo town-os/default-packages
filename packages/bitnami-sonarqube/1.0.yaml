@@ -28,6 +28,10 @@ questions:
     query: "What external port should SonarQube listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Login: "Default credentials are admin/admin"
-  Database: "Requires an external PostgreSQL server"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Login:
+    value: "Default credentials are admin/admin"
+  Database:
+    value: "Requires an external PostgreSQL server"

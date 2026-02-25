@@ -24,5 +24,9 @@ questions:
     query: "What external port should the WildFly management console listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Management: "http://localhost:@mgmtport@"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Management:
+    value: "http://localhost:@mgmtport@"
+    type: url

@@ -24,5 +24,9 @@ questions:
     query: "What external port should the MinIO console listen on?"
     type: port
 notes:
-  API: "http://localhost:@apiport@"
-  Console: "http://localhost:@consoleport@"
+  API:
+    value: "http://localhost:@apiport@"
+    type: url
+  Console:
+    value: "http://localhost:@consoleport@"
+    type: url

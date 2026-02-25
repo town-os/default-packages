@@ -16,4 +16,6 @@ questions:
     query: "What external port should ArangoDB listen on?"
     type: port
 notes:
-  WebUI: "http://localhost:@port@"
+  WebUI:
+    value: "http://localhost:@port@"
+    type: url

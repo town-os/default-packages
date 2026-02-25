@@ -16,4 +16,6 @@ questions:
     query: "What external port should Mosquitto MQTT listen on?"
     type: port
 notes:
-  MQTT: "mqtt://localhost:@port@"
+  MQTT:
+    value: "mqtt://localhost:@port@"
+    type: url

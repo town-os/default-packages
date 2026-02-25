@@ -21,4 +21,6 @@ questions:
     query: "What external port should InfluxDB listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
+  URL:
+    value: "http://localhost:@port@"
+    type: url

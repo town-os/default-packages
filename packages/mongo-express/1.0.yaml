@@ -22,5 +22,8 @@ questions:
     query: "What external port should mongo-express listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Info: "Requires an external MongoDB server"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Info:
+    value: "Requires an external MongoDB server"

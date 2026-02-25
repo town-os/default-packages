@@ -20,5 +20,9 @@ questions:
     query: "What external port should the Neo4j Bolt protocol listen on?"
     type: port
 notes:
-  Browser: "http://localhost:@httpport@"
-  Bolt: "bolt://localhost:@boltport@"
+  Browser:
+    value: "http://localhost:@httpport@"
+    type: url
+  Bolt:
+    value: "bolt://localhost:@boltport@"
+    type: url

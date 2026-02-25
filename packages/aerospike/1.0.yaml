@@ -22,4 +22,5 @@ questions:
     query: "What external port should Aerospike listen on?"
     type: port
 notes:
-  Service: "localhost:@port@"
+  Service:
+    value: "localhost:@port@"

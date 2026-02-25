@@ -22,4 +22,6 @@ questions:
     query: "What external port should CouchDB listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@/_utils"
+  URL:
+    value: "http://localhost:@port@/_utils"
+    type: url

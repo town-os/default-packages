@@ -22,5 +22,8 @@ questions:
     query: "What external port should the OrientDB Studio interface listen on?"
     type: port
 notes:
-  Studio: "http://localhost:@httpport@"
-  Binary: "localhost:@binaryport@"
+  Studio:
+    value: "http://localhost:@httpport@"
+    type: url
+  Binary:
+    value: "localhost:@binaryport@"

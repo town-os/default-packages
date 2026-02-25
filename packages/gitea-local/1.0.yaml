@@ -21,4 +21,9 @@ questions:
     query: "What port should the web interface listen on?"
     type: port
 notes:
-  URL: "http://@domain@:@httpport@"
+  URL:
+    value: "http://@domain@:@httpport@"
+    type: url
+  SSH:
+    value: "ssh://git@@domain@:@sshport@"
+    type: url

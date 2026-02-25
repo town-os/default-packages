@@ -20,4 +20,5 @@ questions:
     query: "What external port should Eggdrop listen on for DCC/telnet?"
     type: port
 notes:
-  Listen: "telnet localhost @port@"
+  Listen:
+    value: "telnet localhost @port@"

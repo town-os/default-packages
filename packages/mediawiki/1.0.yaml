@@ -14,5 +14,6 @@ questions:
     query: "What external port should MediaWiki listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Setup: "Complete the web-based installer. Select SQLite and set data directory to /var/www/data."
+  URL:
+    value: "http://localhost:@port@"
+    type: url

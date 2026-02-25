@@ -18,4 +18,6 @@ questions:
     query: "What external port should Storm Nimbus listen on?"
     type: port
 notes:
-  UI: "http://localhost:@uiport@"
+  UI:
+    value: "http://localhost:@uiport@"
+    type: url

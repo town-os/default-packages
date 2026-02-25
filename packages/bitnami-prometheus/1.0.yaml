@@ -14,5 +14,8 @@ questions:
     query: "What external port should Prometheus listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Config: "Place prometheus.yml in the config volume"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Config:
+    value: "Place prometheus.yml in the config volume"

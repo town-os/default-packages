@@ -31,6 +31,11 @@ questions:
     query: "What external port should YOURLS listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Admin: "http://localhost:@port@/admin/"
-  Database: "Requires an external MySQL/MariaDB server"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Admin:
+    value: "http://localhost:@port@/admin/"
+    type: url
+  Database:
+    value: "Requires an external MySQL/MariaDB server"

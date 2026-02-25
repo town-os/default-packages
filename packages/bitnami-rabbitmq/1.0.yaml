@@ -25,5 +25,9 @@ questions:
     query: "What external port should the RabbitMQ management UI listen on?"
     type: port
 notes:
-  AMQP: "amqp://localhost:@port@"
-  Management: "http://localhost:@mgmtport@"
+  AMQP:
+    value: "amqp://localhost:@port@"
+    type: url
+  Management:
+    value: "http://localhost:@mgmtport@"
+    type: url

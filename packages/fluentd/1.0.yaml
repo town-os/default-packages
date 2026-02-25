@@ -12,4 +12,6 @@ questions:
     query: "What external port should Fluentd forward input listen on?"
     type: port
 notes:
-  Forward: "tcp://localhost:@port@"
+  Forward:
+    value: "tcp://localhost:@port@"
+    type: url

@@ -12,5 +12,8 @@ questions:
     query: "What external port should HAProxy listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Config: "Mount haproxy.cfg in the config volume"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Config:
+    value: "Mount haproxy.cfg in the config volume"

@@ -31,5 +31,8 @@ questions:
     query: "What external port should Silverpeas listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@/silverpeas"
-  Database: "Requires an external PostgreSQL server"
+  URL:
+    value: "http://localhost:@port@/silverpeas"
+    type: url
+  Database:
+    value: "Requires an external PostgreSQL server"

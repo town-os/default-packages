@@ -21,5 +21,8 @@ questions:
     query: "What external port should TeamSpeak file transfer use?"
     type: port
 notes:
-  Voice: "ts3server://localhost?port=@voiceport@"
-  ServerQuery: "telnet localhost @queryport@"
+  Voice:
+    value: "ts3server://localhost?port=@voiceport@"
+    type: url
+  ServerQuery:
+    value: "telnet localhost @queryport@"

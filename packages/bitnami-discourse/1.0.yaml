@@ -48,5 +48,8 @@ questions:
     query: "What external port should Discourse listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Database: "Requires external PostgreSQL and Redis servers"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Database:
+    value: "Requires external PostgreSQL and Redis servers"

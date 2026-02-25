@@ -18,6 +18,8 @@ questions:
     query: "What external port should Postfix Admin listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Setup: "http://localhost:@port@/setup.php"
-  Info: "Using SQLite database"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Info:
+    value: "Using SQLite database"

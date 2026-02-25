@@ -19,5 +19,8 @@ questions:
     query: "What external port should Rocket.Chat listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Database: "Requires an external MongoDB instance with replica set enabled"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Database:
+    value: "Requires an external MongoDB instance with replica set enabled"

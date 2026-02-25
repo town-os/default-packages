@@ -16,4 +16,5 @@ questions:
     query: "What external port should spiped listen on?"
     type: port
 notes:
-  Info: "Place your symmetric key file in the key volume. Generate one with: dd if=/dev/urandom bs=32 count=1 of=keyfile"
+  Info:
+    value: "Place your symmetric key file in the key volume. Generate one with: dd if=/dev/urandom bs=32 count=1 of=keyfile"

@@ -12,5 +12,8 @@ questions:
     query: "What external port should the Docker registry listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Push: "docker push localhost:@port@/myimage:tag"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Push:
+    value: "docker push localhost:@port@/myimage:tag"

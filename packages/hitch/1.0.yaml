@@ -12,4 +12,6 @@ questions:
     query: "What external port should Hitch listen on for TLS?"
     type: port
 notes:
-  URL: "https://localhost:@port@"
+  URL:
+    value: "https://localhost:@port@"
+    type: url

@@ -12,6 +12,10 @@ questions:
     query: "What external port should Redmine listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Login: "Default admin credentials are admin/admin"
-  Database: "Uses SQLite by default"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Login:
+    value: "Default admin credentials are admin/admin"
+  Database:
+    value: "Uses SQLite by default"

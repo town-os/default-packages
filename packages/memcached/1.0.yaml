@@ -10,4 +10,5 @@ questions:
     query: "What external port should Memcached listen on?"
     type: port
 notes:
-  Connection: "localhost:@port@"
+  Connection:
+    value: "localhost:@port@"

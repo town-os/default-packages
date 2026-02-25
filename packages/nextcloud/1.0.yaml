@@ -25,4 +25,6 @@ questions:
     query: "What external port should Nextcloud listen on?"
     type: port
 notes:
-  URL: "http://@domain@:@port@"
+  URL:
+    value: "http://@domain@:@port@"
+    type: url

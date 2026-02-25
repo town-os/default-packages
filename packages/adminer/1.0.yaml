@@ -14,5 +14,8 @@ questions:
     query: "What external port should Adminer listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Info: "Supports MySQL, PostgreSQL, SQLite, MS SQL, Oracle, and others"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Info:
+    value: "Supports MySQL, PostgreSQL, SQLite, MS SQL, Oracle, and others"

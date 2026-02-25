@@ -27,5 +27,9 @@ questions:
     query: "What port should SSH listen on?"
     type: port
 notes:
-  URL: "http://@domain@:@httpport@"
-  SSH: "ssh://git@@domain@:@sshport@"
+  URL:
+    value: "http://@domain@:@httpport@"
+    type: url
+  SSH:
+    value: "ssh://git@@domain@:@sshport@"
+    type: url

@@ -17,5 +17,9 @@ questions:
     query: "What external port should Ghost listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Admin: "http://localhost:@port@/ghost"
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Admin:
+    value: "http://localhost:@port@/ghost"
+    type: url

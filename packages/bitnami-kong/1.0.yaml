@@ -19,5 +19,9 @@ questions:
     query: "What external port should the Kong Admin API listen on?"
     type: port
 notes:
-  Proxy: "http://localhost:@proxyport@"
-  Admin: "http://localhost:@adminport@"
+  Proxy:
+    value: "http://localhost:@proxyport@"
+    type: url
+  Admin:
+    value: "http://localhost:@adminport@"
+    type: url

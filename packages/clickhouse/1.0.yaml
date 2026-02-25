@@ -23,5 +23,8 @@ questions:
     query: "What external port should the ClickHouse native protocol listen on?"
     type: port
 notes:
-  HTTP: "http://localhost:@httpport@"
-  Native: "localhost:@nativeport@"
+  HTTP:
+    value: "http://localhost:@httpport@"
+    type: url
+  Native:
+    value: "localhost:@nativeport@"

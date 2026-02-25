@@ -20,4 +20,6 @@ questions:
     query: "What external port should Convertigo listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@/convertigo"
+  URL:
+    value: "http://localhost:@port@/convertigo"
+    type: url

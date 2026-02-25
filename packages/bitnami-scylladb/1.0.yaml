@@ -18,4 +18,5 @@ questions:
     query: "What external port should ScyllaDB CQL listen on?"
     type: port
 notes:
-  CQL: "localhost:@port@"
+  CQL:
+    value: "localhost:@port@"

@@ -16,5 +16,8 @@ questions:
     query: "What external port should the RethinkDB driver protocol listen on?"
     type: port
 notes:
-  Admin: "http://localhost:@webport@"
-  Driver: "localhost:@driverport@"
+  Admin:
+    value: "http://localhost:@webport@"
+    type: url
+  Driver:
+    value: "localhost:@driverport@"

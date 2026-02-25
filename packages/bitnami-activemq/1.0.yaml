@@ -24,5 +24,9 @@ questions:
     query: "What external port should the ActiveMQ web console listen on?"
     type: port
 notes:
-  OpenWire: "tcp://localhost:@port@"
-  Console: "http://localhost:@webport@"
+  OpenWire:
+    value: "tcp://localhost:@port@"
+    type: url
+  Console:
+    value: "http://localhost:@webport@"
+    type: url

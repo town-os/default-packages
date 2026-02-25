@@ -15,4 +15,6 @@ questions:
     query: "What external port should the Consul UI/API listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
+  URL:
+    value: "http://localhost:@port@"
+    type: url

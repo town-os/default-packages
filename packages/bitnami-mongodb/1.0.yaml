@@ -20,4 +20,6 @@ questions:
     query: "What external port should MongoDB listen on?"
     type: port
 notes:
-  Connection: "mongodb://@user@:@password@@localhost:@port@"
+  Connection:
+    value: "mongodb://@user@:@password@@localhost:@port@"
+    type: url

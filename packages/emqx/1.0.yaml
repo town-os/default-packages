@@ -18,5 +18,9 @@ questions:
     query: "What external port should the EMQX dashboard listen on?"
     type: port
 notes:
-  MQTT: "mqtt://localhost:@mqttport@"
-  Dashboard: "http://localhost:@dashboardport@"
+  MQTT:
+    value: "mqtt://localhost:@mqttport@"
+    type: url
+  Dashboard:
+    value: "http://localhost:@dashboardport@"
+    type: url

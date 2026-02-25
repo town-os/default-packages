@@ -18,5 +18,8 @@ questions:
     query: "What external port should Drupal listen on?"
     type: port
 notes:
-  URL: "http://localhost:@port@"
-  Database: "Supports SQLite out of the box. Select SQLite during the web-based install wizard."
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Database:
+    value: "Supports SQLite out of the box. Select SQLite during the web-based install wizard."

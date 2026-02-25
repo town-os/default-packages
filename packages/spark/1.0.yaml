@@ -16,5 +16,9 @@ questions:
     query: "What external port should the Spark master listen on?"
     type: port
 notes:
-  UI: "http://localhost:@webuiport@"
-  Master: "spark://localhost:@masterport@"
+  UI:
+    value: "http://localhost:@webuiport@"
+    type: url
+  Master:
+    value: "spark://localhost:@masterport@"
+    type: url

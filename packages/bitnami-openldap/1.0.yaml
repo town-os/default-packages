@@ -24,4 +24,6 @@ questions:
     query: "What external port should OpenLDAP listen on?"
     type: port
 notes:
-  URL: "ldap://localhost:@port@"
+  URL:
+    value: "ldap://localhost:@port@"
+    type: url
