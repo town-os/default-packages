@@ -1,5 +1,7 @@
 # Default Town OS Package Repository
 
+> **[Town OS](https://town-os.github.io): Your Cloud in Your Closet, easy enough for anyone.**
+
 **NOTE:** Until this notice is removed, we are experimenting with generating large numbers of packages using Claude. Feel free to try these packages -- they're pretty safe to launch -- but they may not actually work. Send pull requests if you want to shape them up! At some point, this notice will be removed and the rest of the terms around trust and reliability take more importance.
 
 The official default package repository for [Town OS](https://github.com/town-os/town-os). This repository is included automatically on every Town OS installation and provides packages that have been reviewed by the Town OS maintainers. Packages in this repository are expected to be trustworthy, well-tested, and behave as described.
