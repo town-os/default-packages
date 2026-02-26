@@ -20,7 +20,7 @@ packages/
     1.0.yaml
     2.0.yaml
   postgres/
-    16.0.yaml
+    1.0.yaml
 ```
 
 ## Package format
@@ -29,49 +29,197 @@ Package definitions are YAML files with the following fields:
 
 ```yaml
 image: nginx:1.26-alpine
+description: Lightweight high-performance web server and reverse proxy
+supplies: ["http"]
 command: ["optional", "command", "override"]
 environment:
-    NGINX_HOST: "@hostname@"
+  NGINX_HOST: "@hostname@"
 network:
-    external:
-        "@port@": "80"
-    internal:
-        "5432": "5432"
+  external:
+    "@port@": "80"
+  internal:
+    "5432": "5432"
 volumes:
-    html:
-        mountpoint: /usr/share/nginx/html
-        quota: 2gb
+  html:
+    mountpoint: /usr/share/nginx/html
+    quota: 2gb
+    uid: 1000
+    gid: 1000
+  data:
+    mountpoint: /data
+    archive: seed-data.tar.gz
 questions:
-    hostname:
-        query: "What hostname should nginx serve?"
-        type: hostname
-    port:
-        query: "What external port should nginx listen on?"
-        type: port
+  hostname:
+    query: "What hostname should nginx serve?"
+    type: hostname
+  port:
+    query: "What external port should nginx listen on?"
+    type: port
+    default: "8080"
+archives:
+  - image: nginx:latest
+    directory: /usr/share/nginx/html
+    volume: html
 notes:
-    URL: "http://@hostname@:@port@"
+  URL:
+    value: "http://@hostname@:@port@"
+    type: url
+  Support:
+    value: "+1 (555) 123-4567"
+    type: phone
 ```
 
-| Field              | Description                                                                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `image`            | Container image reference (e.g. `nginx:1.26-alpine`)                                                                                          |
-| `command`          | Optional command override for the container                                                                                                   |
-| `environment`      | Environment variables passed to the container. Values may contain `@variable@` template markers that are substituted with question responses. |
-| `network.external` | Port mappings exposed to the host (`host:container`)                                                                                          |
-| `network.internal` | Port mappings available only between containers                                                                                               |
-| `volumes`          | Named volumes with a `mountpoint` and optional `quota` (e.g. `2gb`)                                                                           |
-| `questions`        | Interactive prompts shown during installation. Responses replace `@name@` markers.                                                            |
-| `notes`            | Key-value metadata displayed after installation. Supports template substitution.                                                              |
+### Top-level fields
 
-### Question types
+| Field         | Description                                                                                                                                   |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `image`       | **Required.** Container image reference (e.g. `nginx:1.26-alpine`). Short names are normalized to `docker.io/library/<name>:latest`.         |
+| `description` | Short human-readable summary of the package.                                                                                                  |
+| `supplies`    | List of semantic capability tags this package provides (e.g. `["database"]`, `["http"]`, `["cache", "database"]`).                            |
+| `command`     | Optional command override for the container.                                                                                                  |
+| `environment` | Environment variables passed to the container. Values may contain `@variable@` template markers that are substituted with question responses. |
+| `network`     | Port mapping configuration (see below).                                                                                                       |
+| `volumes`     | Named volumes with mount configuration (see below).                                                                                           |
+| `questions`   | Interactive prompts shown during installation (see below).                                                                                    |
+| `archives`    | List of archive extraction specs to pre-populate volumes from container images (see below).                                                   |
+| `notes`       | Key-value metadata displayed after installation. Supports template substitution and optional type validation (see below).                     |
 
-| Type       | Validates                                        |
-| ---------- | ------------------------------------------------ |
-| `hostname` | Lowercase alphanumeric with hyphens              |
-| `port`     | Integer 1-65535                                  |
-| `bytes`    | Human-readable size (e.g. `512mb`, `2gb`, `1tb`) |
-| `volume`   | Alphanumeric with hyphens and underscores        |
-| _(empty)_  | Any string                                       |
+### Supplies tags
+
+The `supplies` field declares what capabilities a package provides. This enables dependency resolution and filtering. Common tags:
+
+| Tag          | Used for                                      | Examples                              |
+| ------------ | --------------------------------------------- | ------------------------------------- |
+| `http`       | Web servers, CMS platforms, web applications  | nginx, wordpress, gitea               |
+| `database`   | Relational and NoSQL databases                | postgres, mysql, mongo, redis         |
+| `cache`      | Caching and key-value stores                  | redis, memcached, valkey              |
+| `search`     | Search and analytics engines                  | elasticsearch, opensearch, solr       |
+| `messaging`  | Message brokers and queues                    | rabbitmq, nats, kafka, mosquitto      |
+| `monitoring` | Metrics, alerting, and visualization          | prometheus, grafana, telegraf         |
+| `storage`    | Object storage and file hosting               | minio, registry, nextcloud            |
+
+### Network
+
+| Field              | Description                                                            |
+| ------------------ | ---------------------------------------------------------------------- |
+| `network.external` | Port mappings exposed to the host. Keys and values are `"port"` strings. Both may contain `@variable@` templates. |
+| `network.internal` | Port mappings available only between containers on the internal network. |
+
+Omit `external` or `internal` entirely if unused (do not use `{}`).
+
+### Volumes
+
+| Field        | Description                                                                    |
+| ------------ | ------------------------------------------------------------------------------ |
+| `mountpoint` | **Required.** Absolute path inside the container where the volume is mounted.  |
+| `quota`      | Optional size limit (e.g. `512mb`, `2gb`, `1tb`). May use `@variable@` templates. |
+| `archive`    | Optional archive filename to pre-populate the volume with.                     |
+| `uid`        | Optional numeric user ID for volume ownership.                                 |
+| `gid`        | Optional numeric group ID for volume ownership.                                |
+
+Omit `volumes` entirely if the package has none (do not use `{}`).
+
+### Archives
+
+The `archives` field is a list of specs for extracting files from container images into volumes:
+
+```yaml
+archives:
+  - image: nginx:latest
+    directory: /usr/share/nginx/html
+    volume: html
+```
+
+| Field       | Description                                                              |
+| ----------- | ------------------------------------------------------------------------ |
+| `image`     | **Required.** Container image to extract files from.                     |
+| `directory` | **Required.** Absolute path in the container image to extract.           |
+| `volume`    | **Required.** Name of a volume defined in this package to extract into.  |
+
+### Questions
+
+Questions define interactive prompts shown during package installation. User responses replace `@name@` template markers throughout the package definition.
+
+```yaml
+questions:
+  port:
+    query: "What external port should nginx listen on?"
+    type: port
+    default: "8080"
+```
+
+| Field     | Description                                                        |
+| --------- | ------------------------------------------------------------------ |
+| `query`   | **Required.** The prompt text shown to the user.                   |
+| `type`    | Optional validation type (see table below). Omit for free-form text. |
+| `default` | Optional default value suggested to the user.                      |
+
+#### Question types
+
+| Type       | Validates                                                  |
+| ---------- | ---------------------------------------------------------- |
+| `hostname` | Lowercase alphanumeric with hyphens (no dots)              |
+| `port`     | Integer 1-65535                                            |
+| `bytes`    | Human-readable size (e.g. `512mb`, `2gb`, `1tb`)           |
+| `volume`   | Alphanumeric with hyphens and underscores                  |
+| `archive`  | Any non-empty string (archive filename)                    |
+| `duration` | Human-readable duration (e.g. `30s`, `5m`, `2h`, `1d`)    |
+| _(omitted)_ | Any string (no validation)                                |
+
+Do not use empty `type:` or `type: string` -- simply omit the `type` field for untyped questions.
+
+### Notes
+
+Notes provide key-value metadata displayed after installation. Each note has a `value` and an optional `type` for validation.
+
+```yaml
+notes:
+  URL:
+    value: "http://localhost:@port@"
+    type: url
+  Info:
+    value: "Default admin credentials are admin/admin"
+```
+
+| Field   | Description                                                                |
+| ------- | -------------------------------------------------------------------------- |
+| `value` | **Required.** The note text. Supports `@variable@` template substitution. |
+| `type`  | Optional validation type (see table below). Omit for plain text.           |
+
+#### Note types
+
+| Type    | Validates                                                           |
+| ------- | ------------------------------------------------------------------- |
+| `url`   | Valid URL                                                           |
+| `phone` | Phone number (digits, spaces, parentheses, dashes, optional leading `+`) |
+| `email` | Email address (`user@domain.tld`)                                   |
+| _(omitted)_ | No validation (plain text)                                     |
+
+### Template system
+
+Template variables use the `@variable@` syntax and are substituted during compilation. They can appear in:
+
+- Environment variable values
+- Network port mappings (both keys and values)
+- Volume mountpoints, quotas, and archive fields
+- Note values
+
+Two built-in template variables are available without questions:
+
+| Variable                | Description                                |
+| ----------------------- | ------------------------------------------ |
+| `@LOCAL_EXTERNAL_HOST@` | The external hostname of the Town OS host  |
+| `@LOCAL_INTERNAL_HOST@` | The internal hostname of the Town OS host  |
+
+### Style guidelines
+
+When writing package definitions:
+
+- Omit empty maps (`environment: {}`, `internal: {}`, `volumes: {}`) -- leave them out entirely.
+- Omit `type` on questions that accept free-form text -- do not write `type:` with no value.
+- Include `description` with a short summary of what the package is.
+- Include `supplies` with relevant capability tags when the package provides a well-known service.
+- Include `notes` with connection URLs and any important post-install information.
 
 ## Adding this repository
 
@@ -124,7 +272,7 @@ Users can trust that packages from this repository do what they say they do. Thi
 
 ## Contributing
 
-To propose a new package or update an existing one, open a pull request with the package YAML file placed under `packages/<name>/<version>.yaml`. See existing packages for examples of the expected format.
+To propose a new package or update an existing one, open a pull request with the package YAML file placed under `packages/<name>/<version>.yaml`. See existing packages for examples of the expected format and follow the style guidelines above.
 
 ## License
 
