@@ -1,10 +1,10 @@
 image: prom/node-exporter:latest
+description: Prometheus exporter for hardware and OS metrics
+supplies: ["monitoring"]
 command: ["--path.rootfs=/host"]
-environment: {}
 network:
   external:
     "@port@": "9100"
-  internal: {}
 volumes:
   host:
     mountpoint: /host

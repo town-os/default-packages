@@ -1,9 +1,9 @@
 image: bitnami/apache:latest
-environment: {}
+description: Apache HTTP Server (Bitnami)
+supplies: ["http"]
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   app:
     mountpoint: /app

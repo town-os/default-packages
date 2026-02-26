@@ -1,4 +1,6 @@
 image: bitnami/odoo:latest
+description: Open-source business management suite (Bitnami)
+supplies: ["http"]
 environment:
   ODOO_DATABASE_HOST: "@dbhost@"
   ODOO_DATABASE_NAME: "@dbname@"
@@ -9,7 +11,6 @@ environment:
 network:
   external:
     "@port@": "8069"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/odoo
@@ -19,19 +20,14 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   adminemail:
     query: "What email should the Odoo admin use?"
-    type:
   adminpass:
     query: "What admin password should Odoo use?"
-    type:
   port:
     query: "What external port should Odoo listen on?"
     type: port

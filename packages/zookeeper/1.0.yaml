@@ -1,9 +1,8 @@
 image: zookeeper:latest
-environment: {}
+description: Centralized service for distributed coordination
 network:
   external:
     "@port@": "2181"
-  internal: {}
 volumes:
   data:
     mountpoint: /data

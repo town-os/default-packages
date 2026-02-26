@@ -1,9 +1,8 @@
 image: lightstreamer:latest
-environment: {}
+description: Real-time messaging server for streaming data
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   adapters:
     mountpoint: /lightstreamer/adapters

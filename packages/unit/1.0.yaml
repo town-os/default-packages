@@ -1,9 +1,9 @@
 image: unit:latest
-environment: {}
+description: NGINX Unit dynamic web application server
+supplies: ["http"]
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   config:
     mountpoint: /docker-entrypoint.d

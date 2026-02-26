@@ -1,9 +1,9 @@
 image: hitch:latest
-environment: {}
+description: Scalable TLS proxy for terminating SSL/TLS connections
+supplies: ["http"]
 network:
   external:
     "@port@": "443"
-  internal: {}
 volumes:
   config:
     mountpoint: /etc/hitch

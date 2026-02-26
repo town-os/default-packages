@@ -1,4 +1,6 @@
 image: joomla:latest
+description: Content management system for building websites and applications
+supplies: ["http"]
 environment:
   JOOMLA_DB_HOST: "@dbhost@"
   JOOMLA_DB_USER: "@dbuser@"
@@ -7,7 +9,6 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   html:
     mountpoint: /var/www/html
@@ -17,13 +18,10 @@ questions:
     type: hostname
   dbuser:
     query: "What MySQL/MariaDB user should Joomla use?"
-    type:
   dbpass:
     query: "What is the MySQL/MariaDB password?"
-    type:
   dbname:
     query: "What is the MySQL/MariaDB database name?"
-    type:
   port:
     query: "What external port should Joomla listen on?"
     type: port

@@ -1,9 +1,9 @@
 image: chronograf:latest
-environment: {}
+description: Time series data visualization from the InfluxData platform
+supplies: ["monitoring"]
 network:
   external:
     "@port@": "8888"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/chronograf

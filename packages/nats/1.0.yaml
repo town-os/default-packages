@@ -1,11 +1,11 @@
 image: nats:latest
+description: High-performance cloud-native messaging system
+supplies: ["messaging"]
 command: ["nats-server", "--jetstream", "--store_dir", "/data"]
-environment: {}
 network:
   external:
     "@port@": "4222"
     "@monitorport@": "8222"
-  internal: {}
 volumes:
   data:
     mountpoint: /data

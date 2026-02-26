@@ -1,4 +1,6 @@
 image: gitea/gitea:latest
+description: Lightweight self-hosted Git service
+supplies: ["http"]
 environment:
   GITEA__server__DOMAIN: "@domain@"
   GITEA__server__SSH_DOMAIN: "@domain@"
@@ -10,7 +12,6 @@ network:
   external:
     "@httpport@": "3000"
     "@sshport@": "22"
-  internal: {}
 volumes:
   database:
     mountpoint: /database

@@ -1,21 +1,20 @@
 image: mysql:latest
+description: Popular open-source relational database
+supplies: ["database"]
 environment:
   MYSQL_ROOT_PASSWORD: "@password@"
   MYSQL_DATABASE: "@database@"
 network:
   external:
     "@port@": "3306"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/mysql
 questions:
   password:
     query: "What should the MySQL root password be?"
-    type:
   database:
     query: "What should the default database be named?"
-    type:
   port:
     query: "What external port should MySQL listen on?"
     type: port

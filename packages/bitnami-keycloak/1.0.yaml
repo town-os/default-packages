@@ -1,21 +1,20 @@
 image: bitnami/keycloak:latest
+description: Open-source identity and access management (Bitnami)
+supplies: ["http"]
 environment:
   KC_BOOTSTRAP_ADMIN_USERNAME: "@user@"
   KC_BOOTSTRAP_ADMIN_PASSWORD: "@password@"
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/keycloak
 questions:
   user:
     query: "What admin username should Keycloak use?"
-    type:
   password:
     query: "What admin password should Keycloak use?"
-    type:
   port:
     query: "What external port should Keycloak listen on?"
     type: port

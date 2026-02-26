@@ -1,4 +1,6 @@
 image: rabbitmq:management
+description: Feature-rich message broker supporting multiple protocols
+supplies: ["messaging"]
 environment:
   RABBITMQ_DEFAULT_USER: "@user@"
   RABBITMQ_DEFAULT_PASS: "@password@"
@@ -6,17 +8,14 @@ network:
   external:
     "@port@": "5672"
     "@mgmtport@": "15672"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/rabbitmq
 questions:
   user:
     query: "What username should RabbitMQ use?"
-    type:
   password:
     query: "What password should RabbitMQ use?"
-    type:
   port:
     query: "What external port should RabbitMQ AMQP listen on?"
     type: port

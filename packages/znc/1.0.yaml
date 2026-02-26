@@ -1,9 +1,8 @@
 image: znc:latest
-environment: {}
+description: Advanced IRC bouncer
 network:
   external:
     "@port@": "6697"
-  internal: {}
 volumes:
   data:
     mountpoint: /znc-data

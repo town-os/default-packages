@@ -1,4 +1,6 @@
 image: bitnami/discourse:latest
+description: Open-source discussion platform (Bitnami)
+supplies: ["http"]
 environment:
   DISCOURSE_HOST: "@domain@"
   DISCOURSE_DATABASE_HOST: "@dbhost@"
@@ -12,7 +14,6 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/discourse
@@ -25,25 +26,19 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   redishost:
     query: "What is the Redis host for Discourse?"
     type: hostname
   adminuser:
     query: "What admin username should Discourse use?"
-    type:
   adminpass:
     query: "What admin password should Discourse use?"
-    type:
   adminemail:
     query: "What email should the Discourse admin use?"
-    type:
   port:
     query: "What external port should Discourse listen on?"
     type: port

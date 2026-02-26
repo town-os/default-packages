@@ -1,4 +1,5 @@
 image: bitnami/consul:latest
+description: Service mesh and service discovery solution (Bitnami)
 environment:
   CONSUL_AGENT_MODE: "server"
   CONSUL_BOOTSTRAP_EXPECT: "1"
@@ -6,7 +7,6 @@ environment:
 network:
   external:
     "@port@": "8500"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/consul

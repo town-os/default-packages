@@ -1,10 +1,10 @@
 image: websphere-liberty:latest
-environment: {}
+description: IBM WebSphere Liberty Java application server
+supplies: ["http"]
 network:
   external:
     "@httpport@": "9080"
     "@httpsport@": "9443"
-  internal: {}
 volumes:
   config:
     mountpoint: /config

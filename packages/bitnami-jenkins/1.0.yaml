@@ -1,21 +1,20 @@
 image: bitnami/jenkins:latest
+description: Open-source automation server (Bitnami)
+supplies: ["http"]
 environment:
   JENKINS_USERNAME: "@user@"
   JENKINS_PASSWORD: "@password@"
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/jenkins
 questions:
   user:
     query: "What admin username should Jenkins use?"
-    type:
   password:
     query: "What admin password should Jenkins use?"
-    type:
   port:
     query: "What external port should Jenkins listen on?"
     type: port

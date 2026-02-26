@@ -1,17 +1,17 @@
 image: grafana/grafana:latest
+description: Open-source analytics and interactive visualization platform
+supplies: ["monitoring"]
 environment:
   GF_SECURITY_ADMIN_PASSWORD: "@adminpass@"
 network:
   external:
     "@port@": "3000"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/grafana
 questions:
   adminpass:
     query: "What password should the Grafana admin user have?"
-    type:
   port:
     query: "What external port should Grafana listen on?"
     type: port

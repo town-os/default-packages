@@ -1,4 +1,6 @@
 image: bitnami/wordpress:latest
+description: Popular content management system (Bitnami)
+supplies: ["http"]
 environment:
   WORDPRESS_DATABASE_HOST: "@dbhost@"
   WORDPRESS_DATABASE_NAME: "@dbname@"
@@ -9,7 +11,6 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/wordpress
@@ -19,19 +20,14 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   adminuser:
     query: "What admin username should WordPress use?"
-    type:
   adminpass:
     query: "What admin password should WordPress use?"
-    type:
   port:
     query: "What external port should WordPress listen on?"
     type: port

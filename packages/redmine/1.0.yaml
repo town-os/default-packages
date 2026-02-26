@@ -1,9 +1,9 @@
 image: redmine:latest
-environment: {}
+description: Flexible project management web application
+supplies: ["http"]
 network:
   external:
     "@port@": "3000"
-  internal: {}
 volumes:
   files:
     mountpoint: /usr/src/redmine/files

@@ -1,4 +1,5 @@
 image: mongo-express:latest
+description: Web-based MongoDB administration interface
 environment:
   ME_CONFIG_MONGODB_SERVER: "@mongohost@"
   ME_CONFIG_BASICAUTH_USERNAME: "@adminuser@"
@@ -6,18 +7,14 @@ environment:
 network:
   external:
     "@port@": "8081"
-  internal: {}
-volumes: {}
 questions:
   mongohost:
     query: "What is the MongoDB server hostname?"
     type: hostname
   adminuser:
     query: "What username should protect the mongo-express web interface?"
-    type:
   adminpass:
     query: "What password should protect the mongo-express web interface?"
-    type:
   port:
     query: "What external port should mongo-express listen on?"
     type: port

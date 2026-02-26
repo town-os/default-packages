@@ -1,4 +1,6 @@
 image: friendica:latest
+description: Decentralized social networking platform
+supplies: ["http"]
 environment:
   FRIENDICA_URL: "http://localhost:@port@"
   FRIENDICA_ADMIN_MAIL: "@adminmail@"
@@ -9,26 +11,21 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   html:
     mountpoint: /var/www/html
 questions:
   adminmail:
     query: "What is the admin email address for Friendica?"
-    type:
   dbhost:
     query: "What is the MySQL/MariaDB server hostname?"
     type: hostname
   dbuser:
     query: "What is the MySQL database username?"
-    type:
   dbpass:
     query: "What is the MySQL database password?"
-    type:
   dbname:
     query: "What is the MySQL database name?"
-    type:
   port:
     query: "What external port should Friendica listen on?"
     type: port

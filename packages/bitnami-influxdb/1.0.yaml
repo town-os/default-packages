@@ -1,4 +1,6 @@
 image: bitnami/influxdb:latest
+description: Time series database for metrics (Bitnami)
+supplies: ["database", "monitoring"]
 environment:
   INFLUXDB_ADMIN_USER: "@user@"
   INFLUXDB_ADMIN_USER_PASSWORD: "@password@"
@@ -6,17 +8,14 @@ environment:
 network:
   external:
     "@port@": "8086"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/influxdb
 questions:
   user:
     query: "What should the InfluxDB admin username be? (default: admin)"
-    type:
   password:
     query: "What should the InfluxDB admin password be?"
-    type:
   port:
     query: "What external port should InfluxDB listen on?"
     type: port

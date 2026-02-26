@@ -1,4 +1,6 @@
 image: odoo:latest
+description: Open-source business management suite
+supplies: ["http"]
 environment:
   HOST: "@dbhost@"
   USER: "@dbuser@"
@@ -6,7 +8,6 @@ environment:
 network:
   external:
     "@port@": "8069"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/odoo
@@ -18,10 +19,8 @@ questions:
     type: hostname
   dbuser:
     query: "What is the PostgreSQL username?"
-    type:
   dbpass:
     query: "What is the PostgreSQL password?"
-    type:
   port:
     query: "What external port should Odoo listen on?"
     type: port

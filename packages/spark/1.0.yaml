@@ -1,10 +1,9 @@
 image: spark:latest
-environment: {}
+description: Unified analytics engine for large-scale data processing
 network:
   external:
     "@webuiport@": "8080"
     "@masterport@": "7077"
-  internal: {}
 volumes:
   work:
     mountpoint: /opt/spark/work-dir

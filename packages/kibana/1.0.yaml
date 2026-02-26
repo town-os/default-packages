@@ -1,17 +1,17 @@
 image: kibana:8.16.0
+description: Visualization dashboard for Elasticsearch
+supplies: ["monitoring"]
 environment:
   ELASTICSEARCH_HOSTS: "@elasticsearchurl@"
 network:
   external:
     "@port@": "5601"
-  internal: {}
 volumes:
   data:
     mountpoint: /usr/share/kibana/data
 questions:
   elasticsearchurl:
     query: "What is the Elasticsearch URL (e.g. http://elasticsearch:9200)?"
-    type:
   port:
     query: "What external port should Kibana listen on?"
     type: port

@@ -1,4 +1,6 @@
 image: influxdb:latest
+description: Time series database for metrics and events
+supplies: ["database", "monitoring"]
 environment:
   DOCKER_INFLUXDB_INIT_MODE: setup
   DOCKER_INFLUXDB_INIT_USERNAME: "@user@"
@@ -8,7 +10,6 @@ environment:
 network:
   external:
     "@port@": "8086"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/influxdb2
@@ -17,16 +18,12 @@ volumes:
 questions:
   user:
     query: "What should the InfluxDB admin username be?"
-    type:
   password:
     query: "What should the InfluxDB admin password be?"
-    type:
   org:
     query: "What should the InfluxDB organization name be?"
-    type:
   bucket:
     query: "What should the default InfluxDB bucket name be?"
-    type:
   port:
     query: "What external port should InfluxDB listen on?"
     type: port

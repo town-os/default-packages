@@ -1,17 +1,17 @@
 image: percona:latest
+description: Enhanced drop-in replacement for MySQL
+supplies: ["database"]
 environment:
   MYSQL_ROOT_PASSWORD: "@password@"
 network:
   external:
     "@port@": "3306"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/mysql
 questions:
   password:
     query: "What root password should be set for Percona MySQL?"
-    type:
   port:
     query: "What external port should Percona MySQL listen on?"
     type: port

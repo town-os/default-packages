@@ -1,9 +1,9 @@
 image: haproxy:latest
-environment: {}
+description: Reliable high-performance TCP/HTTP load balancer
+supplies: ["http"]
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   config:
     mountpoint: /usr/local/etc/haproxy

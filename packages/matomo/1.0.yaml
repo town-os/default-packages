@@ -1,4 +1,6 @@
 image: matomo:latest
+description: Open-source web analytics platform
+supplies: ["http"]
 environment:
   MATOMO_DATABASE_HOST: "@dbhost@"
   MATOMO_DATABASE_ADAPTER: mysql
@@ -8,7 +10,6 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   html:
     mountpoint: /var/www/html
@@ -18,13 +19,10 @@ questions:
     type: hostname
   dbuser:
     query: "What MySQL/MariaDB user should Matomo use?"
-    type:
   dbpass:
     query: "What is the MySQL/MariaDB password?"
-    type:
   dbname:
     query: "What is the MySQL/MariaDB database name?"
-    type:
   port:
     query: "What external port should Matomo listen on?"
     type: port

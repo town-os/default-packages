@@ -1,10 +1,10 @@
 image: rethinkdb:latest
-environment: {}
+description: Open-source database for the realtime web
+supplies: ["database"]
 network:
   external:
     "@webport@": "8080"
     "@driverport@": "28015"
-  internal: {}
 volumes:
   data:
     mountpoint: /data

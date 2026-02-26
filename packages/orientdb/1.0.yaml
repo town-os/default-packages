@@ -1,11 +1,12 @@
 image: orientdb:latest
+description: Multi-model database supporting graph, document, and object models
+supplies: ["database"]
 environment:
   ORIENTDB_ROOT_PASSWORD: "@password@"
 network:
   external:
     "@binaryport@": "2424"
     "@httpport@": "2480"
-  internal: {}
 volumes:
   databases:
     mountpoint: /orientdb/databases
@@ -14,7 +15,6 @@ volumes:
 questions:
   password:
     query: "What root password should be set for OrientDB?"
-    type:
   binaryport:
     query: "What external port should the OrientDB binary protocol listen on?"
     type: port

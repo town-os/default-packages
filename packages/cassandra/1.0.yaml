@@ -1,9 +1,9 @@
 image: cassandra:latest
-environment: {}
+description: Distributed wide-column NoSQL database
+supplies: ["database"]
 network:
   external:
     "@port@": "9042"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/cassandra

@@ -1,10 +1,11 @@
 image: plone:latest
+description: Enterprise content management system built on Python
+supplies: ["http"]
 environment:
   SITE: "Plone"
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /data

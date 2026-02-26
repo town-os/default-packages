@@ -1,4 +1,6 @@
 image: postfixadmin:latest
+description: Web-based administration interface for Postfix mail server
+supplies: ["http"]
 environment:
   POSTFIXADMIN_DB_TYPE: "sqlite"
   POSTFIXADMIN_DB_NAME: "/var/www/html/data/postfixadmin.db"
@@ -6,14 +8,12 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/www/html/data
 questions:
   setuppass:
     query: "What setup password should Postfix Admin use?"
-    type:
   port:
     query: "What external port should Postfix Admin listen on?"
     type: port

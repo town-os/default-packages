@@ -1,21 +1,19 @@
 image: eggdrop:latest
+description: Popular open-source IRC bot
 environment:
   SERVER: "@server@"
   NICK: "@nick@"
 network:
   external:
     "@port@": "3333"
-  internal: {}
 volumes:
   data:
     mountpoint: /home/eggdrop/eggdrop/data
 questions:
   server:
     query: "What IRC server should Eggdrop connect to (e.g. irc.libera.chat)?"
-    type:
   nick:
     query: "What nickname should the Eggdrop bot use?"
-    type:
   port:
     query: "What external port should Eggdrop listen on for DCC/telnet?"
     type: port

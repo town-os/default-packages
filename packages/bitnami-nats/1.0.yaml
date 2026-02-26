@@ -1,5 +1,6 @@
 image: bitnami/nats:latest
-environment: {}
+description: High-performance cloud-native messaging system (Bitnami)
+supplies: ["messaging"]
 network:
   external:
     "@port@": "4222"

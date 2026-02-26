@@ -1,4 +1,6 @@
 image: bitnami/sonarqube:latest
+description: Continuous code quality and security inspection (Bitnami)
+supplies: ["http"]
 environment:
   SONARQUBE_DATABASE_HOST: "@dbhost@"
   SONARQUBE_DATABASE_NAME: "@dbname@"
@@ -7,7 +9,6 @@ environment:
 network:
   external:
     "@port@": "9000"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/sonarqube
@@ -17,13 +18,10 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   port:
     query: "What external port should SonarQube listen on?"
     type: port

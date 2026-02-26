@@ -1,4 +1,6 @@
 image: bitnami/redmine:latest
+description: Flexible project management web application (Bitnami)
+supplies: ["http"]
 environment:
   REDMINE_DATABASE_TYPE: "mariadb"
   REDMINE_DATABASE_HOST: "@dbhost@"
@@ -10,7 +12,6 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/redmine
@@ -20,19 +21,14 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   adminuser:
     query: "What admin username should Redmine use?"
-    type:
   adminpass:
     query: "What admin password should Redmine use?"
-    type:
   port:
     query: "What external port should Redmine listen on?"
     type: port

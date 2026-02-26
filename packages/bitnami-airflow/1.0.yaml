@@ -1,4 +1,6 @@
 image: bitnami/airflow:latest
+description: Workflow orchestration platform (Bitnami)
+supplies: ["http"]
 environment:
   AIRFLOW_USERNAME: "@user@"
   AIRFLOW_PASSWORD: "@password@"
@@ -11,29 +13,23 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   dags:
     mountpoint: /opt/bitnami/airflow/dags
 questions:
   user:
     query: "What admin username should Airflow use?"
-    type:
   password:
     query: "What admin password should Airflow use?"
-    type:
   dbhost:
     query: "What is the PostgreSQL host for Airflow?"
     type: hostname
   dbname:
     query: "What is the PostgreSQL database name for Airflow?"
-    type:
   dbuser:
     query: "What is the PostgreSQL username for Airflow?"
-    type:
   dbpass:
     query: "What is the PostgreSQL password for Airflow?"
-    type:
   port:
     query: "What external port should Airflow listen on?"
     type: port

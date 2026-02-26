@@ -1,9 +1,8 @@
 image: sonarqube:latest
-environment: {}
+description: Continuous code quality and security inspection
 network:
   external:
     "@port@": "9000"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/sonarqube/data

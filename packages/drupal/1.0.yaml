@@ -1,9 +1,9 @@
 image: drupal:latest
-environment: {}
+description: Flexible content management platform
+supplies: ["http"]
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   modules:
     mountpoint: /var/www/html/modules

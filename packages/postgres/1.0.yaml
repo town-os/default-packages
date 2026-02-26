@@ -1,4 +1,6 @@
 image: postgres:latest
+description: Powerful open-source relational database
+supplies: ["database"]
 environment:
   POSTGRES_PASSWORD: "@password@"
   POSTGRES_USER: "@user@"
@@ -6,20 +8,16 @@ environment:
 network:
   external:
     "@port@": "5432"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/postgresql/data
 questions:
   password:
     query: "What should the PostgreSQL superuser password be?"
-    type:
   user:
     query: "What should the PostgreSQL superuser name be? (default: postgres)"
-    type:
   database:
     query: "What should the default database be named?"
-    type:
   port:
     query: "What external port should PostgreSQL listen on?"
     type: port

@@ -1,11 +1,12 @@
 image: elasticsearch:8.16.0
+description: Distributed search and analytics engine
+supplies: ["search"]
 environment:
   discovery.type: "single-node"
   xpack.security.enabled: "false"
 network:
   external:
     "@port@": "9200"
-  internal: {}
 volumes:
   data:
     mountpoint: /usr/share/elasticsearch/data

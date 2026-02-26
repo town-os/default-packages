@@ -1,9 +1,9 @@
 image: redis:latest
-environment: {}
+description: In-memory data structure store used as database and cache
+supplies: ["cache", "database"]
 network:
   external:
     "@port@": "6379"
-  internal: {}
 volumes:
   data:
     mountpoint: /data

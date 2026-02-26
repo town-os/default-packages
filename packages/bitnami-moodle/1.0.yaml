@@ -1,4 +1,6 @@
 image: bitnami/moodle:latest
+description: Open-source learning management system (Bitnami)
+supplies: ["http"]
 environment:
   MOODLE_DATABASE_HOST: "@dbhost@"
   MOODLE_DATABASE_NAME: "@dbname@"
@@ -9,7 +11,6 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/moodle
@@ -21,19 +22,14 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   adminuser:
     query: "What admin username should Moodle use?"
-    type:
   adminpass:
     query: "What admin password should Moodle use?"
-    type:
   port:
     query: "What external port should Moodle listen on?"
     type: port

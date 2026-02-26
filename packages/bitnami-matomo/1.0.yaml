@@ -1,4 +1,6 @@
 image: bitnami/matomo:latest
+description: Open-source web analytics platform (Bitnami)
+supplies: ["http"]
 environment:
   MATOMO_DATABASE_HOST: "@dbhost@"
   MATOMO_DATABASE_NAME: "@dbname@"
@@ -9,7 +11,6 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/matomo
@@ -19,19 +20,14 @@ questions:
     type: hostname
   dbname:
     query: "What is the database name?"
-    type:
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   adminuser:
     query: "What admin username should Matomo use?"
-    type:
   adminpass:
     query: "What admin password should Matomo use?"
-    type:
   port:
     query: "What external port should Matomo listen on?"
     type: port

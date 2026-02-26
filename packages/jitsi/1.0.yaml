@@ -1,12 +1,13 @@
 # FIXME: this package is probably really busted until we can figure out dependencies, which is on the way.
 image: jitsi/web:latest
+description: Open-source video conferencing platform
+supplies: ["http"]
 environment:
   ENABLE_HTTP_REDIRECT: "0"
   PUBLIC_URL: "http://localhost:@port@"
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   config:
     mountpoint: /config

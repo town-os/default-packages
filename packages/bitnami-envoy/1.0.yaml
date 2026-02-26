@@ -1,10 +1,10 @@
 image: bitnami/envoy:latest
-environment: {}
+description: Cloud-native edge and service proxy (Bitnami)
+supplies: ["http"]
 network:
   external:
     "@port@": "10000"
     "@adminport@": "9901"
-  internal: {}
 volumes:
   config:
     mountpoint: /opt/bitnami/envoy/conf

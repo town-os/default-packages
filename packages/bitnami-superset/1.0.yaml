@@ -1,4 +1,6 @@
 image: bitnami/superset:latest
+description: Data exploration and visualization platform (Bitnami)
+supplies: ["http", "monitoring"]
 environment:
   SUPERSET_USERNAME: "@user@"
   SUPERSET_PASSWORD: "@password@"
@@ -10,29 +12,23 @@ environment:
 network:
   external:
     "@port@": "8088"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/superset
 questions:
   user:
     query: "What admin username should Superset use?"
-    type:
   password:
     query: "What admin password should Superset use?"
-    type:
   dbhost:
     query: "What is the PostgreSQL host for Superset?"
     type: hostname
   dbname:
     query: "What is the PostgreSQL database name for Superset?"
-    type:
   dbuser:
     query: "What is the PostgreSQL username for Superset?"
-    type:
   dbpass:
     query: "What is the PostgreSQL password for Superset?"
-    type:
   port:
     query: "What external port should Superset listen on?"
     type: port

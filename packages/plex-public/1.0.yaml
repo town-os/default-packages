@@ -1,9 +1,8 @@
 image: plexinc/pms-docker:latest
-environment: {}
+description: Media server for streaming movies, TV shows, and music
 network:
   external:
     "32400": "32400"
-  internal: {}
 volumes:
   media:
     mountpoint: /data

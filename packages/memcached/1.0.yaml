@@ -1,10 +1,9 @@
 image: memcached:latest
-environment: {}
+description: High-performance distributed memory caching system
+supplies: ["cache"]
 network:
   external:
     "@port@": "11211"
-  internal: {}
-volumes: {}
 questions:
   port:
     query: "What external port should Memcached listen on?"

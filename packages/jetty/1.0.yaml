@@ -1,9 +1,9 @@
 image: jetty:latest
-environment: {}
+description: Lightweight Java HTTP server and servlet container
+supplies: ["http"]
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   webapps:
     mountpoint: /var/lib/jetty/webapps

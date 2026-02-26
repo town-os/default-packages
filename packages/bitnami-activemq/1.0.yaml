@@ -1,4 +1,6 @@
 image: bitnami/activemq:latest
+description: Popular open-source message broker (Bitnami)
+supplies: ["messaging"]
 environment:
   ACTIVEMQ_USERNAME: "@user@"
   ACTIVEMQ_PASSWORD: "@password@"
@@ -6,17 +8,14 @@ network:
   external:
     "@port@": "61616"
     "@webport@": "8161"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/activemq/data
 questions:
   user:
     query: "What admin username should ActiveMQ use?"
-    type:
   password:
     query: "What admin password should ActiveMQ use?"
-    type:
   port:
     query: "What external port should ActiveMQ OpenWire listen on?"
     type: port

@@ -1,9 +1,9 @@
 image: krakend:latest
-environment: {}
+description: Ultra-performant API gateway
+supplies: ["http"]
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   config:
     mountpoint: /etc/krakend

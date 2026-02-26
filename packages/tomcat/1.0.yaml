@@ -1,9 +1,9 @@
 image: tomcat:latest
-environment: {}
+description: Java Servlet and JSP container
+supplies: ["http"]
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   webapps:
     mountpoint: /usr/local/tomcat/webapps

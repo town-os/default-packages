@@ -1,11 +1,12 @@
 image: gitea/gitea:latest
+description: Lightweight self-hosted Git service (local network)
+supplies: ["http"]
 environment:
   GITEA__server__DOMAIN: "@domain@"
   GITEA__server__SSH_SERVER: false
   GITEA__server__ROOT_URL: "http://@domain@:@httpport@/"
   GITEA__database__DB_TYPE: sqlite3
 network:
-  external: {}
   internal:
     "@httpport@": "3000"
 volumes:

@@ -1,4 +1,6 @@
 image: backdrop:latest
+description: Content management system for small to medium organizations
+supplies: ["http"]
 environment:
   BACKDROP_DB_HOST: "@dbhost@"
   BACKDROP_DB_USER: "@dbuser@"
@@ -7,21 +9,16 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
-volumes: {}
 questions:
   dbhost:
     query: "What is the MySQL/MariaDB server hostname?"
     type: hostname
   dbuser:
     query: "What is the MySQL database username?"
-    type:
   dbpass:
     query: "What is the MySQL database password?"
-    type:
   dbname:
     query: "What is the MySQL database name?"
-    type:
   port:
     query: "What external port should Backdrop CMS listen on?"
     type: port

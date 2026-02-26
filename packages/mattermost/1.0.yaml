@@ -1,17 +1,18 @@
 image: mattermost/mattermost-team-edition:latest
+description: Open-source messaging platform for team collaboration
+supplies: ["http"]
 environment:
   MM_SQLSETTINGS_DRIVERNAME: sqlite3
   MM_SQLSETTINGS_DATASOURCE: /mattermost/data/mattermost.db
 network:
   external:
     "@port@": "8065"
-  internal: {}
 volumes:
   data:
     mountpoint: /mattermost/data
   logs:
     mountpoint: /mattermost/logs
-  config: 
+  config:
     mountpoint: /mattermost/config
   plugins:
     mountpoint: /mattermost/plugins

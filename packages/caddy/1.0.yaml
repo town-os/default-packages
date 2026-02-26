@@ -1,10 +1,10 @@
 image: caddy:latest
-environment: {}
+description: Fast multi-platform web server with automatic HTTPS
+supplies: ["http"]
 command: ["caddy", "file-server", "--root", "/usr/share/caddy", "--listen", ":80"]
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   files:
     mountpoint: /usr/share/caddy

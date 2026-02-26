@@ -1,11 +1,12 @@
 image: bonita:latest
+description: Open-source business process management platform
+supplies: ["http"]
 environment:
   PLATFORM_PASSWORD: "@platformpass@"
   DB_VENDOR: "h2"
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   temp:
     mountpoint: /opt/bonita/server/temp
@@ -14,7 +15,6 @@ volumes:
 questions:
   platformpass:
     query: "What password should the Bonita platform admin use?"
-    type:
   port:
     query: "What external port should Bonita listen on?"
     type: port

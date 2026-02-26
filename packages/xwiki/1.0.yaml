@@ -1,4 +1,6 @@
 image: xwiki:latest
+description: Advanced open-source enterprise wiki
+supplies: ["http"]
 environment:
   DB_HOST: "@dbhost@"
   DB_USER: "@dbuser@"
@@ -7,7 +9,6 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   data:
     mountpoint: /usr/local/xwiki
@@ -17,13 +18,10 @@ questions:
     type: hostname
   dbuser:
     query: "What is the database username?"
-    type:
   dbpass:
     query: "What is the database password?"
-    type:
   dbname:
     query: "What is the database name?"
-    type:
   port:
     query: "What external port should XWiki listen on?"
     type: port

@@ -1,9 +1,9 @@
 image: mediawiki:latest
-environment: {}
+description: Wiki software that powers Wikipedia
+supplies: ["http"]
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   images:
     mountpoint: /var/www/html/images

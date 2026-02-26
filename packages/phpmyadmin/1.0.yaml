@@ -1,10 +1,10 @@
 image: phpmyadmin:latest
+description: Web-based MySQL/MariaDB administration tool
 environment:
   PMA_HOST: "@dbhost@"
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   sessions:
     mountpoint: /sessions

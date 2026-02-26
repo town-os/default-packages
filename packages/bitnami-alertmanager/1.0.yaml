@@ -1,9 +1,9 @@
 image: bitnami/alertmanager:latest
-environment: {}
+description: Alert handling for Prometheus (Bitnami)
+supplies: ["monitoring"]
 network:
   external:
     "@port@": "9093"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/bitnami/alertmanager/data

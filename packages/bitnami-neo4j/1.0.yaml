@@ -1,18 +1,18 @@
 image: bitnami/neo4j:latest
+description: Graph database for connected data (Bitnami)
+supplies: ["database"]
 environment:
   NEO4J_PASSWORD: "@password@"
 network:
   external:
     "@httpport@": "7474"
     "@boltport@": "7687"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/neo4j
 questions:
   password:
     query: "What password should be set for the Neo4j admin user?"
-    type:
   httpport:
     query: "What external port should the Neo4j browser listen on?"
     type: port

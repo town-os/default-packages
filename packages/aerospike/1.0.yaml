@@ -1,11 +1,12 @@
 image: aerospike:latest
+description: High-performance distributed NoSQL database
+supplies: ["database"]
 environment:
   NAMESPACE: "@namespace@"
   MEM_GB: "@memgb@"
 network:
   external:
     "@port@": "3000"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/aerospike/data
@@ -14,10 +15,8 @@ volumes:
 questions:
   namespace:
     query: "What namespace name should Aerospike use?"
-    type:
   memgb:
     query: "How many GB of memory should Aerospike allocate (e.g. 1, 2, 4)?"
-    type:
   port:
     query: "What external port should Aerospike listen on?"
     type: port

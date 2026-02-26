@@ -1,4 +1,6 @@
 image: bitnami/wildfly:latest
+description: Flexible Java application server (Bitnami)
+supplies: ["http"]
 environment:
   WILDFLY_USERNAME: "@user@"
   WILDFLY_PASSWORD: "@password@"
@@ -6,17 +8,14 @@ network:
   external:
     "@port@": "8080"
     "@mgmtport@": "9990"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/wildfly
 questions:
   user:
     query: "What admin username should WildFly use?"
-    type:
   password:
     query: "What admin password should WildFly use?"
-    type:
   port:
     query: "What external port should WildFly HTTP listen on?"
     type: port

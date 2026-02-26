@@ -1,4 +1,6 @@
 image: clickhouse:latest
+description: Fast open-source column-oriented database for analytics
+supplies: ["database"]
 environment:
   CLICKHOUSE_DB: "default"
   CLICKHOUSE_PASSWORD: "@password@"
@@ -6,7 +8,6 @@ network:
   external:
     "@httpport@": "8123"
     "@nativeport@": "9000"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/clickhouse
@@ -15,7 +16,6 @@ volumes:
 questions:
   password:
     query: "What password should be set for the ClickHouse default user?"
-    type:
   httpport:
     query: "What external port should the ClickHouse HTTP interface listen on?"
     type: port

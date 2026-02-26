@@ -1,4 +1,6 @@
 image: ghost:latest
+description: Professional publishing platform
+supplies: ["http"]
 environment:
   database__client: sqlite3
   database__connection__filename: /var/lib/ghost/content/data/ghost.db
@@ -8,7 +10,6 @@ environment:
 network:
   external:
     "@port@": "2368"
-  internal: {}
 volumes:
   content:
     mountpoint: /var/lib/ghost/content

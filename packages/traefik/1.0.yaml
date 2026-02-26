@@ -1,10 +1,10 @@
 image: traefik:latest
-environment: {}
+description: Cloud-native application proxy and load balancer
+supplies: ["http"]
 network:
   external:
     "@port@": "80"
     "@dashport@": "8080"
-  internal: {}
 volumes:
   config:
     mountpoint: /etc/traefik

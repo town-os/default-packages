@@ -1,9 +1,8 @@
 image: fluentd:latest
-environment: {}
+description: Unified logging layer for data collection and consumption
 network:
   external:
     "@port@": "24224"
-  internal: {}
 volumes:
   log:
     mountpoint: /fluentd/log

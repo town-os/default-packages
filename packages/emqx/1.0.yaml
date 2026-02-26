@@ -1,10 +1,10 @@
 image: emqx:latest
-environment: {}
+description: Scalable MQTT messaging broker for IoT
+supplies: ["messaging"]
 network:
   external:
     "@mqttport@": "1883"
     "@dashboardport@": "18083"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/emqx/data

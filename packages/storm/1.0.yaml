@@ -1,10 +1,9 @@
 image: storm:latest
-environment: {}
+description: Distributed real-time computation system
 network:
   external:
     "@uiport@": "8080"
     "@nimbusport@": "6627"
-  internal: {}
 volumes:
   data:
     mountpoint: /data

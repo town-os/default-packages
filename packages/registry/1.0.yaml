@@ -1,9 +1,9 @@
 image: registry:latest
-environment: {}
+description: Docker container image registry
+supplies: ["storage"]
 network:
   external:
     "@port@": "5000"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/registry

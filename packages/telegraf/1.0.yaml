@@ -1,9 +1,9 @@
 image: telegraf:latest
-environment: {}
+description: Plugin-driven server agent for collecting and reporting metrics
+supplies: ["monitoring"]
 network:
   external:
     "@port@": "8125"
-  internal: {}
 volumes:
   config:
     mountpoint: /etc/telegraf

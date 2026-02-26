@@ -1,9 +1,9 @@
 image: bitnami/prometheus:latest
-environment: {}
+description: Systems monitoring and alerting toolkit (Bitnami)
+supplies: ["monitoring"]
 network:
   external:
     "@port@": "9090"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/bitnami/prometheus/data

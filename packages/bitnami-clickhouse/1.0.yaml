@@ -1,4 +1,6 @@
 image: bitnami/clickhouse:latest
+description: Fast column-oriented database for analytics (Bitnami)
+supplies: ["database"]
 environment:
   CLICKHOUSE_ADMIN_USER: "default"
   CLICKHOUSE_ADMIN_PASSWORD: "@password@"
@@ -6,14 +8,12 @@ network:
   external:
     "@httpport@": "8123"
     "@nativeport@": "9000"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/clickhouse
 questions:
   password:
     query: "What password should be set for the ClickHouse default user?"
-    type:
   httpport:
     query: "What external port should the ClickHouse HTTP interface listen on?"
     type: port

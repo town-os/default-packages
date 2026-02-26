@@ -1,10 +1,10 @@
 image: bitnami/zookeeper:latest
+description: Centralized service for distributed coordination (Bitnami)
 environment:
   ALLOW_ANONYMOUS_LOGIN: "yes"
 network:
   external:
     "@port@": "2181"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/zookeeper

@@ -1,21 +1,20 @@
 image: mariadb:latest
+description: Community-developed fork of MySQL
+supplies: ["database"]
 environment:
   MARIADB_ROOT_PASSWORD: "@password@"
   MARIADB_DATABASE: "@database@"
 network:
   external:
     "@port@": "3306"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/mysql
 questions:
   password:
     query: "What should the MariaDB root password be?"
-    type:
   database:
     query: "What should the default database be named?"
-    type:
   port:
     query: "What external port should MariaDB listen on?"
     type: port

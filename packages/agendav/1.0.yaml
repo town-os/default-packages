@@ -1,4 +1,6 @@
 image: ghcr.io/nagimov/agendav-docker:latest
+description: CalDAV web client for managing calendars
+supplies: ["http"]
 environment:
   AGENDAV_SERVER_NAME: "@domain@"
   AGENDAV_TITLE: "AgenDAV"
@@ -12,21 +14,16 @@ environment:
 network:
   external:
     "@port@": "8080"
-  internal: {}
-volumes: {}
 questions:
   domain:
     query: "What hostname or IP should AgenDAV use as its server name?"
     type: hostname
   caldavurl:
     query: "What is the CalDAV server URL (e.g. https://baikal.example.com/cal.php)?"
-    type: string
   caldavpuburl:
     query: "What is the public CalDAV URL (e.g. https://baikal.example.com)?"
-    type: string
   timezone:
     query: "What timezone should AgenDAV use (e.g. UTC, America/New_York)?"
-    type: string
   port:
     query: "What external port should AgenDAV listen on?"
     type: port

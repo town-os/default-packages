@@ -1,10 +1,11 @@
 image: kapacitor:latest
+description: Real-time streaming data processing engine
+supplies: ["monitoring"]
 environment:
   KAPACITOR_INFLUXDB_0_URLS_0: "@influxdburl@"
 network:
   external:
     "@port@": "9092"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/lib/kapacitor
@@ -13,7 +14,6 @@ volumes:
 questions:
   influxdburl:
     query: "What is the InfluxDB URL for Kapacitor to connect to (e.g. http://influxdb:8086)?"
-    type:
   port:
     query: "What external port should the Kapacitor HTTP API listen on?"
     type: port

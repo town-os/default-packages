@@ -1,4 +1,6 @@
 image: kong:latest
+description: Cloud-native API gateway and service mesh
+supplies: ["http"]
 environment:
   KONG_DATABASE: "off"
   KONG_PROXY_LISTEN: "0.0.0.0:8000"
@@ -8,7 +10,6 @@ network:
   external:
     "@proxyport@": "8000"
     "@adminport@": "8001"
-  internal: {}
 volumes:
   config:
     mountpoint: /opt/kong

@@ -1,11 +1,12 @@
 image: couchdb:latest
+description: Seamless multi-master sync document database
+supplies: ["database"]
 environment:
   COUCHDB_USER: "@user@"
   COUCHDB_PASSWORD: "@password@"
 network:
   external:
     "@port@": "5984"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/couchdb/data
@@ -14,10 +15,8 @@ volumes:
 questions:
   user:
     query: "What should the CouchDB admin username be?"
-    type:
   password:
     query: "What should the CouchDB admin password be?"
-    type:
   port:
     query: "What external port should CouchDB listen on?"
     type: port

@@ -1,7 +1,6 @@
 image: plexinc/pms-docker:latest
-environment: {}
+description: Media server for streaming movies, TV shows, and music (local network)
 network:
-  external: {}
   internal:
     "32400": "32400"
 volumes:
@@ -11,7 +10,7 @@ volumes:
   config:
     mountpoint: /config
 questions:
-  hostname: 
+  hostname:
     query: "What is your hostname?"
     type: hostname
   mediasize:

@@ -1,10 +1,9 @@
 image: flink:latest
-environment: {}
+description: Stateful stream processing framework
 network:
   external:
     "@webuiport@": "8081"
     "@rpcport@": "6123"
-  internal: {}
 volumes:
   data:
     mountpoint: /opt/flink/data

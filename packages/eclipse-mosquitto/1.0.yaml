@@ -1,9 +1,9 @@
 image: eclipse-mosquitto:latest
-environment: {}
+description: Lightweight MQTT message broker
+supplies: ["messaging"]
 network:
   external:
     "@port@": "1883"
-  internal: {}
 volumes:
   config:
     mountpoint: /mosquitto/config

@@ -1,9 +1,9 @@
 image: bitnami/nginx:latest
-environment: {}
+description: Lightweight high-performance web server (Bitnami)
+supplies: ["http"]
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   app:
     mountpoint: /app

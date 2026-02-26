@@ -1,9 +1,8 @@
 image: bitnami/vault:latest
-environment: {}
+description: Secrets management and data protection (Bitnami)
 network:
   external:
     "@port@": "8200"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/vault

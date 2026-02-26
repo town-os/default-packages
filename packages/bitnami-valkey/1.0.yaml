@@ -1,17 +1,17 @@
 image: bitnami/valkey:latest
+description: Open-source Redis-compatible key-value store (Bitnami)
+supplies: ["cache", "database"]
 environment:
   VALKEY_PASSWORD: "@password@"
 network:
   external:
     "@port@": "6379"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/valkey
 questions:
   password:
     query: "What should the Valkey password be?"
-    type:
   port:
     query: "What external port should Valkey listen on?"
     type: port

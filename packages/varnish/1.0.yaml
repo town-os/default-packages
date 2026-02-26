@@ -1,4 +1,6 @@
 image: varnish:latest
+description: High-performance HTTP accelerator and caching reverse proxy
+supplies: ["http", "cache"]
 environment:
   VARNISH_BACKEND_HOST: "@backendhost@"
   VARNISH_BACKEND_PORT: "@backendport@"
@@ -6,7 +8,6 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   config:
     mountpoint: /etc/varnish
@@ -19,7 +20,6 @@ questions:
     type: port
   cachesize:
     query: "How much memory should Varnish use for caching (e.g. 256M, 1G)?"
-    type:
   port:
     query: "What external port should Varnish listen on?"
     type: port

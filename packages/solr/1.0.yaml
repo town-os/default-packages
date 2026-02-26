@@ -1,9 +1,9 @@
 image: solr:latest
-environment: {}
+description: Enterprise search platform built on Apache Lucene
+supplies: ["search"]
 network:
   external:
     "@port@": "8983"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/solr

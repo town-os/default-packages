@@ -1,4 +1,6 @@
 image: bitnami/minio:latest
+description: High-performance S3-compatible object storage (Bitnami)
+supplies: ["storage"]
 environment:
   MINIO_ROOT_USER: "@user@"
   MINIO_ROOT_PASSWORD: "@password@"
@@ -6,17 +8,14 @@ network:
   external:
     "@apiport@": "9000"
     "@consoleport@": "9001"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/minio/data
 questions:
   user:
     query: "What root username should MinIO use?"
-    type:
   password:
     query: "What root password should MinIO use?"
-    type:
   apiport:
     query: "What external port should the MinIO API listen on?"
     type: port

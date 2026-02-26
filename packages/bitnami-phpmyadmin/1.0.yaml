@@ -1,11 +1,10 @@
 image: bitnami/phpmyadmin:latest
+description: Web-based MySQL/MariaDB administration tool (Bitnami)
 environment:
   DATABASE_HOST: "@dbhost@"
 network:
   external:
     "@port@": "8080"
-  internal: {}
-volumes: {}
 questions:
   dbhost:
     query: "What is the MySQL/MariaDB server hostname?"

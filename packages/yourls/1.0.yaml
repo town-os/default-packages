@@ -1,4 +1,6 @@
 image: yourls:latest
+description: Self-hosted URL shortener
+supplies: ["http"]
 environment:
   YOURLS_SITE: "http://localhost:@port@"
   YOURLS_USER: "@adminuser@"
@@ -9,24 +11,18 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
-volumes: {}
 questions:
   adminuser:
     query: "What admin username should YOURLS use?"
-    type:
   adminpass:
     query: "What admin password should YOURLS use?"
-    type:
   dbhost:
     query: "What is the MySQL/MariaDB server hostname?"
     type: hostname
   dbuser:
     query: "What is the MySQL database username?"
-    type:
   dbpass:
     query: "What is the MySQL database password?"
-    type:
   port:
     query: "What external port should YOURLS listen on?"
     type: port

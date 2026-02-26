@@ -1,9 +1,9 @@
 image: bitnami/solr:latest
-environment: {}
+description: Enterprise search platform (Bitnami)
+supplies: ["search"]
 network:
   external:
     "@port@": "8983"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/solr

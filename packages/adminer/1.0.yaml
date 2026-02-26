@@ -1,11 +1,8 @@
 image: adminer:latest
-environment:
-  ADMINER_DEFAULT_SERVER: "@dbhost@"
+description: Database management tool with support for multiple engines
 network:
   external:
     "@port@": "8080"
-  internal: {}
-volumes: {}
 questions:
   dbhost:
     query: "What is the default database server hostname or IP?"
@@ -13,6 +10,8 @@ questions:
   port:
     query: "What external port should Adminer listen on?"
     type: port
+environment:
+  ADMINER_DEFAULT_SERVER: "@dbhost@"
 notes:
   URL:
     value: "http://localhost:@port@"

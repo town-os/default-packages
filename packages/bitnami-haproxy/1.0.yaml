@@ -1,9 +1,9 @@
 image: bitnami/haproxy:latest
-environment: {}
+description: Reliable high-performance TCP/HTTP load balancer (Bitnami)
+supplies: ["http"]
 network:
   external:
     "@port@": "8080"
-  internal: {}
 volumes:
   config:
     mountpoint: /bitnami/haproxy/conf

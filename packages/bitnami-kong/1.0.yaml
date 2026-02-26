@@ -1,4 +1,6 @@
 image: bitnami/kong:latest
+description: Cloud-native API gateway (Bitnami)
+supplies: ["http"]
 environment:
   KONG_DATABASE: "off"
   KONG_PROXY_LISTEN_ADDRESS: "0.0.0.0"
@@ -7,7 +9,6 @@ network:
   external:
     "@proxyport@": "8000"
     "@adminport@": "8001"
-  internal: {}
 volumes:
   config:
     mountpoint: /opt/bitnami/kong/conf

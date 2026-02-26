@@ -1,11 +1,12 @@
 image: mongo:latest
+description: Document-oriented NoSQL database
+supplies: ["database"]
 environment:
   MONGO_INITDB_ROOT_USERNAME: "@user@"
   MONGO_INITDB_ROOT_PASSWORD: "@password@"
 network:
   external:
     "@port@": "27017"
-  internal: {}
 volumes:
   data:
     mountpoint: /data/db
@@ -14,10 +15,8 @@ volumes:
 questions:
   user:
     query: "What should the MongoDB admin username be?"
-    type:
   password:
     query: "What should the MongoDB admin password be?"
-    type:
   port:
     query: "What external port should MongoDB listen on?"
     type: port

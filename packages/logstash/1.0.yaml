@@ -1,10 +1,9 @@
 image: logstash:8.16.0
-environment: {}
+description: Server-side data processing pipeline
 network:
   external:
     "@beatsport@": "5044"
     "@apiport@": "9600"
-  internal: {}
 volumes:
   pipeline:
     mountpoint: /usr/share/logstash/pipeline

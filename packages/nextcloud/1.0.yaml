@@ -1,4 +1,6 @@
 image: nextcloud:latest
+description: Self-hosted productivity platform for file sync and collaboration
+supplies: ["http", "storage"]
 environment:
   SQLITE_DATABASE: nextcloud
   NEXTCLOUD_ADMIN_USER: "@adminuser@"
@@ -7,17 +9,14 @@ environment:
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   html:
     mountpoint: /var/www/html
 questions:
   adminuser:
     query: "What username should the Nextcloud admin account use?"
-    type:
   adminpass:
     query: "What password should the Nextcloud admin account use?"
-    type:
   domain:
     query: "What domain or IP will Nextcloud be accessed from?"
     type: hostname

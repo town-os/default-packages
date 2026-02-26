@@ -1,4 +1,6 @@
 image: bitnami/elasticsearch:latest
+description: Distributed search and analytics engine (Bitnami)
+supplies: ["search"]
 environment:
   ELASTICSEARCH_CLUSTER_NAME: "elasticsearch"
   ELASTICSEARCH_NODE_NAME: "elasticsearch-node"
@@ -6,7 +8,6 @@ environment:
 network:
   external:
     "@port@": "9200"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/elasticsearch/data

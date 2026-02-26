@@ -1,9 +1,9 @@
 image: httpd:latest
-environment: {}
+description: Apache HTTP Server
+supplies: ["http"]
 network:
   external:
     "@port@": "80"
-  internal: {}
 volumes:
   htdocs:
     mountpoint: /usr/local/apache2/htdocs

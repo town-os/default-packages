@@ -1,4 +1,6 @@
 image: bitnami/opensearch:latest
+description: Community-driven search and analytics suite (Bitnami)
+supplies: ["search"]
 environment:
   OPENSEARCH_CLUSTER_NAME: "opensearch"
   OPENSEARCH_NODE_NAME: "opensearch-node"
@@ -6,7 +8,6 @@ environment:
 network:
   external:
     "@port@": "9200"
-  internal: {}
 volumes:
   data:
     mountpoint: /bitnami/opensearch/data

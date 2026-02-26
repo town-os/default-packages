@@ -1,4 +1,5 @@
 image: teamspeak:latest
+description: Voice communication software for gaming and teams
 environment:
   TS3SERVER_LICENSE: "accept"
 network:
@@ -6,7 +7,6 @@ network:
     "@voiceport@": "9987"
     "@queryport@": "10011"
     "@filetransferport@": "30033"
-  internal: {}
 volumes:
   data:
     mountpoint: /var/ts3server

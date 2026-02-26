@@ -1,10 +1,10 @@
 image: open-liberty:latest
-environment: {}
+description: Lightweight open framework for building Java microservices
+supplies: ["http"]
 network:
   external:
     "@httpport@": "9080"
     "@httpsport@": "9443"
-  internal: {}
 volumes:
   config:
     mountpoint: /config
