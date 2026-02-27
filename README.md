@@ -11,14 +11,18 @@ The official default package repository for [Town OS](https://town-os.github.io)
 ## Repository structure
 
 ```
+featured.json
 packages/
   <package-name>/
     <version>.yaml
 ```
 
-Each package is a directory under `packages/` containing one or more versioned YAML files. For example:
+Each package is a directory under `packages/` containing one or more versioned YAML files. The optional `featured.json` at the repository root lists packages to highlight in the UI.
+
+For example:
 
 ```
+featured.json
 packages/
   nginx/
     1.0.yaml
@@ -26,6 +30,16 @@ packages/
   postgres/
     1.0.yaml
 ```
+
+### Featured packages
+
+A repository can include a `featured.json` file at its root to highlight selected packages. The file contains a JSON array of package name strings:
+
+```json
+["wordpress", "nextcloud", "postgres"]
+```
+
+Packages listed here appear with `featured: true` in the API's package list response, allowing the UI to surface them prominently. The file is optional -- if absent, no packages are featured.
 
 ## Package format
 
@@ -52,6 +66,9 @@ volumes:
   data:
     mountpoint: /data
     archive: seed-data.tar.gz
+  site:
+    mountpoint: /srv/site
+    git: https://github.com/example/my-site.git
 questions:
   hostname:
     query: "What hostname should nginx serve?"
@@ -118,6 +135,7 @@ Omit `external` or `internal` entirely if unused (do not use `{}`).
 | `mountpoint` | **Required.** Absolute path inside the container where the volume is mounted.  |
 | `quota`      | Optional size limit (e.g. `512mb`, `2gb`, `1tb`). May use `@variable@` templates. |
 | `archive`    | Optional archive filename to pre-populate the volume with.                     |
+| `git`        | Optional Git repository URL to clone into the volume during installation (e.g. `https://github.com/user/repo.git`). Supported schemes: `http`, `https`, `ssh`, `git`, `file`. |
 | `uid`        | Optional numeric user ID for volume ownership.                                 |
 | `gid`        | Optional numeric group ID for volume ownership.                                |
 
@@ -168,6 +186,7 @@ questions:
 | `volume`   | Alphanumeric with hyphens and underscores                  |
 | `archive`  | Any non-empty string (archive filename)                    |
 | `duration` | Human-readable duration (e.g. `30s`, `5m`, `2h`, `1d`)    |
+| `secret`   | Any non-empty string (typically auto-generated)            |
 | _(omitted)_ | Any string (no validation)                                |
 
 Do not use empty `type:` or `type: string` -- simply omit the `type` field for untyped questions.
@@ -205,7 +224,7 @@ Template variables use the `@variable@` syntax and are substituted during compil
 
 - Environment variable values
 - Network port mappings (both keys and values)
-- Volume mountpoints, quotas, and archive fields
+- Volume mountpoints, quotas, archive fields, and git URLs
 - Note values
 
 Two built-in template variables are available without questions:
