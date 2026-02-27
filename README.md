@@ -8,6 +8,27 @@ The official default package repository for [Town OS](https://town-os.github.io)
 
 **NOTE:** These packages are currently experimental. Many were generated using Claude and need testing and pull requests. Some packages -- such as gitea, plex, nginx, and many databases -- already work well, but others may not. They are safe to launch, but should not be relied on for production use yet. Send pull requests if you want to shape them up! At a later point, packages in this repository will be expected to be trustworthy, well-tested, and behave as described.
 
+## Table of contents
+
+- [Repository structure](#repository-structure)
+  - [Featured packages](#featured-packages)
+- [Package format](#package-format)
+  - [Top-level fields](#top-level-fields)
+  - [Supplies tags](#supplies-tags)
+  - [Network](#network)
+  - [Volumes](#volumes)
+  - [Archives](#archives)
+  - [Questions](#questions)
+  - [Notes](#notes)
+  - [Template system](#template-system)
+  - [Style guidelines](#style-guidelines)
+- [Adding this repository](#adding-this-repository)
+  - [Through the UI](#through-the-ui)
+  - [By editing repositories.json](#by-editing-repositoriesjson)
+- [Trust model](#trust-model)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Repository structure
 
 ```
