@@ -1,4 +1,4 @@
-image: bitnami/keycloak:latest
+image: bitnami/keycloak
 description: Open-source identity and access management (Bitnami)
 supplies: ["http"]
 environment:

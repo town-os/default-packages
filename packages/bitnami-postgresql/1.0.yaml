@@ -1,4 +1,4 @@
-image: bitnami/postgresql:latest
+image: bitnami/postgresql
 description: Powerful open-source relational database (Bitnami)
 supplies: ["database"]
 environment:

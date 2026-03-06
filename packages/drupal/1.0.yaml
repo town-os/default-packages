@@ -1,4 +1,4 @@
-image: drupal:latest
+image: drupal
 description: Flexible content management platform
 supplies: ["http"]
 network:

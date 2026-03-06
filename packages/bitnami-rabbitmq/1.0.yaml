@@ -1,4 +1,4 @@
-image: bitnami/rabbitmq:latest
+image: bitnami/rabbitmq
 description: Feature-rich message broker (Bitnami)
 supplies: ["messaging"]
 environment:

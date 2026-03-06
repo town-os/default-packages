@@ -1,4 +1,4 @@
-image: bitnami/gitea:latest
+image: bitnami/gitea
 description: Lightweight self-hosted Git service (Bitnami)
 supplies: ["http"]
 environment:

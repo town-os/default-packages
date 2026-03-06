@@ -1,4 +1,4 @@
-image: bitnami/prometheus:latest
+image: bitnami/prometheus
 description: Systems monitoring and alerting toolkit (Bitnami)
 supplies: ["monitoring"]
 network:

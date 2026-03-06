@@ -1,4 +1,4 @@
-image: flink:latest
+image: flink
 description: Stateful stream processing framework
 network:
   external:

@@ -1,4 +1,4 @@
-image: krakend:latest
+image: krakend
 description: Ultra-performant API gateway
 supplies: ["http"]
 network:

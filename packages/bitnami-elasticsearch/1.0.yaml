@@ -1,4 +1,4 @@
-image: bitnami/elasticsearch:latest
+image: bitnami/elasticsearch
 description: Distributed search and analytics engine (Bitnami)
 supplies: ["search"]
 environment:

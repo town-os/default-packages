@@ -1,4 +1,4 @@
-image: bitnami/odoo:latest
+image: bitnami/odoo
 description: Open-source business management suite (Bitnami)
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: bitnami/haproxy:latest
+image: bitnami/haproxy
 description: Reliable high-performance TCP/HTTP load balancer (Bitnami)
 supplies: ["http"]
 network:

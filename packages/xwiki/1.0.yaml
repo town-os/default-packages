@@ -1,4 +1,4 @@
-image: xwiki:latest
+image: xwiki
 description: Advanced open-source enterprise wiki
 supplies: ["http"]
 environment:

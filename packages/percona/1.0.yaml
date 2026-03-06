@@ -1,4 +1,4 @@
-image: percona:latest
+image: percona
 description: Enhanced drop-in replacement for MySQL
 supplies: ["database"]
 environment:

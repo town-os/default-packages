@@ -1,4 +1,4 @@
-image: bitnami/minio:latest
+image: bitnami/minio
 description: High-performance S3-compatible object storage (Bitnami)
 supplies: ["storage"]
 environment:

@@ -1,4 +1,4 @@
-image: emqx:latest
+image: emqx
 description: Scalable MQTT messaging broker for IoT
 supplies: ["messaging"]
 network:

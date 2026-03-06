@@ -1,4 +1,4 @@
-image: httpd:latest
+image: httpd
 description: Apache HTTP Server
 supplies: ["http"]
 network:

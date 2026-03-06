@@ -1,4 +1,4 @@
-image: monica:latest
+image: monica
 description: Personal relationship management system
 supplies: ["http"]
 environment:

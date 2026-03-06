@@ -1,4 +1,4 @@
-image: bitnami/scylladb:latest
+image: bitnami/scylladb
 description: High-performance Cassandra-compatible NoSQL database (Bitnami)
 supplies: ["database"]
 environment:

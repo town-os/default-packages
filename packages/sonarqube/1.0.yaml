@@ -1,4 +1,4 @@
-image: sonarqube:latest
+image: sonarqube
 description: Continuous code quality and security inspection
 network:
   external:

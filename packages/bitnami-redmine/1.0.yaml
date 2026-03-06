@@ -1,4 +1,4 @@
-image: bitnami/redmine:latest
+image: bitnami/redmine
 description: Flexible project management web application (Bitnami)
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: bitnami/superset:latest
+image: bitnami/superset
 description: Data exploration and visualization platform (Bitnami)
 supplies: ["http", "monitoring"]
 environment:

@@ -1,4 +1,4 @@
-image: bonita:latest
+image: bonita
 description: Open-source business process management platform
 supplies: ["http"]
 environment:

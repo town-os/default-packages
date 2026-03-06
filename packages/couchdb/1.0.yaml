@@ -1,4 +1,4 @@
-image: couchdb:latest
+image: couchdb
 description: Seamless multi-master sync document database
 supplies: ["database"]
 environment:

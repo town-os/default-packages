@@ -1,4 +1,4 @@
-image: bitnami/valkey:latest
+image: bitnami/valkey
 description: Open-source Redis-compatible key-value store (Bitnami)
 supplies: ["cache", "database"]
 environment:

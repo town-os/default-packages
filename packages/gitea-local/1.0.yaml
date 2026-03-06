@@ -1,4 +1,4 @@
-image: gitea/gitea:latest
+image: gitea/gitea
 description: Lightweight self-hosted Git service (local network)
 supplies: ["http"]
 environment:

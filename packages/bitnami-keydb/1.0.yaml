@@ -1,4 +1,4 @@
-image: bitnami/keydb:latest
+image: bitnami/keydb
 description: High-performance Redis-compatible database (Bitnami)
 supplies: ["cache", "database"]
 environment:

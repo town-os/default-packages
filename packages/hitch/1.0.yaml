@@ -1,4 +1,4 @@
-image: hitch:latest
+image: hitch
 description: Scalable TLS proxy for terminating SSL/TLS connections
 supplies: ["http"]
 network:

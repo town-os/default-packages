@@ -1,4 +1,4 @@
-image: rocket.chat:latest
+image: rocket.chat
 description: Open-source team communication platform
 supplies: ["http"]
 environment:

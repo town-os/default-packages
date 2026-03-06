@@ -1,4 +1,4 @@
-image: nginx:latest
+image: nginx
 description: Lightweight high-performance web server and reverse proxy
 supplies: ["http"]
 network:

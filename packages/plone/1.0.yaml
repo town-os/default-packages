@@ -1,4 +1,4 @@
-image: plone:latest
+image: plone
 description: Enterprise content management system built on Python
 supplies: ["http"]
 environment:

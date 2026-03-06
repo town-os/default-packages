@@ -1,4 +1,4 @@
-image: crate:latest
+image: crate
 description: Distributed SQL database built on a NoSQL foundation
 supplies: ["database"]
 environment:

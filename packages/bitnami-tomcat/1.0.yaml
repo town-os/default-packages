@@ -1,4 +1,4 @@
-image: bitnami/tomcat:latest
+image: bitnami/tomcat
 description: Java Servlet and JSP container (Bitnami)
 supplies: ["http"]
 environment:

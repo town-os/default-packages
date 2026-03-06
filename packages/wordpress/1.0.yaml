@@ -1,4 +1,4 @@
-image: wordpress:latest
+image: wordpress
 description: Popular open-source content management system
 supplies: ["http"]
 environment:

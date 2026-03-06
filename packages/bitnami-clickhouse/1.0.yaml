@@ -1,4 +1,4 @@
-image: bitnami/clickhouse:latest
+image: bitnami/clickhouse
 description: Fast column-oriented database for analytics (Bitnami)
 supplies: ["database"]
 environment:

@@ -1,4 +1,4 @@
-image: postfixadmin:latest
+image: postfixadmin
 description: Web-based administration interface for Postfix mail server
 supplies: ["http"]
 environment:

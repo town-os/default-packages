@@ -1,4 +1,4 @@
-image: convertigo:latest
+image: convertigo
 description: Low-code platform for enterprise mobile and web applications
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: kong:latest
+image: kong
 description: Cloud-native API gateway and service mesh
 supplies: ["http"]
 environment:

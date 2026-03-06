@@ -1,4 +1,4 @@
-image: solr:latest
+image: solr
 description: Enterprise search platform built on Apache Lucene
 supplies: ["search"]
 network:

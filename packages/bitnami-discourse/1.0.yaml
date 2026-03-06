@@ -1,4 +1,4 @@
-image: bitnami/discourse:latest
+image: bitnami/discourse
 description: Open-source discussion platform (Bitnami)
 supplies: ["http"]
 environment:

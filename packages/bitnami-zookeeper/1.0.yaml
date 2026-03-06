@@ -1,4 +1,4 @@
-image: bitnami/zookeeper:latest
+image: bitnami/zookeeper
 description: Centralized service for distributed coordination (Bitnami)
 environment:
   ALLOW_ANONYMOUS_LOGIN: "yes"

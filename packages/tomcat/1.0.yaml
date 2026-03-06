@@ -1,4 +1,4 @@
-image: tomcat:latest
+image: tomcat
 description: Java Servlet and JSP container
 supplies: ["http"]
 network:

@@ -1,4 +1,4 @@
-image: unit:latest
+image: unit
 description: NGINX Unit dynamic web application server
 supplies: ["http"]
 network:

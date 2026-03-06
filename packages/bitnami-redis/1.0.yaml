@@ -1,4 +1,4 @@
-image: bitnami/redis:latest
+image: bitnami/redis
 description: In-memory data structure store (Bitnami)
 supplies: ["cache", "database"]
 environment:

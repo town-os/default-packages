@@ -1,4 +1,4 @@
-image: eggdrop:latest
+image: eggdrop
 description: Popular open-source IRC bot
 environment:
   SERVER: "@server@"

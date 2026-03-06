@@ -1,4 +1,4 @@
-image: bitnami/mastodon:latest
+image: bitnami/mastodon
 description: Decentralized social network server (Bitnami)
 supplies: ["http"]
 environment:

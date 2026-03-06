@@ -1,4 +1,4 @@
-image: bitnami/influxdb:latest
+image: bitnami/influxdb
 description: Time series database for metrics (Bitnami)
 supplies: ["database", "monitoring"]
 environment:

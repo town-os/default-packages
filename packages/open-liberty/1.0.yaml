@@ -1,4 +1,4 @@
-image: open-liberty:latest
+image: open-liberty
 description: Lightweight open framework for building Java microservices
 supplies: ["http"]
 network:

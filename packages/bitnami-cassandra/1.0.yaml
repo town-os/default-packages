@@ -1,4 +1,4 @@
-image: bitnami/cassandra:latest
+image: bitnami/cassandra
 description: Distributed wide-column NoSQL database (Bitnami)
 supplies: ["database"]
 environment:

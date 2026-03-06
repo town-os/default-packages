@@ -1,4 +1,4 @@
-image: tomee:latest
+image: tomee
 description: Apache TomEE Java EE application server
 supplies: ["http"]
 network:

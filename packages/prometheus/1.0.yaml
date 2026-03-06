@@ -1,4 +1,4 @@
-image: prom/prometheus:latest
+image: prom/prometheus
 description: Systems monitoring and alerting toolkit
 supplies: ["monitoring"]
 network:

@@ -1,4 +1,4 @@
-image: znc:latest
+image: znc
 description: Advanced IRC bouncer
 network:
   external:

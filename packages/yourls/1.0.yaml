@@ -1,4 +1,4 @@
-image: yourls:latest
+image: yourls
 description: Self-hosted URL shortener
 supplies: ["http"]
 environment:

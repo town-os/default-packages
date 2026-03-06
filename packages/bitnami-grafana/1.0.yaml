@@ -1,4 +1,4 @@
-image: bitnami/grafana:latest
+image: bitnami/grafana
 description: Analytics and interactive visualization platform (Bitnami)
 supplies: ["monitoring"]
 environment:

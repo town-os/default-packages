@@ -1,4 +1,4 @@
-image: orientdb:latest
+image: orientdb
 description: Multi-model database supporting graph, document, and object models
 supplies: ["database"]
 environment:

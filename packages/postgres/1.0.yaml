@@ -1,4 +1,4 @@
-image: postgres:latest
+image: postgres
 description: Powerful open-source relational database
 supplies: ["database"]
 environment:

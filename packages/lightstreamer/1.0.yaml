@@ -1,4 +1,4 @@
-image: lightstreamer:latest
+image: lightstreamer
 description: Real-time messaging server for streaming data
 network:
   external:

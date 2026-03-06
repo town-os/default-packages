@@ -1,4 +1,4 @@
-image: bitnami/drupal:latest
+image: bitnami/drupal
 description: Flexible content management platform (Bitnami)
 supplies: ["http"]
 environment:

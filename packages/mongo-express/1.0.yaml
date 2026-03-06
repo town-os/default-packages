@@ -1,4 +1,4 @@
-image: mongo-express:latest
+image: mongo-express
 description: Web-based MongoDB administration interface
 environment:
   ME_CONFIG_MONGODB_SERVER: "@mongohost@"

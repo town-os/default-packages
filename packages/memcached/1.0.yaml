@@ -1,4 +1,4 @@
-image: memcached:latest
+image: memcached
 description: High-performance distributed memory caching system
 supplies: ["cache"]
 network:

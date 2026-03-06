@@ -1,4 +1,4 @@
-image: backdrop:latest
+image: backdrop
 description: Content management system for small to medium organizations
 supplies: ["http"]
 environment:

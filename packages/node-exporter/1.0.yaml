@@ -1,4 +1,4 @@
-image: prom/node-exporter:latest
+image: prom/node-exporter
 description: Prometheus exporter for hardware and OS metrics
 supplies: ["monitoring"]
 command: ["--path.rootfs=/host"]

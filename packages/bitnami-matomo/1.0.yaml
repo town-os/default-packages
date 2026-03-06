@@ -1,4 +1,4 @@
-image: bitnami/matomo:latest
+image: bitnami/matomo
 description: Open-source web analytics platform (Bitnami)
 supplies: ["http"]
 environment:

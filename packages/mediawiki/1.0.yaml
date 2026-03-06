@@ -1,4 +1,4 @@
-image: mediawiki:latest
+image: mediawiki
 description: Wiki software that powers Wikipedia
 supplies: ["http"]
 network:

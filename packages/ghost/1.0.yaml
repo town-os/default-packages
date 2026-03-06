@@ -1,4 +1,4 @@
-image: ghost:latest
+image: ghost
 description: Professional publishing platform
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: bitnami/couchdb:latest
+image: bitnami/couchdb
 description: Seamless multi-master sync document database (Bitnami)
 supplies: ["database"]
 environment:

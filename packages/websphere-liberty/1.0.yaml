@@ -1,4 +1,4 @@
-image: websphere-liberty:latest
+image: websphere-liberty
 description: IBM WebSphere Liberty Java application server
 supplies: ["http"]
 network:

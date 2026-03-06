@@ -1,4 +1,4 @@
-image: ghcr.io/nagimov/agendav-docker:latest
+image: ghcr.io/nagimov/agendav-docker
 description: CalDAV web client for managing calendars
 supplies: ["http"]
 environment:

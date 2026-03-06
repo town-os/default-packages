@@ -1,4 +1,4 @@
-image: bitnami/opensearch:latest
+image: bitnami/opensearch
 description: Community-driven search and analytics suite (Bitnami)
 supplies: ["search"]
 environment:

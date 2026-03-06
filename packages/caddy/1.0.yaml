@@ -1,4 +1,4 @@
-image: caddy:latest
+image: caddy
 description: Fast multi-platform web server with automatic HTTPS
 supplies: ["http"]
 command: ["caddy", "file-server", "--root", "/usr/share/caddy", "--listen", ":80"]

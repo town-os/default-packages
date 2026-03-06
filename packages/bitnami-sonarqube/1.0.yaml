@@ -1,4 +1,4 @@
-image: bitnami/sonarqube:latest
+image: bitnami/sonarqube
 description: Continuous code quality and security inspection (Bitnami)
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: silverpeas:latest
+image: silverpeas
 description: Collaborative and social-networking portal
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: bitnami/nats:latest
+image: bitnami/nats
 description: High-performance cloud-native messaging system (Bitnami)
 supplies: ["messaging"]
 network:

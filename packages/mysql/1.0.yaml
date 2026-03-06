@@ -1,4 +1,4 @@
-image: mysql:latest
+image: mysql
 description: Popular open-source relational database
 supplies: ["database"]
 environment:

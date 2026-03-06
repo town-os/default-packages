@@ -1,4 +1,4 @@
-image: neo4j:latest
+image: neo4j
 description: Graph database for connected data
 supplies: ["database"]
 environment:

@@ -1,4 +1,4 @@
-image: aerospike:latest
+image: aerospike
 description: High-performance distributed NoSQL database
 supplies: ["database"]
 environment:

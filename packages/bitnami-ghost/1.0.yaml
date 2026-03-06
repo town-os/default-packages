@@ -1,4 +1,4 @@
-image: bitnami/ghost:latest
+image: bitnami/ghost
 description: Professional publishing platform (Bitnami)
 supplies: ["http"]
 environment:

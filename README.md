@@ -14,12 +14,17 @@ The official default package repository for [Town OS](https://town-os.github.io)
   - [Featured packages](#featured-packages)
 - [Package format](#package-format)
   - [Top-level fields](#top-level-fields)
+  - [Image field](#image-field)
+  - [VM packages](#vm-packages)
+  - [Proton packages](#proton-packages)
   - [Supplies tags](#supplies-tags)
   - [Network](#network)
   - [Volumes](#volumes)
   - [Archives](#archives)
+  - [Git sources](#git-sources)
   - [Questions](#questions)
   - [Notes](#notes)
+  - [File templates](#file-templates)
   - [Template system](#template-system)
   - [Style guidelines](#style-guidelines)
 - [Adding this repository](#adding-this-repository)
@@ -67,7 +72,7 @@ Packages listed here appear with `featured: true` in the API's package list resp
 Package definitions are YAML files with the following fields:
 
 ```yaml
-image: nginx:1.26-alpine
+image: nginx
 description: Lightweight high-performance web server and reverse proxy
 supplies: ["http"]
 command: ["optional", "command", "override"]
@@ -99,9 +104,23 @@ questions:
     type: port
     default: "8080"
 archives:
-  - image: nginx:latest
+  - image: nginx
     directory: /usr/share/nginx/html
     volume: html
+git_sources:
+  - url: https://github.com/example/config.git
+    branch: main
+    volume: config
+templates:
+  nginx-conf:
+    volume: html
+    path: default.conf
+    content: |
+      server {
+          listen 80;
+          server_name {{.Responses.hostname}};
+          root /usr/share/nginx/html;
+      }
 notes:
   URL:
     value: "http://@hostname@:@port@"
@@ -113,18 +132,110 @@ notes:
 
 ### Top-level fields
 
+A package must specify exactly one runtime: `image` (container), `vm` (virtual machine), or `proton` (Windows app). Specifying more than one or none is a validation error.
+
 | Field         | Description                                                                                                                                   |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `image`       | **Required.** Container image reference (e.g. `nginx:1.26-alpine`). Short names are normalized to `docker.io/library/<name>:latest`.         |
+| `image`       | Container image reference (e.g. `nginx`, `nginx:1.26-alpine`). See [Image field](#image-field) for details.                                  |
+| `vm`          | Virtual machine configuration. Mutually exclusive with `image` and `proton`. See [VM packages](#vm-packages).                                |
+| `proton`      | Windows application configuration via Valve's Proton. Mutually exclusive with `image` and `vm`. See [Proton packages](#proton-packages).     |
 | `description` | Short human-readable summary of the package.                                                                                                  |
 | `supplies`    | List of semantic capability tags this package provides (e.g. `["database"]`, `["http"]`, `["cache", "database"]`).                            |
-| `command`     | Optional command override for the container.                                                                                                  |
-| `environment` | Environment variables passed to the container. Values may contain `@variable@` template markers that are substituted with question responses. |
+| `command`     | Optional command override for the container (container runtime only).                                                                         |
+| `environment` | Environment variables passed to the container (container runtime only). Values may contain `@variable@` template markers that are substituted with question responses. |
 | `network`     | Port mapping configuration (see below).                                                                                                       |
 | `volumes`     | Named volumes with mount configuration (see below).                                                                                           |
 | `questions`   | Interactive prompts shown during installation (see below).                                                                                    |
-| `archives`    | List of archive extraction specs to pre-populate volumes from container images (see below).                                                   |
+| `archives`    | List of archive extraction specs to pre-populate volumes from container images (container runtime only, see below).                           |
+| `git_sources` | List of Git repositories to clone into volumes during installation (see below).                                                               |
+| `templates`   | Named file templates rendered into volumes using Go `text/template` syntax (see below).                                                      |
 | `notes`       | Key-value metadata displayed after installation. Supports template substitution and optional type validation (see below).                     |
+
+### Image field
+
+The `image` field specifies the container image for the package. It accepts two forms:
+
+**Plain string (preferred):**
+
+```yaml
+image: nginx
+```
+
+**Structured form:**
+
+```yaml
+image:
+  type: oci
+  url: nginx
+```
+
+| Field  | Description                                                                 |
+| ------ | --------------------------------------------------------------------------- |
+| `type` | Image type. Currently only `oci` is supported. Defaults to `oci` if omitted. |
+| `url`  | Image reference (same format as the plain string form).                      |
+
+When a plain string is used, it is treated as an OCI image reference. Both forms are equivalent.
+
+#### Image normalization
+
+Image references are automatically normalized during compilation:
+
+- `nginx` becomes `docker.io/library/nginx:latest`
+- `user/app` becomes `docker.io/user/app:latest`
+- `ghcr.io/org/app` becomes `ghcr.io/org/app:latest` (if no tag)
+- `nginx:1.26-alpine` is preserved as-is (tag already present)
+
+Because `:latest` is appended automatically to tagless references, prefer omitting it in package definitions. Write `image: nginx` rather than `image: nginx:latest`.
+
+### VM packages
+
+VM packages run a virtual machine using QEMU instead of a container. The `vm` field is mutually exclusive with `image` and `proton`.
+
+```yaml
+vm:
+  image: https://example.com/ubuntu-22.04.qcow2
+  memory: 2gb
+  cpus: 2
+description: Ubuntu 22.04 virtual machine
+network:
+  external:
+    "2222": "22"
+```
+
+| Field    | Description                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------------------ |
+| `image`  | **Required.** VM disk image URL or local filename. Supports HTTP/HTTPS URLs and `@variable@` template substitution. |
+| `memory` | VM memory as a human-readable byte string (e.g. `2gb`, `512mb`). Defaults to `1gb`. Supports `@variable@` templates. |
+| `cpus`   | Number of virtual CPUs. Defaults to `1`.                                                                            |
+
+Remote disk images are downloaded and converted to raw format via `qemu-img`. VMs run with KVM acceleration, virtio disk and network, and user-mode networking with port forwarding.
+
+The `command`, `environment`, and `archives` fields are not applicable to VM packages.
+
+### Proton packages
+
+Proton packages run Windows applications using Valve's Proton compatibility layer. The `proton` field is mutually exclusive with `image` and `vm`.
+
+```yaml
+proton:
+  app_image: myapp-container
+  app_directory: /opt/myapp
+  volume: appdata
+  exe: MyApp.exe
+  args: ["-fullscreen", "-config", "settings.ini"]
+description: Windows application running via Proton
+volumes:
+  appdata:
+    mountpoint: /data
+```
+
+| Field           | Description                                                              |
+| --------------- | ------------------------------------------------------------------------ |
+| `app_image`     | **Required.** Container image containing the application files.          |
+| `app_directory` | **Required.** Path within the container image where application files are located. |
+| `volume`        | **Required.** Name of a volume defined in this package for application data. |
+| `exe`           | **Required.** Windows executable filename to run.                        |
+| `args`          | Optional list of command-line arguments passed to the executable.        |
 
 ### Supplies tags
 
@@ -168,7 +279,7 @@ The `archives` field is a list of specs for extracting files from container imag
 
 ```yaml
 archives:
-  - image: nginx:latest
+  - image: nginx
     directory: /usr/share/nginx/html
     volume: html
 ```
@@ -178,6 +289,28 @@ archives:
 | `image`     | **Required.** Container image to extract files from.                     |
 | `directory` | **Required.** Absolute path in the container image to extract.           |
 | `volume`    | **Required.** Name of a volume defined in this package to extract into.  |
+
+### Git sources
+
+The `git_sources` field is a list of Git repositories to clone into volumes during installation. Unlike the per-volume `git` field, `git_sources` supports branch selection and can be rebuilt via the API.
+
+```yaml
+git_sources:
+  - url: https://github.com/example/config.git
+    branch: main
+    volume: config
+  - url: https://github.com/example/plugins.git
+    branch: stable
+    volume: plugins
+```
+
+| Field    | Description                                                                            |
+| -------- | -------------------------------------------------------------------------------------- |
+| `url`    | **Required.** Git repository URL to clone. Supports `@variable@` template substitution. |
+| `branch` | Git branch to checkout. Supports `@variable@` template substitution.                   |
+| `volume` | **Required.** Name of a volume defined in this package to clone into.                  |
+
+The `POST /packages/rebuild-git` API endpoint pulls latest changes for each git-sourced volume and restarts the dependent service.
 
 ### Questions
 
@@ -199,16 +332,18 @@ questions:
 
 #### Question types
 
-| Type       | Validates                                                  |
-| ---------- | ---------------------------------------------------------- |
-| `hostname` | Lowercase alphanumeric with hyphens (no dots)              |
-| `port`     | Integer 1-65535                                            |
-| `bytes`    | Human-readable size (e.g. `512mb`, `2gb`, `1tb`)           |
-| `volume`   | Alphanumeric with hyphens and underscores                  |
-| `archive`  | Any non-empty string (archive filename)                    |
-| `duration` | Human-readable duration (e.g. `30s`, `5m`, `2h`, `1d`)    |
-| `secret`   | Any non-empty string (typically auto-generated)            |
-| _(omitted)_ | Any string (no validation)                                |
+| Type       | Validates                                                  | Auto-generation                                              |
+| ---------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `hostname` | Lowercase alphanumeric with hyphens (no dots)              | `<package-name>-<4-char-hex>` (e.g. `nginx-a3f2`)           |
+| `port`     | Integer 1-65535                                            | Random available port in range 10000-60000                   |
+| `bytes`    | Human-readable size (e.g. `512mb`, `2gb`, `1tb`)           |                                                              |
+| `volume`   | Alphanumeric with hyphens and underscores                  |                                                              |
+| `archive`  | Any non-empty string (archive filename)                    |                                                              |
+| `duration` | Human-readable duration (e.g. `30s`, `5m`, `2h`, `1d`)    |                                                              |
+| `secret`   | Any non-empty string                                       | 256-bit hex string via `crypto/rand` (64 hex characters)     |
+| _(omitted)_ | Any string (no validation)                                |                                                              |
+
+Auto-generation is triggered when the user provides an empty response or `"auto"`. For `secret` questions, values are always auto-generated if not explicitly provided, making them suitable for passwords and encryption keys. For `port` questions, the auto-generated port is verified to not conflict with other installed packages.
 
 Do not use empty `type:` or `type: string` -- simply omit the `type` field for untyped questions.
 
@@ -239,6 +374,48 @@ notes:
 | `email` | Email address (`user@domain.tld`)                                   |
 | _(omitted)_ | No validation (plain text)                                     |
 
+### File templates
+
+The `templates` field defines named file templates that are rendered into volumes using Go `text/template` syntax. Templates are applied after volume seeding (archives, git clones) but before the service starts. During reconciliation, templates are re-rendered but existing files are never overwritten.
+
+```yaml
+templates:
+  nginx-conf:
+    volume: config
+    path: nginx.conf
+    content: |
+      server {
+          listen 80;
+          server_name {{.Responses.hostname}};
+          root /usr/share/nginx/html;
+      }
+  env-file:
+    volume: config
+    path: .env
+    content: |
+      APP_NAME={{.Package.Name}}
+      APP_VERSION={{.Package.Version}}
+      HOSTNAME={{.System.Hostname}}
+```
+
+| Field     | Description                                                                                      |
+| --------- | ------------------------------------------------------------------------------------------------ |
+| `volume`  | **Required.** Name of a volume defined in this package. Supports `@variable@` substitution.      |
+| `path`    | **Required.** Relative file path within the volume. Must not contain directory traversal (`..`).  |
+| `content` | **Required.** Go `text/template` string rendered with the template data context (see below).     |
+
+Template names (the YAML keys) must be alphanumeric with dots, dashes, and underscores.
+
+#### Template data context
+
+Templates have access to three namespaces:
+
+| Namespace    | Fields                                                             |
+| ------------ | ------------------------------------------------------------------ |
+| `.Responses` | Question responses keyed by name (e.g. `{{.Responses.hostname}}`) |
+| `.Package`   | `Name`, `Version`, `Repo`, `Image`, `Description`                 |
+| `.System`    | `Hostname`, `ExternalIP`, `InternalIP`                             |
+
 ### Template system
 
 Template variables use the `@variable@` syntax and are substituted during compilation. They can appear in:
@@ -246,6 +423,8 @@ Template variables use the `@variable@` syntax and are substituted during compil
 - Environment variable values
 - Network port mappings (both keys and values)
 - Volume mountpoints, quotas, archive fields, and git URLs
+- Git source URLs and branches
+- Template volume and path fields
 - Note values
 
 Two built-in template variables are available without questions:
@@ -259,6 +438,7 @@ Two built-in template variables are available without questions:
 
 When writing package definitions:
 
+- Prefer tagless images -- write `image: nginx` rather than `image: nginx:latest`, since `:latest` is appended automatically during normalization.
 - Omit empty maps (`environment: {}`, `internal: {}`, `volumes: {}`) -- leave them out entirely.
 - Omit `type` on questions that accept free-form text -- do not write `type:` with no value.
 - Include `description` with a short summary of what the package is.

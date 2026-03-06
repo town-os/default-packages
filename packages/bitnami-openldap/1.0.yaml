@@ -1,4 +1,4 @@
-image: bitnami/openldap:latest
+image: bitnami/openldap
 description: Open-source LDAP directory server (Bitnami)
 environment:
   LDAP_ROOT: "@rootdn@"

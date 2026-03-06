@@ -1,4 +1,4 @@
-image: clickhouse:latest
+image: clickhouse
 description: Fast open-source column-oriented database for analytics
 supplies: ["database"]
 environment:

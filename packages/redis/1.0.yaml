@@ -1,4 +1,4 @@
-image: redis:latest
+image: redis
 description: In-memory data structure store used as database and cache
 supplies: ["cache", "database"]
 network:

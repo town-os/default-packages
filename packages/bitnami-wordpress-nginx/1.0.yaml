@@ -1,4 +1,4 @@
-image: bitnami/wordpress-nginx:latest
+image: bitnami/wordpress-nginx
 description: WordPress with Nginx web server (Bitnami)
 supplies: ["http"]
 environment:

@@ -1,4 +1,4 @@
-image: odoo:latest
+image: odoo
 description: Open-source business management suite
 supplies: ["http"]
 environment:

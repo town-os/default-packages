@@ -1,4 +1,4 @@
-image: bitnami/apache:latest
+image: bitnami/apache
 description: Apache HTTP Server (Bitnami)
 supplies: ["http"]
 network:

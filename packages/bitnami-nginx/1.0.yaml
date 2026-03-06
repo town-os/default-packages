@@ -1,4 +1,4 @@
-image: bitnami/nginx:latest
+image: bitnami/nginx
 description: Lightweight high-performance web server (Bitnami)
 supplies: ["http"]
 network:

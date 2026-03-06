@@ -1,4 +1,4 @@
-image: bitnami/neo4j:latest
+image: bitnami/neo4j
 description: Graph database for connected data (Bitnami)
 supplies: ["database"]
 environment:

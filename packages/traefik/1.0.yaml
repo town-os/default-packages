@@ -1,4 +1,4 @@
-image: traefik:latest
+image: traefik
 description: Cloud-native application proxy and load balancer
 supplies: ["http"]
 network:

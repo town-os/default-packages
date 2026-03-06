@@ -1,4 +1,4 @@
-image: varnish:latest
+image: varnish
 description: High-performance HTTP accelerator and caching reverse proxy
 supplies: ["http", "cache"]
 environment:

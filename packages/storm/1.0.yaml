@@ -1,4 +1,4 @@
-image: storm:latest
+image: storm
 description: Distributed real-time computation system
 network:
   external:

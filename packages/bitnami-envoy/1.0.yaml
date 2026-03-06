@@ -1,4 +1,4 @@
-image: bitnami/envoy:latest
+image: bitnami/envoy
 description: Cloud-native edge and service proxy (Bitnami)
 supplies: ["http"]
 network:

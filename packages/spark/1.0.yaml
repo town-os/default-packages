@@ -1,4 +1,4 @@
-image: spark:latest
+image: spark
 description: Unified analytics engine for large-scale data processing
 network:
   external:

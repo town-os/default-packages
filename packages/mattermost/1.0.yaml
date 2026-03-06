@@ -1,4 +1,4 @@
-image: mattermost/mattermost-team-edition:latest
+image: mattermost/mattermost-team-edition
 description: Open-source messaging platform for team collaboration
 supplies: ["http"]
 environment:

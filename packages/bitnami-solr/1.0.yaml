@@ -1,4 +1,4 @@
-image: bitnami/solr:latest
+image: bitnami/solr
 description: Enterprise search platform (Bitnami)
 supplies: ["search"]
 network:

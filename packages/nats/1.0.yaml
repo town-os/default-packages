@@ -1,4 +1,4 @@
-image: nats:latest
+image: nats
 description: High-performance cloud-native messaging system
 supplies: ["messaging"]
 command: ["nats-server", "--jetstream", "--store_dir", "/data"]

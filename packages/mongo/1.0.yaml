@@ -1,4 +1,4 @@
-image: mongo:latest
+image: mongo
 description: Document-oriented NoSQL database
 supplies: ["database"]
 environment:

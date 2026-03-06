@@ -1,4 +1,4 @@
-image: jetty:latest
+image: jetty
 description: Lightweight Java HTTP server and servlet container
 supplies: ["http"]
 network:

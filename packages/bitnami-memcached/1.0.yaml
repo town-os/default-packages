@@ -1,4 +1,4 @@
-image: bitnami/memcached:latest
+image: bitnami/memcached
 description: High-performance distributed memory caching system (Bitnami)
 supplies: ["cache"]
 network:

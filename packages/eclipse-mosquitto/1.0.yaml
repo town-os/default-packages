@@ -1,4 +1,4 @@
-image: eclipse-mosquitto:latest
+image: eclipse-mosquitto
 description: Lightweight MQTT message broker
 supplies: ["messaging"]
 network:

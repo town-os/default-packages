@@ -1,4 +1,4 @@
-image: grafana/grafana:latest
+image: grafana/grafana
 description: Open-source analytics and interactive visualization platform
 supplies: ["monitoring"]
 environment:

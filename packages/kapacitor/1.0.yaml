@@ -1,4 +1,4 @@
-image: kapacitor:latest
+image: kapacitor
 description: Real-time streaming data processing engine
 supplies: ["monitoring"]
 environment:

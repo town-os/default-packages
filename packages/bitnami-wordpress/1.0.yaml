@@ -1,4 +1,4 @@
-image: bitnami/wordpress:latest
+image: bitnami/wordpress
 description: Popular content management system (Bitnami)
 supplies: ["http"]
 environment:

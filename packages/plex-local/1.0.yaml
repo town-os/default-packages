@@ -1,4 +1,4 @@
-image: plexinc/pms-docker:latest
+image: plexinc/pms-docker
 description: Media server for streaming movies, TV shows, and music (local network)
 network:
   internal:

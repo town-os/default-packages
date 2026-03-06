@@ -1,4 +1,4 @@
-image: friendica:latest
+image: friendica
 description: Decentralized social networking platform
 supplies: ["http"]
 environment:

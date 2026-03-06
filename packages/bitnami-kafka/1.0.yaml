@@ -1,4 +1,4 @@
-image: bitnami/kafka:latest
+image: bitnami/kafka
 description: Distributed event streaming platform (Bitnami)
 supplies: ["messaging"]
 environment:

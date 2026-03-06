@@ -1,4 +1,4 @@
-image: phpmyadmin:latest
+image: phpmyadmin
 description: Web-based MySQL/MariaDB administration tool
 environment:
   PMA_HOST: "@dbhost@"

@@ -1,4 +1,4 @@
-image: haproxy:latest
+image: haproxy
 description: Reliable high-performance TCP/HTTP load balancer
 supplies: ["http"]
 network:

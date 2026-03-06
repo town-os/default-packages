@@ -1,4 +1,4 @@
-image: redmine:latest
+image: redmine
 description: Flexible project management web application
 supplies: ["http"]
 network:

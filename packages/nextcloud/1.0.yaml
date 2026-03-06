@@ -1,4 +1,4 @@
-image: nextcloud:latest
+image: nextcloud
 description: Self-hosted productivity platform for file sync and collaboration
 supplies: ["http", "storage"]
 environment:

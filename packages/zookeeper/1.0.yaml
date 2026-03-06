@@ -1,4 +1,4 @@
-image: zookeeper:latest
+image: zookeeper
 description: Centralized service for distributed coordination
 network:
   external:

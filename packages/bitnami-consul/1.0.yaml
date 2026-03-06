@@ -1,4 +1,4 @@
-image: bitnami/consul:latest
+image: bitnami/consul
 description: Service mesh and service discovery solution (Bitnami)
 environment:
   CONSUL_AGENT_MODE: "server"

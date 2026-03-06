@@ -1,4 +1,4 @@
-image: bitnami/mongodb:latest
+image: bitnami/mongodb
 description: Document-oriented NoSQL database (Bitnami)
 supplies: ["database"]
 environment:

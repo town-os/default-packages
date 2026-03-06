@@ -1,4 +1,4 @@
-image: matomo:latest
+image: matomo
 description: Open-source web analytics platform
 supplies: ["http"]
 environment:

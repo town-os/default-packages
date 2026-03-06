@@ -1,4 +1,4 @@
-image: bitnami/activemq:latest
+image: bitnami/activemq
 description: Popular open-source message broker (Bitnami)
 supplies: ["messaging"]
 environment:

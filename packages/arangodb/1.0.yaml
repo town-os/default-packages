@@ -1,4 +1,4 @@
-image: arangodb:latest
+image: arangodb
 description: Multi-model database for graph, document, and key-value data
 supplies: ["database"]
 environment:

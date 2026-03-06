@@ -1,4 +1,4 @@
-image: influxdb:latest
+image: influxdb
 description: Time series database for metrics and events
 supplies: ["database", "monitoring"]
 environment:

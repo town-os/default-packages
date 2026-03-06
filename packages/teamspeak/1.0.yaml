@@ -1,4 +1,4 @@
-image: teamspeak:latest
+image: teamspeak
 description: Voice communication software for gaming and teams
 environment:
   TS3SERVER_LICENSE: "accept"

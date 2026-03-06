@@ -1,4 +1,4 @@
-image: fluentd:latest
+image: fluentd
 description: Unified logging layer for data collection and consumption
 network:
   external:

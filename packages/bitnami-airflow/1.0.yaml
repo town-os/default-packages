@@ -1,4 +1,4 @@
-image: bitnami/airflow:latest
+image: bitnami/airflow
 description: Workflow orchestration platform (Bitnami)
 supplies: ["http"]
 environment:

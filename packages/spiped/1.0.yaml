@@ -1,4 +1,4 @@
-image: spiped:latest
+image: spiped
 description: Symmetric key encrypted and authenticated pipe daemon
 command: ["-d", "-s", "[0.0.0.0]:8080", "-t", "@target@"]
 network:

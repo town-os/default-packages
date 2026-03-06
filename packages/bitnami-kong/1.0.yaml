@@ -1,4 +1,4 @@
-image: bitnami/kong:latest
+image: bitnami/kong
 description: Cloud-native API gateway (Bitnami)
 supplies: ["http"]
 environment:
