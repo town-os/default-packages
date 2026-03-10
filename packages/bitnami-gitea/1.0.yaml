@@ -25,8 +25,8 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   SSH:
-    value: "ssh://git@localhost:@sshport@"
+    value: "ssh://git@@PACKAGE_DNS@:@sshport@"
     type: url

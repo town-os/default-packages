@@ -2,7 +2,7 @@ image: plexinc/pms-docker
 description: Media server for streaming movies, TV shows, and music (local network)
 network:
   internal:
-    "32400": "32400"
+    "@port@": "32400"
 volumes:
   media:
     mountpoint: /data
@@ -10,13 +10,13 @@ volumes:
   config:
     mountpoint: /config
 questions:
-  hostname:
-    query: "What is your hostname?"
-    type: hostname
+  port:
+    query: "What port should Plex listen on?"
+    type: port
   mediasize:
     query: "How much storage should be allocated for media?"
     type: bytes
 notes:
   url:
-    value: "http://@hostname@:32400/web"
+    value: "http://@PACKAGE_DNS@:@port@/web"
     type: url

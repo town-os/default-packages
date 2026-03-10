@@ -19,8 +19,8 @@ questions:
     type: port
 notes:
   MQTT:
-    value: "mqtt://localhost:@mqttport@"
+    value: "mqtt://@PACKAGE_DNS@:@mqttport@"
     type: url
   Dashboard:
-    value: "http://localhost:@dashboardport@"
+    value: "http://@PACKAGE_DNS@:@dashboardport@"
     type: url

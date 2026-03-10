@@ -17,5 +17,5 @@ questions:
     type: port
 notes:
   MQTT:
-    value: "mqtt://localhost:@port@"
+    value: "mqtt://@PACKAGE_DNS@:@port@"
     type: url

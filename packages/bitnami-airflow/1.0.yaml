@@ -11,7 +11,7 @@ environment:
   AIRFLOW_DATABASE_USERNAME: "@dbuser@"
   AIRFLOW_DATABASE_PASSWORD: "@dbpass@"
 network:
-  external:
+  internal:
     "@port@": "8080"
 volumes:
   dags:
@@ -23,7 +23,7 @@ questions:
     query: "What admin password should Airflow use?"
   dbhost:
     query: "What is the PostgreSQL host for Airflow?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the PostgreSQL database name for Airflow?"
   dbuser:
@@ -33,7 +33,8 @@ questions:
   port:
     query: "What external port should Airflow listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url

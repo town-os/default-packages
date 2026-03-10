@@ -22,7 +22,7 @@ questions:
     type: port
 notes:
   Voice:
-    value: "ts3server://localhost?port=@voiceport@"
+    value: "ts3server://@PACKAGE_DNS@?port=@voiceport@"
     type: url
   ServerQuery:
-    value: "telnet localhost @queryport@"
+    value: "telnet @PACKAGE_DNS@ @queryport@"

@@ -22,5 +22,5 @@ questions:
     type: port
 notes:
   Connection:
-    value: "mongodb://@user@:@password@@localhost:@port@"
+    value: "mongodb://@user@:@password@@@PACKAGE_DNS@:@port@"
     type: url

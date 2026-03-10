@@ -24,8 +24,8 @@ questions:
     type: port
 notes:
   API:
-    value: "http://localhost:@apiport@"
+    value: "http://@PACKAGE_DNS@:@apiport@"
     type: url
   Console:
-    value: "http://localhost:@consoleport@"
+    value: "http://@PACKAGE_DNS@:@consoleport@"
     type: url

@@ -24,8 +24,8 @@ questions:
     type: port
 notes:
   OpenWire:
-    value: "tcp://localhost:@port@"
+    value: "tcp://@PACKAGE_DNS@:@port@"
     type: url
   Console:
-    value: "http://localhost:@webport@"
+    value: "http://@PACKAGE_DNS@:@webport@"
     type: url

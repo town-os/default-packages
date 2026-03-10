@@ -17,5 +17,5 @@ questions:
     type: port
 notes:
   Connection:
-    value: "redis://:@password@@localhost:@port@"
+    value: "redis://:@password@@@PACKAGE_DNS@:@port@"
     type: url

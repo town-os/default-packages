@@ -21,8 +21,8 @@ questions:
     type: port
 notes:
   Browser:
-    value: "http://localhost:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   Bolt:
-    value: "bolt://localhost:@boltport@"
+    value: "bolt://@PACKAGE_DNS@:@boltport@"
     type: url

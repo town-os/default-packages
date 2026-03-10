@@ -23,5 +23,5 @@ questions:
     type: port
 notes:
   Connection:
-    value: "postgresql://@user@:@password@@localhost:@port@/@database@"
+    value: "postgresql://@user@:@password@@@PACKAGE_DNS@:@port@/@database@"
     type: url

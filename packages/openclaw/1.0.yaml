@@ -10,13 +10,11 @@ volumes:
   workspace:
     mountpoint: /home/node/.openclaw/workspace
 questions:
-  domain:
-    query: "What domain should OpenClaw serve?"
-    type: hostname
   port:
     query: "What port should the web interface listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://@domain@:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url

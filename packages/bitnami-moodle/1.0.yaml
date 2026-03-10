@@ -9,7 +9,7 @@ environment:
   MOODLE_USERNAME: "@adminuser@"
   MOODLE_PASSWORD: "@adminpass@"
 network:
-  external:
+  internal:
     "@port@": "8080"
 volumes:
   data:
@@ -19,7 +19,7 @@ volumes:
 questions:
   dbhost:
     query: "What is the MariaDB/MySQL host for Moodle?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the database name?"
   dbuser:
@@ -33,9 +33,10 @@ questions:
   port:
     query: "What external port should Moodle listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Database:
     value: "Requires an external MariaDB or MySQL server"

@@ -6,7 +6,7 @@ environment:
   VARNISH_BACKEND_PORT: "@backendport@"
   VARNISH_SIZE: "@cachesize@"
 network:
-  external:
+  internal:
     "@port@": "80"
 volumes:
   config:
@@ -14,7 +14,7 @@ volumes:
 questions:
   backendhost:
     query: "What is the backend hostname that Varnish should proxy to?"
-    type: hostname
+    type: dns
   backendport:
     query: "What port is the backend listening on?"
     type: port
@@ -23,7 +23,8 @@ questions:
   port:
     query: "What external port should Varnish listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url

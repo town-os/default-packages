@@ -11,7 +11,7 @@ environment:
   MASTODON_ADMIN_PASSWORD: "@adminpass@"
   MASTODON_ADMIN_EMAIL: "@adminemail@"
 network:
-  external:
+  internal:
     "@port@": "3000"
 volumes:
   data:
@@ -19,7 +19,7 @@ volumes:
 questions:
   dbhost:
     query: "What is the PostgreSQL host for Mastodon?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the database name?"
   dbuser:
@@ -28,7 +28,7 @@ questions:
     query: "What is the database password?"
   redishost:
     query: "What is the Redis host for Mastodon?"
-    type: hostname
+    type: dns
   adminuser:
     query: "What admin username should Mastodon use?"
   adminpass:
@@ -38,9 +38,10 @@ questions:
   port:
     query: "What external port should Mastodon listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Database:
     value: "Requires external PostgreSQL and Redis servers"

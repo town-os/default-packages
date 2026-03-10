@@ -23,7 +23,7 @@ questions:
     type: port
 notes:
   Studio:
-    value: "http://localhost:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   Binary:
-    value: "localhost:@binaryport@"
+    value: "@PACKAGE_DNS@:@binaryport@"

@@ -22,8 +22,8 @@ questions:
     type: port
 notes:
   URL:
-    value: "nats://localhost:@port@"
+    value: "nats://@PACKAGE_DNS@:@port@"
     type: url
   Monitoring:
-    value: "http://localhost:@monitorport@"
+    value: "http://@PACKAGE_DNS@:@monitorport@"
     type: url

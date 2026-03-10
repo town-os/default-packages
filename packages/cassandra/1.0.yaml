@@ -13,4 +13,4 @@ questions:
     type: port
 notes:
   CQL:
-    value: "localhost:@port@"
+    value: "@PACKAGE_DNS@:@port@"

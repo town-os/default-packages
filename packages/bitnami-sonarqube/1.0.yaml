@@ -7,7 +7,7 @@ environment:
   SONARQUBE_DATABASE_USER: "@dbuser@"
   SONARQUBE_DATABASE_PASSWORD: "@dbpass@"
 network:
-  external:
+  internal:
     "@port@": "9000"
 volumes:
   data:
@@ -15,7 +15,7 @@ volumes:
 questions:
   dbhost:
     query: "What is the PostgreSQL host for SonarQube?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the database name?"
   dbuser:
@@ -25,9 +25,10 @@ questions:
   port:
     query: "What external port should SonarQube listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Login:
     value: "Default credentials are admin/admin"

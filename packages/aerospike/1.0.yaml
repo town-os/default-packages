@@ -22,4 +22,4 @@ questions:
     type: port
 notes:
   Service:
-    value: "localhost:@port@"
+    value: "@PACKAGE_DNS@:@port@"

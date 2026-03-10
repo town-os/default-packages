@@ -8,7 +8,7 @@ environment:
   DB_USER: "@dbuser@"
   DB_PASSWORD: "@dbpass@"
 network:
-  external:
+  internal:
     "@port@": "8000"
 volumes:
   data:
@@ -18,7 +18,7 @@ volumes:
 questions:
   dbhost:
     query: "What is the PostgreSQL server hostname?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the PostgreSQL database name?"
   dbuser:
@@ -28,9 +28,10 @@ questions:
   port:
     query: "What external port should Silverpeas listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@/silverpeas"
+    value: "http://@PACKAGE_DNS@:@port@/silverpeas"
     type: url
   Database:
     value: "Requires an external PostgreSQL server"

@@ -16,7 +16,7 @@ questions:
     type: port
 notes:
   Beats:
-    value: "localhost:@beatsport@"
+    value: "@PACKAGE_DNS@:@beatsport@"
   API:
-    value: "http://localhost:@apiport@"
+    value: "http://@PACKAGE_DNS@:@apiport@"
     type: url

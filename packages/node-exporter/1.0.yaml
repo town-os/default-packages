@@ -14,7 +14,7 @@ questions:
     type: port
 notes:
   Metrics:
-    value: "http://localhost:@port@/metrics"
+    value: "http://@PACKAGE_DNS@:@port@/metrics"
     type: url
   Info:
     value: "Requires --net=host, --pid=host, and a read-only bind mount of / to /host for accurate host metrics"

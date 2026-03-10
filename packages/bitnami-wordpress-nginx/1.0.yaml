@@ -9,7 +9,7 @@ environment:
   WORDPRESS_USERNAME: "@adminuser@"
   WORDPRESS_PASSWORD: "@adminpass@"
 network:
-  external:
+  internal:
     "@port@": "8080"
 volumes:
   data:
@@ -17,7 +17,7 @@ volumes:
 questions:
   dbhost:
     query: "What is the MariaDB/MySQL host for WordPress?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the database name?"
   dbuser:
@@ -31,9 +31,10 @@ questions:
   port:
     query: "What external port should WordPress (Nginx) listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Database:
     value: "Requires an external MariaDB or MySQL server"

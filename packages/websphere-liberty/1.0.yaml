@@ -19,10 +19,10 @@ questions:
     type: port
 notes:
   HTTP:
-    value: "http://localhost:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   HTTPS:
-    value: "https://localhost:@httpsport@"
+    value: "https://@PACKAGE_DNS@:@httpsport@"
     type: url
   Deploy:
     value: "Place WAR/EAR files in /config/dropins/"

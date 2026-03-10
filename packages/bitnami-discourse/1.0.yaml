@@ -2,7 +2,7 @@ image: bitnami/discourse
 description: Open-source discussion platform (Bitnami)
 supplies: ["http"]
 environment:
-  DISCOURSE_HOST: "@domain@"
+  DISCOURSE_HOST: "@PACKAGE_DNS@"
   DISCOURSE_DATABASE_HOST: "@dbhost@"
   DISCOURSE_DATABASE_NAME: "@dbname@"
   DISCOURSE_DATABASE_USER: "@dbuser@"
@@ -12,18 +12,15 @@ environment:
   DISCOURSE_PASSWORD: "@adminpass@"
   DISCOURSE_EMAIL: "@adminemail@"
 network:
-  external:
+  internal:
     "@port@": "8080"
 volumes:
   data:
     mountpoint: /bitnami/discourse
 questions:
-  domain:
-    query: "What hostname should Discourse use?"
-    type: hostname
   dbhost:
     query: "What is the PostgreSQL host for Discourse?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the database name?"
   dbuser:
@@ -32,7 +29,7 @@ questions:
     query: "What is the database password?"
   redishost:
     query: "What is the Redis host for Discourse?"
-    type: hostname
+    type: dns
   adminuser:
     query: "What admin username should Discourse use?"
   adminpass:
@@ -42,9 +39,10 @@ questions:
   port:
     query: "What external port should Discourse listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Database:
     value: "Requires external PostgreSQL and Redis servers"

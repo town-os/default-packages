@@ -10,4 +10,4 @@ questions:
     type: port
 notes:
   Connection:
-    value: "localhost:@port@"
+    value: "@PACKAGE_DNS@:@port@"

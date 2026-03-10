@@ -18,5 +18,5 @@ questions:
     type: port
 notes:
   UI:
-    value: "http://localhost:@uiport@"
+    value: "http://@PACKAGE_DNS@:@uiport@"
     type: url

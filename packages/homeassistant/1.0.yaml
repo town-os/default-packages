@@ -8,13 +8,11 @@ volumes:
   config:
     mountpoint: /config
 questions:
-  domain:
-    query: "What domain should Home Assistant serve?"
-    type: hostname
   port:
     query: "What port should the web interface listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://@domain@:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url

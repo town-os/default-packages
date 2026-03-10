@@ -13,7 +13,7 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Push:
-    value: "docker push localhost:@port@/myimage:tag"
+    value: "docker push @PACKAGE_DNS@:@port@/myimage:tag"

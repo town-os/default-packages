@@ -13,7 +13,7 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Login:
     value: "Default admin credentials are admin/admin"

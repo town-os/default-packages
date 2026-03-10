@@ -2,14 +2,14 @@ image: yourls
 description: Self-hosted URL shortener
 supplies: ["http"]
 environment:
-  YOURLS_SITE: "http://localhost:@port@"
+  YOURLS_SITE: "http://@PACKAGE_DNS@:@port@"
   YOURLS_USER: "@adminuser@"
   YOURLS_PASS: "@adminpass@"
   YOURLS_DB_HOST: "@dbhost@"
   YOURLS_DB_USER: "@dbuser@"
   YOURLS_DB_PASS: "@dbpass@"
 network:
-  external:
+  internal:
     "@port@": "80"
 questions:
   adminuser:
@@ -18,7 +18,7 @@ questions:
     query: "What admin password should YOURLS use?"
   dbhost:
     query: "What is the MySQL/MariaDB server hostname?"
-    type: hostname
+    type: dns
   dbuser:
     query: "What is the MySQL database username?"
   dbpass:
@@ -26,12 +26,13 @@ questions:
   port:
     query: "What external port should YOURLS listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Admin:
-    value: "http://localhost:@port@/admin/"
+    value: "http://@PACKAGE_DNS@:@port@/admin/"
     type: url
   Database:
     value: "Requires an external MySQL/MariaDB server"

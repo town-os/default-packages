@@ -4,7 +4,7 @@ supplies: ["http"]
 environment:
   MONGO_URL: "@mongourl@"
   MONGO_OPLOG_URL: "@mongooplogurl@"
-  ROOT_URL: "http://localhost:@port@"
+  ROOT_URL: "http://@PACKAGE_DNS@:@port@"
 network:
   external:
     "@port@": "3000"
@@ -18,7 +18,7 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Database:
     value: "Requires an external MongoDB instance with replica set enabled"

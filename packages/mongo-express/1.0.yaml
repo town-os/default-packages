@@ -5,12 +5,12 @@ environment:
   ME_CONFIG_BASICAUTH_USERNAME: "@adminuser@"
   ME_CONFIG_BASICAUTH_PASSWORD: "@adminpass@"
 network:
-  external:
+  internal:
     "@port@": "8081"
 questions:
   mongohost:
     query: "What is the MongoDB server hostname?"
-    type: hostname
+    type: dns
   adminuser:
     query: "What username should protect the mongo-express web interface?"
   adminpass:
@@ -18,9 +18,10 @@ questions:
   port:
     query: "What external port should mongo-express listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Info:
     value: "Requires an external MongoDB server"

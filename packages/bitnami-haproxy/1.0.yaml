@@ -13,7 +13,7 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Config:
     value: "Mount haproxy.cfg in the config volume"

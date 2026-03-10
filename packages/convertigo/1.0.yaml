@@ -20,5 +20,5 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@/convertigo"
+    value: "http://@PACKAGE_DNS@:@port@/convertigo"
     type: url

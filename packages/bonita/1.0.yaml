@@ -20,7 +20,7 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@/bonita"
+    value: "http://@PACKAGE_DNS@:@port@/bonita"
     type: url
   Info:
     value: "Using embedded H2 database. For production, set DB_VENDOR to mysql or postgres."

@@ -22,7 +22,7 @@ questions:
     type: port
 notes:
   HTTP:
-    value: "http://localhost:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   Native:
-    value: "localhost:@nativeport@"
+    value: "@PACKAGE_DNS@:@nativeport@"

@@ -21,8 +21,8 @@ questions:
     type: port
 notes:
   Proxy:
-    value: "http://localhost:@proxyport@"
+    value: "http://@PACKAGE_DNS@:@proxyport@"
     type: url
   Admin:
-    value: "http://localhost:@adminport@"
+    value: "http://@PACKAGE_DNS@:@adminport@"
     type: url

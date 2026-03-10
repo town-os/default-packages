@@ -20,4 +20,4 @@ questions:
     type: port
 notes:
   Broker:
-    value: "localhost:@port@"
+    value: "@PACKAGE_DNS@:@port@"

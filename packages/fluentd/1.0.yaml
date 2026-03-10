@@ -12,5 +12,5 @@ questions:
     type: port
 notes:
   Forward:
-    value: "tcp://localhost:@port@"
+    value: "tcp://@PACKAGE_DNS@:@port@"
     type: url

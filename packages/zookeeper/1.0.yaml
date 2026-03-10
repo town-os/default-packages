@@ -14,4 +14,4 @@ questions:
     type: port
 notes:
   Client:
-    value: "localhost:@port@"
+    value: "@PACKAGE_DNS@:@port@"

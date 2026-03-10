@@ -17,10 +17,10 @@ questions:
     type: port
 notes:
   Proxy:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Admin:
-    value: "http://localhost:@adminport@"
+    value: "http://@PACKAGE_DNS@:@adminport@"
     type: url
   Config:
     value: "Place envoy.yaml in the config volume"

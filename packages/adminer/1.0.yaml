@@ -1,20 +1,21 @@
 image: adminer
 description: Database management tool with support for multiple engines
 network:
-  external:
+  internal:
     "@port@": "8080"
 questions:
   dbhost:
     query: "What is the default database server hostname or IP?"
-    type: hostname
+    type: dns
   port:
     query: "What external port should Adminer listen on?"
     type: port
+    default: "80"
 environment:
   ADMINER_DEFAULT_SERVER: "@dbhost@"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Info:
     value: "Supports MySQL, PostgreSQL, SQLite, MS SQL, Oracle, and others"

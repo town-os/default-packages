@@ -7,7 +7,7 @@ environment:
   DB_USERNAME: "@dbuser@"
   DB_PASSWORD: "@dbpass@"
 network:
-  external:
+  internal:
     "@port@": "80"
 volumes:
   storage:
@@ -17,7 +17,7 @@ questions:
     query: "What is the APP_KEY (generate with: echo base64:$(openssl rand -base64 32))?"
   dbhost:
     query: "What is the MySQL/MariaDB server hostname?"
-    type: hostname
+    type: dns
   dbuser:
     query: "What is the MySQL database username?"
   dbpass:
@@ -25,9 +25,10 @@ questions:
   port:
     query: "What external port should Monica listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Database:
     value: "Requires an external MySQL/MariaDB server"

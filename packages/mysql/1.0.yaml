@@ -20,5 +20,5 @@ questions:
     type: port
 notes:
   Connection:
-    value: "mysql://root:@password@@localhost:@port@/@database@"
+    value: "mysql://root:@password@@@PACKAGE_DNS@:@port@/@database@"
     type: url

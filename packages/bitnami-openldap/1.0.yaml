@@ -22,5 +22,5 @@ questions:
     type: port
 notes:
   URL:
-    value: "ldap://localhost:@port@"
+    value: "ldap://@PACKAGE_DNS@:@port@"
     type: url

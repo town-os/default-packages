@@ -13,5 +13,5 @@ questions:
     type: port
 notes:
   URL:
-    value: "https://localhost:@port@"
+    value: "https://@PACKAGE_DNS@:@port@"
     type: url

@@ -19,4 +19,4 @@ questions:
     type: port
 notes:
   Listen:
-    value: "telnet localhost @port@"
+    value: "telnet @PACKAGE_DNS@ @port@"

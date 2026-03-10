@@ -5,7 +5,7 @@ environment:
   database__client: sqlite3
   database__connection__filename: /var/lib/ghost/content/data/ghost.db
   database__useNullAsDefault: "true"
-  url: "http://localhost:@port@"
+  url: "http://@PACKAGE_DNS@:@port@"
   NODE_ENV: development
 network:
   external:
@@ -19,8 +19,8 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Admin:
-    value: "http://localhost:@port@/ghost"
+    value: "http://@PACKAGE_DNS@:@port@/ghost"
     type: url

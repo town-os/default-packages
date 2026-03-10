@@ -24,8 +24,8 @@ questions:
     type: port
 notes:
   AMQP:
-    value: "amqp://localhost:@port@"
+    value: "amqp://@PACKAGE_DNS@:@port@"
     type: url
   Management:
-    value: "http://localhost:@mgmtport@"
+    value: "http://@PACKAGE_DNS@:@mgmtport@"
     type: url

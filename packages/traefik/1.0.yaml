@@ -17,8 +17,8 @@ questions:
     type: port
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url
   Dashboard:
-    value: "http://localhost:@dashport@"
+    value: "http://@PACKAGE_DNS@:@dashport@"
     type: url

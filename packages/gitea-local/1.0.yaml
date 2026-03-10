@@ -2,9 +2,9 @@ image: gitea/gitea
 description: Lightweight self-hosted Git service (local network)
 supplies: ["http"]
 environment:
-  GITEA__server__DOMAIN: "@domain@"
-  GITEA__server__SSH_DOMAIN: "@domain@"
-  GITEA__server__ROOT_URL: "http://@domain@:@httpport@/"
+  GITEA__server__DOMAIN: "@PACKAGE_DNS@"
+  GITEA__server__SSH_DOMAIN: "@PACKAGE_DNS@"
+  GITEA__server__ROOT_URL: "http://@PACKAGE_DNS@:@httpport@/"
   GITEA__database__DB_TYPE: sqlite3
 network:
   internal:
@@ -16,20 +16,18 @@ volumes:
   log:
     mountpoint: /data/gitea/log
 questions:
-  domain:
-    query: "What domain should Gitea serve?"
-    type: hostname
   httpport:
     query: "What port should the web interface listen on?"
     type: port
+    default: "80"
   sshport:
     query: "What port should SSH listen on?"
     type: port
     default: 2222
 notes:
   URL:
-    value: "http://@domain@:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   SSH:
-    value: "ssh://git@@domain@:@sshport@"
+    value: "ssh://git@@PACKAGE_DNS@:@sshport@"
     type: url

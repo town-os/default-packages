@@ -21,7 +21,7 @@ questions:
     type: port
 notes:
   Admin:
-    value: "http://localhost:@httpport@"
+    value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   PostgreSQL:
-    value: "localhost:@pgport@"
+    value: "@PACKAGE_DNS@:@pgport@"

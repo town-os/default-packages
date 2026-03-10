@@ -10,7 +10,7 @@ environment:
   SUPERSET_DATABASE_USER: "@dbuser@"
   SUPERSET_DATABASE_PASSWORD: "@dbpass@"
 network:
-  external:
+  internal:
     "@port@": "8088"
 volumes:
   data:
@@ -22,7 +22,7 @@ questions:
     query: "What admin password should Superset use?"
   dbhost:
     query: "What is the PostgreSQL host for Superset?"
-    type: hostname
+    type: dns
   dbname:
     query: "What is the PostgreSQL database name for Superset?"
   dbuser:
@@ -32,7 +32,8 @@ questions:
   port:
     query: "What external port should Superset listen on?"
     type: port
+    default: "80"
 notes:
   URL:
-    value: "http://localhost:@port@"
+    value: "http://@PACKAGE_DNS@:@port@"
     type: url

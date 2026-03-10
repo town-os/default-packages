@@ -13,7 +13,7 @@ questions:
     type: port
 notes:
   StatsD:
-    value: "udp://localhost:@port@"
+    value: "udp://@PACKAGE_DNS@:@port@"
     type: url
   Info:
     value: "Mount a telegraf.conf into /etc/telegraf/telegraf.conf to configure inputs and outputs"
