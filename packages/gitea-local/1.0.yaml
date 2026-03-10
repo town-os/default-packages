@@ -19,7 +19,6 @@ questions:
   httpport:
     query: "What port should the web interface listen on?"
     type: port
-    default: "80"
   sshport:
     query: "What port should SSH listen on?"
     type: port

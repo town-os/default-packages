@@ -38,7 +38,6 @@ questions:
   port:
     query: "What external port should Mastodon listen on?"
     type: port
-    default: "80"
 notes:
   URL:
     value: "http://@PACKAGE_DNS@:@port@"

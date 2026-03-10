@@ -10,7 +10,6 @@ questions:
   port:
     query: "What external port should Adminer listen on?"
     type: port
-    default: "80"
 environment:
   ADMINER_DEFAULT_SERVER: "@dbhost@"
 notes:
