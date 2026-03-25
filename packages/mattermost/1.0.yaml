@@ -3,7 +3,7 @@ description: Open-source messaging platform for team collaboration
 supplies: ["http"]
 environment:
   MM_SQLSETTINGS_DRIVERNAME: postgres
-  TOWNOS_DBPASS: "@dbpass@"
+  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@127.0.0.1:5432/mattermost?sslmode=disable"
 network:
   external:
     "@port@": "8065"
@@ -32,7 +32,7 @@ dependencies:
       password: "@dbpass@"
       user: "mattermost"
       database: "mattermost"
-      port: "auto"
+      port: "5432"
 templates:
   config:
     volume: config
@@ -43,4 +43,4 @@ templates:
           "DriverName": "postgres"
         }
       }
-command: ["sh", "-c", "export MM_SQLSETTINGS_DATASOURCE=\"postgres://mattermost:${TOWNOS_DBPASS}@${TOWNOS_DEP_DB_HOST}:${TOWNOS_DEP_DB_PORT_5432}/mattermost?sslmode=disable\" && exec /mattermost/bin/mattermost server"]
+command: ["/mattermost/bin/mattermost", "server"]
