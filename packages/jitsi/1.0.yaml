@@ -1,10 +1,17 @@
-# FIXME: this package is probably really busted until we can figure out dependencies, which is on the way.
 image: jitsi/web
 description: Open-source video conferencing platform
 supplies: ["http"]
 environment:
   ENABLE_HTTP_REDIRECT: "0"
   PUBLIC_URL: "http://@PACKAGE_DNS@:@port@"
+  XMPP_SERVER: "127.0.0.1"
+  XMPP_PORT: "@xmppport@"
+  XMPP_BOSH_URL_BASE: "http://127.0.0.1:@boshport@/http-bind"
+  XMPP_DOMAIN: "meet.jitsi"
+  XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
+  XMPP_MUC_DOMAIN: "muc.meet.jitsi"
+  XMPP_INTERNAL_MUC_DOMAIN: "internal-muc.meet.jitsi"
+  XMPP_GUEST_DOMAIN: "guest.meet.jitsi"
 network:
   external:
     "@port@": "80"
@@ -19,6 +26,41 @@ questions:
   port:
     query: "What external port should Jitsi Meet listen on?"
     type: port
+  jicofopass:
+    query: "Jicofo authentication password?"
+    type: secret
+  jvbpass:
+    query: "JVB authentication password?"
+    type: secret
+  xmppport:
+    query: "Internal XMPP port?"
+    type: port
+  boshport:
+    query: "Internal XMPP HTTP port?"
+    type: port
+dependencies:
+  prosody:
+    package: prosody
+    responses:
+      jicofopass: "@jicofopass@"
+      jvbpass: "@jvbpass@"
+      port: "@xmppport@"
+      httpport: "@boshport@"
+  jicofo:
+    package: jicofo
+    responses:
+      xmpphost: "127.0.0.1"
+      xmppport: "@xmppport@"
+      jicofopass: "@jicofopass@"
+      port: "auto"
+  jvb:
+    package: jvb
+    responses:
+      xmpphost: "127.0.0.1"
+      xmppport: "@xmppport@"
+      jvbpass: "@jvbpass@"
+      port: "auto"
+      mediaport: "10000"
 notes:
   URL:
     value: "http://@PACKAGE_DNS@:@port@"

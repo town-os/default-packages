@@ -1,0 +1,32 @@
+image: jitsi/jvb
+description: Jitsi Videobridge media router
+environment:
+  XMPP_SERVER: "@xmpphost@"
+  XMPP_PORT: "@xmppport@"
+  XMPP_DOMAIN: "meet.jitsi"
+  XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
+  XMPP_MUC_DOMAIN: "muc.meet.jitsi"
+  JVB_AUTH_PASSWORD: "@jvbpass@"
+  JVB_PORT: "@mediaport@"
+  JVB_STUN_SERVERS: "stun.l.google.com:19302"
+network:
+  external:
+    "@port@": "8080"
+    "@mediaport@": "10000"
+volumes:
+  config:
+    mountpoint: /config
+questions:
+  xmpphost:
+    query: "XMPP server host?"
+  xmppport:
+    query: "XMPP server port?"
+  jvbpass:
+    query: "JVB XMPP authentication password?"
+    type: secret
+  port:
+    query: "JVB Colibri HTTP port?"
+    type: port
+  mediaport:
+    query: "JVB media UDP port?"
+    type: port

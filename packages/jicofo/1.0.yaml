@@ -1,0 +1,27 @@
+image: jitsi/jicofo
+description: Jitsi conference focus component
+environment:
+  XMPP_SERVER: "@xmpphost@"
+  XMPP_PORT: "@xmppport@"
+  XMPP_DOMAIN: "meet.jitsi"
+  XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
+  XMPP_MUC_DOMAIN: "muc.meet.jitsi"
+  XMPP_INTERNAL_MUC_DOMAIN: "internal-muc.meet.jitsi"
+  JICOFO_AUTH_PASSWORD: "@jicofopass@"
+network:
+  external:
+    "@port@": "8888"
+volumes:
+  config:
+    mountpoint: /config
+questions:
+  xmpphost:
+    query: "XMPP server host?"
+  xmppport:
+    query: "XMPP server port?"
+  jicofopass:
+    query: "Jicofo XMPP authentication password?"
+    type: secret
+  port:
+    query: "Jicofo HTTP port?"
+    type: port

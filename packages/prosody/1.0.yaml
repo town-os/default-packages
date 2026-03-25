@@ -1,0 +1,33 @@
+image: jitsi/prosody
+description: XMPP server for Jitsi Meet
+supplies: ["xmpp"]
+environment:
+  XMPP_DOMAIN: "meet.jitsi"
+  XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
+  XMPP_MUC_DOMAIN: "muc.meet.jitsi"
+  XMPP_INTERNAL_MUC_DOMAIN: "internal-muc.meet.jitsi"
+  XMPP_GUEST_DOMAIN: "guest.meet.jitsi"
+  JICOFO_AUTH_PASSWORD: "@jicofopass@"
+  JVB_AUTH_PASSWORD: "@jvbpass@"
+network:
+  external:
+    "@port@": "5222"
+    "@httpport@": "5280"
+volumes:
+  config:
+    mountpoint: /config
+  prosody-plugins:
+    mountpoint: /prosody-plugins-custom
+questions:
+  jicofopass:
+    query: "Jicofo XMPP authentication password?"
+    type: secret
+  jvbpass:
+    query: "JVB XMPP authentication password?"
+    type: secret
+  port:
+    query: "XMPP client port?"
+    type: port
+  httpport:
+    query: "XMPP HTTP port?"
+    type: port

@@ -2,8 +2,8 @@ image: mattermost/mattermost-team-edition
 description: Open-source messaging platform for team collaboration
 supplies: ["http"]
 environment:
-  MM_SQLSETTINGS_DRIVERNAME: sqlite3
-  MM_SQLSETTINGS_DATASOURCE: /mattermost/data/mattermost.db
+  MM_SQLSETTINGS_DRIVERNAME: postgres
+  TOWNOS_DBPASS: "@dbpass@"
 network:
   external:
     "@port@": "8065"
@@ -22,4 +22,25 @@ questions:
   port:
     query: "What external port should Mattermost listen on?"
     type: port
-command: ["/mattermost/bin/mattermost", "server"]
+  dbpass:
+    query: "Database password?"
+    type: secret
+dependencies:
+  db:
+    package: postgres
+    responses:
+      password: "@dbpass@"
+      user: "mattermost"
+      database: "mattermost"
+      port: "auto"
+templates:
+  config:
+    volume: config
+    path: config.json
+    content: |
+      {
+        "SqlSettings": {
+          "DriverName": "postgres"
+        }
+      }
+command: ["sh", "-c", "export MM_SQLSETTINGS_DATASOURCE=\"postgres://mattermost:${TOWNOS_DBPASS}@${TOWNOS_DEP_DB_HOST}:${TOWNOS_DEP_DB_PORT_5432}/mattermost?sslmode=disable\" && exec /mattermost/bin/mattermost server"]
