@@ -23,6 +23,8 @@ questions:
     query: "What port should SSH listen on?"
     type: port
     default: 2222
+post_update:
+  - "gitea doctor check --fix"
 notes:
   URL:
     value: "http://@PACKAGE_DNS@:@httpport@"
