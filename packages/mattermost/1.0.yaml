@@ -3,21 +3,31 @@ description: Open-source messaging platform for team collaboration
 supplies: ["http"]
 environment:
   MM_SQLSETTINGS_DRIVERNAME: postgres
-  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@127.0.0.1:5432/mattermost?sslmode=disable"
+  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@dep_db_host@:@dep_db_port_5432@/mattermost?sslmode=disable"
 network:
   external:
     "@port@": "8065"
 volumes:
   data:
     mountpoint: /mattermost/data
+    uid: 2000
+    gid: 2000
   logs:
     mountpoint: /mattermost/logs
+    uid: 2000
+    gid: 2000
   config:
     mountpoint: /mattermost/config
+    uid: 2000
+    gid: 2000
   plugins:
     mountpoint: /mattermost/plugins
+    uid: 2000
+    gid: 2000
   client-plugins:
     mountpoint: /mattermost/client/plugins
+    uid: 2000
+    gid: 2000
 questions:
   port:
     query: "What external port should Mattermost listen on?"

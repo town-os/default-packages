@@ -416,6 +416,37 @@ Templates have access to three namespaces:
 | `.Package`   | `Name`, `Version`, `Repo`, `Image`, `Description`                 |
 | `.System`    | `Hostname`, `ExternalIP`, `InternalIP`                             |
 
+### Dependencies
+
+Packages can declare dependencies on other packages. Dependencies share the parent's podman network, allowing direct communication by container name via podman's built-in DNS.
+
+```yaml
+dependencies:
+  db:
+    package: postgres
+    responses:
+      password: "@dbpass@"
+      user: "mattermost"
+      database: "mattermost"
+      port: "5432"
+```
+
+Each dependency entry has:
+
+| Field       | Description                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------------- |
+| `package`   | **Required.** Name of the dependency package.                                                 |
+| `repo`      | Repository containing the dependency. Defaults to the parent's repository.                    |
+| `version`   | Version to install. Defaults to the latest available version.                                 |
+| `responses` | Question responses for the dependency. Values support `@variable@` syntax from parent questions. |
+
+Parent packages receive environment variables for each dependency at runtime:
+
+- `TOWNOS_DEP_{KEY}_HOST` -- the dependency's container name (resolvable via podman DNS).
+- `TOWNOS_DEP_{KEY}_PORT_{port}` -- the container-side port number.
+
+Parent packages can also use `@dep_KEY_host@` and `@dep_KEY_port_N@` template variables in their environment values (see [Template system](#template-system)).
+
 ### Template system
 
 Template variables use the `@variable@` syntax and are substituted during compilation. They can appear in:
@@ -427,12 +458,16 @@ Template variables use the `@variable@` syntax and are substituted during compil
 - Template volume and path fields
 - Note values
 
-Two built-in template variables are available without questions:
+Built-in template variables are available without questions:
 
-| Variable                | Description                                |
-| ----------------------- | ------------------------------------------ |
-| `@LOCAL_EXTERNAL_HOST@` | The external hostname of the Town OS host  |
-| `@LOCAL_INTERNAL_HOST@` | The internal hostname of the Town OS host  |
+| Variable                | Description                                                                      |
+| ----------------------- | -------------------------------------------------------------------------------- |
+| `@LOCAL_EXTERNAL_HOST@` | The external hostname of the Town OS host                                        |
+| `@LOCAL_INTERNAL_HOST@` | The internal hostname of the Town OS host                                        |
+| `@dep_KEY_host@`        | Container hostname for dependency KEY (resolvable via podman DNS on shared network) |
+| `@dep_KEY_port_N@`      | Container port N for dependency KEY                                              |
+
+Dependency template variables (`@dep_*@`) are only available when the package declares dependencies. KEY is the lowercase dependency key name (e.g., `db` from `dependencies: db:`), and N is the container port number.
 
 ### Style guidelines
 

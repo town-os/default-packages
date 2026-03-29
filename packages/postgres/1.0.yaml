@@ -10,7 +10,7 @@ network:
     "@port@": "5432"
 volumes:
   data:
-    mountpoint: /var/lib/postgresql/data
+    mountpoint: /var/lib/postgresql
 questions:
   password:
     query: "What should the PostgreSQL superuser password be?"
@@ -21,6 +21,8 @@ questions:
   port:
     query: "What external port should PostgreSQL listen on?"
     type: port
+post_update:
+  - "su - postgres -c 'vacuumdb --all --analyze-in-stages'"
 notes:
   Connection:
     value: "postgresql://@user@:@password@@@PACKAGE_DNS@:@port@/@database@"

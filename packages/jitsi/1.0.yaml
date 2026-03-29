@@ -4,9 +4,9 @@ supplies: ["http"]
 environment:
   ENABLE_HTTP_REDIRECT: "0"
   PUBLIC_URL: "http://@PACKAGE_DNS@:@port@"
-  XMPP_SERVER: "127.0.0.1"
-  XMPP_PORT: "@xmppport@"
-  XMPP_BOSH_URL_BASE: "http://127.0.0.1:@boshport@/http-bind"
+  XMPP_SERVER: "@dep_prosody_host@"
+  XMPP_PORT: "@dep_prosody_port_5222@"
+  XMPP_BOSH_URL_BASE: "http://@dep_prosody_host@:@dep_prosody_port_5280@/http-bind"
   XMPP_DOMAIN: "meet.jitsi"
   XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
   XMPP_MUC_DOMAIN: "muc.meet.jitsi"
