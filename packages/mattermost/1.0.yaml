@@ -53,4 +53,8 @@ templates:
           "DriverName": "postgres"
         }
       }
+notes:
+  URL:
+    value: "http://@PACKAGE_DNS@:@port@"
+    type: url
 command: ["/mattermost/bin/mattermost", "server"]
