@@ -1,8 +1,8 @@
-image: jitsi/jicofo
+image: jitsi/jicofo:stable
 description: Jitsi conference focus component
 environment:
-  XMPP_SERVER: "@xmpphost@"
-  XMPP_PORT: "@xmppport@"
+  XMPP_SERVER: "@dep_prosody_host@"
+  XMPP_PORT: "@dep_prosody_port_5222@"
   XMPP_DOMAIN: "meet.jitsi"
   XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
   XMPP_MUC_DOMAIN: "muc.meet.jitsi"
@@ -15,10 +15,6 @@ volumes:
   config:
     mountpoint: /config
 questions:
-  xmpphost:
-    query: "XMPP server host?"
-  xmppport:
-    query: "XMPP server port?"
   jicofopass:
     query: "Jicofo XMPP authentication password?"
     type: secret

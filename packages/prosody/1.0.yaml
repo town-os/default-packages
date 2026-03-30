@@ -1,4 +1,4 @@
-image: jitsi/prosody
+image: jitsi/prosody:stable
 description: XMPP server for Jitsi Meet
 supplies: ["xmpp"]
 environment:

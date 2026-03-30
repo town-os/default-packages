@@ -1,4 +1,4 @@
-image: jitsi/web
+image: jitsi/web:stable
 description: Open-source video conferencing platform
 supplies: ["http"]
 environment:
@@ -49,15 +49,11 @@ dependencies:
   jicofo:
     package: jicofo
     responses:
-      xmpphost: "127.0.0.1"
-      xmppport: "@xmppport@"
       jicofopass: "@jicofopass@"
       port: "auto"
   jvb:
     package: jvb
     responses:
-      xmpphost: "127.0.0.1"
-      xmppport: "@xmppport@"
       jvbpass: "@jvbpass@"
       port: "auto"
       mediaport: "10000"
