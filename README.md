@@ -150,6 +150,8 @@ A package must specify exactly one runtime: `image` (container), `vm` (virtual m
 | `git_sources` | List of Git repositories to clone into volumes during installation (see below).                                                               |
 | `templates`   | Named file templates rendered into volumes using Go `text/template` syntax (see below).                                                      |
 | `notes`       | Key-value metadata displayed after installation. Supports template substitution and optional type validation (see below).                     |
+| `dependencies`| Named dependencies on other packages that share the parent's network (see below).                                                             |
+| `post_update` | List of shell commands executed inside the container after a system update detects an image change (container runtime only, see below).        |
 
 ### Image field
 
@@ -462,12 +464,38 @@ Built-in template variables are available without questions:
 
 | Variable                | Description                                                                      |
 | ----------------------- | -------------------------------------------------------------------------------- |
-| `@LOCAL_EXTERNAL_HOST@` | The external hostname of the Town OS host                                        |
-| `@LOCAL_INTERNAL_HOST@` | The internal hostname of the Town OS host                                        |
+| `@PACKAGE_DNS@`         | The package's DNS name (e.g. `gitea.default.home`)                               |
+| `@LOCAL_EXTERNAL_HOST@` | The external IP address of the Town OS host                                      |
+| `@LOCAL_INTERNAL_HOST@` | The internal IP address of the Town OS host                                      |
 | `@dep_KEY_host@`        | Container hostname for dependency KEY (resolvable via podman DNS on shared network) |
 | `@dep_KEY_port_N@`      | Container port N for dependency KEY                                              |
 
 Dependency template variables (`@dep_*@`) are only available when the package declares dependencies. KEY is the lowercase dependency key name (e.g., `db` from `dependencies: db:`), and N is the container port number.
+
+#### Literal `@` escape
+
+Use `@@` to produce a literal `@` character in template fields. To produce a literal `@` immediately followed by a template variable, use three `@` signs:
+
+| Input                        | Output                          |
+| ---------------------------- | ------------------------------- |
+| `admin@@example.com`         | `admin@example.com`             |
+| `ssh://git@@@PACKAGE_DNS@`   | `ssh://git@gitea.default.home`  |
+| `@@`                         | `@`                             |
+
+This is useful for SSH URLs, email addresses, and other values that contain literal `@` characters alongside template variables.
+
+### Post-update commands
+
+The `post_update` field lists shell commands to run inside the container after a system update detects that the container image has changed. This is useful for migration tasks like database upgrades.
+
+```yaml
+post_update:
+  - "pg_upgrade --check"
+  - "pg_upgrade"
+  - "vacuumdb --all --analyze-in-stages"
+```
+
+Commands run sequentially via `podman exec <container> sh -c '<command>'` with a 5-minute timeout. Failures are logged but do not stop other commands or the reconcile process. Post-update is only supported for container packages (not VM packages).
 
 ### Style guidelines
 
