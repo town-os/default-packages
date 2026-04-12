@@ -25,6 +25,7 @@ questions:
   jvbpass:
     query: "JVB XMPP authentication password?"
     type: secret
+    default: auto
   port:
     query: "JVB Colibri HTTP port?"
     type: port

@@ -22,9 +22,11 @@ questions:
   jicofopass:
     query: "Jicofo XMPP authentication password?"
     type: secret
+    default: auto
   jvbpass:
     query: "JVB XMPP authentication password?"
     type: secret
+    default: auto
   port:
     query: "XMPP client port?"
     type: port

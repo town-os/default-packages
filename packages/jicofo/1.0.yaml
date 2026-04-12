@@ -23,6 +23,7 @@ questions:
   jicofopass:
     query: "Jicofo XMPP authentication password?"
     type: secret
+    default: auto
   port:
     query: "Jicofo HTTP port?"
     type: port
