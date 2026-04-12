@@ -30,5 +30,5 @@ notes:
     value: "http://@PACKAGE_DNS@:@httpport@"
     type: url
   SSH:
-    value: "ssh://git@@PACKAGE_DNS@:@sshport@"
+    value: "ssh://git@@@PACKAGE_DNS@:@sshport@"
     type: url
