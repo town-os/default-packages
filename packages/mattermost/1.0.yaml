@@ -35,6 +35,7 @@ questions:
   dbpass:
     query: "Database password?"
     type: secret
+    default: auto
 dependencies:
   db:
     package: postgres
