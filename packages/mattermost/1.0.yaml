@@ -2,7 +2,7 @@ image: mattermost/mattermost-team-edition
 description: Open-source messaging platform for team collaboration
 supplies: ["http"]
 environment:
-  MM_SERVICESETTINGS_SITEURL: "http://@PACKAGE_DNS@:@port@"
+  MM_SERVICESETTINGS_SITEURL: "https://@PACKAGE_DNS@:@port@"
   MM_SQLSETTINGS_DRIVERNAME: postgres
   MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@dep_db_host@:@dep_db_port_5432@/mattermost?sslmode=disable"
 network:
@@ -57,6 +57,6 @@ templates:
       }
 notes:
   URL:
-    value: "http://@PACKAGE_DNS@:@port@"
+    value: "https://@PACKAGE_DNS@:@port@"
     type: url
 command: ["/mattermost/bin/mattermost", "server"]

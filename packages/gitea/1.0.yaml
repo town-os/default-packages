@@ -4,7 +4,7 @@ supplies: ["http"]
 environment:
   GITEA__server__DOMAIN: "@PACKAGE_DNS@"
   GITEA__server__SSH_DOMAIN: "@PACKAGE_DNS@"
-  GITEA__server__ROOT_URL: "http://@PACKAGE_DNS@:@httpport@/"
+  GITEA__server__ROOT_URL: "https://@PACKAGE_DNS@:@httpport@/"
   GITEA__database__DB_TYPE: sqlite3
 network:
   internal:
@@ -27,7 +27,7 @@ post_update:
   - "gitea doctor check --fix"
 notes:
   URL:
-    value: "http://@PACKAGE_DNS@:@httpport@"
+    value: "https://@PACKAGE_DNS@:@httpport@"
     type: url
   SSH:
     value: "ssh://git@@@PACKAGE_DNS@:@sshport@"

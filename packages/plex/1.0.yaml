@@ -19,5 +19,5 @@ questions:
     type: bytes
 notes:
   url:
-    value: "http://@PACKAGE_DNS@:@port@/web"
+    value: "https://@PACKAGE_DNS@:@port@/web"
     type: url

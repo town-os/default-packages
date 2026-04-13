@@ -3,7 +3,7 @@ description: Open-source video conferencing platform
 supplies: ["http"]
 environment:
   ENABLE_HTTP_REDIRECT: "0"
-  PUBLIC_URL: "http://@PACKAGE_DNS@:@port@"
+  PUBLIC_URL: "https://@PACKAGE_DNS@:@port@"
   XMPP_SERVER: "@dep_prosody_host@"
   XMPP_PORT: "@dep_prosody_port_5222@"
   XMPP_BOSH_URL_BASE: "http://@dep_prosody_host@:@dep_prosody_port_5280@/http-bind"
@@ -65,5 +65,5 @@ dependencies:
       mediaport: "10000"
 notes:
   URL:
-    value: "http://@PACKAGE_DNS@:@port@"
+    value: "https://@PACKAGE_DNS@:@port@"
     type: url

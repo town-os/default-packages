@@ -92,5 +92,5 @@ templates:
       disable_existing_loggers: false
 notes:
   URL:
-    value: "http://@PACKAGE_DNS@:@port@"
+    value: "https://@PACKAGE_DNS@:@port@"
     type: url
