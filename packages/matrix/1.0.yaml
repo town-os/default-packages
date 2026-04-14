@@ -11,8 +11,6 @@ questions:
   port:
     query: "What external port should Matrix listen on?"
     type: port
-  servername:
-    query: "Matrix server name (e.g. example.com)?"
   dbpass:
     query: "Database password?"
     type: secret
@@ -42,7 +40,7 @@ templates:
     volume: data
     path: homeserver.yaml
     content: |
-      server_name: "@servername@"
+      server_name: "@PACKAGE_DNS@"
       pid_file: /data/homeserver.pid
       listeners:
         - port: 8008
@@ -94,3 +92,5 @@ notes:
   URL:
     value: "https://@PACKAGE_DNS@:@port@"
     type: url
+  "Registration shared secret":
+    value: "@registration_secret@"
