@@ -14,6 +14,8 @@ volumes:
 questions:
   password:
     query: "What should the PostgreSQL superuser password be?"
+    type: secret
+    default: auto
   user:
     query: "What should the PostgreSQL superuser name be? (default: postgres)"
   database:
