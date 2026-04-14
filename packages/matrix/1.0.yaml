@@ -1,12 +1,23 @@
 image: matrixdotorg/synapse
 description: Matrix homeserver for decentralized, secure messaging
 supplies: ["http"]
+command:
+  - sh
+  - -c
+  - >-
+    python -m synapse.app.homeserver --config-path=/data/homeserver.yaml --generate-keys
+    && exec python -m synapse.app.homeserver --config-path=/data/homeserver.yaml
+environment:
+  SYNAPSE_SERVER_NAME: "@PACKAGE_DNS@"
+  SYNAPSE_REPORT_STATS: "no"
 network:
   external:
     "@port@": "8008"
 volumes:
   data:
     mountpoint: /data
+    uid: 991
+    gid: 991
 questions:
   port:
     query: "What external port should Matrix listen on?"
