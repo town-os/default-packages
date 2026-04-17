@@ -1,0 +1,15 @@
+image: ghcr.io/immich-app/immich-machine-learning:release
+description: Machine learning backend for Immich (face recognition, smart search, CLIP)
+environment:
+  MACHINE_LEARNING_PORT: "@port@"
+network:
+  internal:
+    http: "@port@"
+volumes:
+  model-cache:
+    mountpoint: /cache
+questions:
+  port:
+    query: "What port should the Immich ML service listen on?"
+    type: port
+    default: "3003"

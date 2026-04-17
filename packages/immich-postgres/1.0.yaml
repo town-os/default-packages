@@ -1,0 +1,32 @@
+image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0
+description: PostgreSQL 14 bundled with the vectorchord and pgvecto.rs extensions required by Immich for smart search, face recognition, and duplicate detection (the stock postgres image lacks these extensions)
+supplies: ["database"]
+environment:
+  POSTGRES_PASSWORD: "@password@"
+  POSTGRES_USER: "@user@"
+  POSTGRES_DB: "@database@"
+  PGPORT: "@port@"
+  POSTGRES_INITDB_ARGS: "--data-checksums"
+network:
+  internal:
+    sql: "@port@"
+volumes:
+  data:
+    mountpoint: /var/lib/postgresql/data
+questions:
+  password:
+    query: "What should the PostgreSQL password be?"
+    type: secret
+    default: auto
+  user:
+    query: "What should the PostgreSQL user be?"
+  database:
+    query: "What should the database be named?"
+  port:
+    query: "What port should PostgreSQL listen on?"
+    type: port
+    default: "5432"
+notes:
+  Connection:
+    value: "postgresql://@user@:@password@@@PACKAGE_DNS@:@port@/@database@"
+    type: url

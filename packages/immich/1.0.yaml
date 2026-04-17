@@ -1,0 +1,53 @@
+image: ghcr.io/immich-app/immich-server:release
+description: Self-hosted photo and video backup solution with AI-powered search
+supplies: ["http"]
+environment:
+  DB_HOSTNAME: "@dep_db_host@"
+  DB_PORT: "@dep_db_port_sql@"
+  DB_USERNAME: "@dbuser@"
+  DB_PASSWORD: "@dbpass@"
+  DB_DATABASE_NAME: "@dbname@"
+  REDIS_HOSTNAME: "@dep_redis_host@"
+  REDIS_PORT: "@dep_redis_port_main@"
+  IMMICH_MACHINE_LEARNING_URL: "http://@dep_ml_host@:@dep_ml_port_http@"
+  UPLOAD_LOCATION: "/usr/src/app/upload"
+  TZ: "UTC"
+network:
+  external:
+    "@port@": "2283"
+volumes:
+  upload:
+    mountpoint: /usr/src/app/upload
+    quota: "@photosize@"
+questions:
+  port:
+    query: "What external port should Immich listen on?"
+    type: port
+  dbuser:
+    query: "Database username?"
+    default: "immich"
+  dbname:
+    query: "Database name?"
+    default: "immich"
+  dbpass:
+    query: "Database password?"
+    type: secret
+    default: auto
+  photosize:
+    query: "How much storage should be allocated for photos and videos?"
+    type: bytes
+dependencies:
+  db:
+    package: immich-postgres
+    responses:
+      user: "@dbuser@"
+      database: "@dbname@"
+      password: "@dbpass@"
+  redis:
+    package: redis
+  ml:
+    package: immich-machine-learning
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@:@port@"
+    type: url

@@ -1,0 +1,15 @@
+image: redis
+description: In-memory key-value store for caching and messaging
+supplies: ["cache"]
+command: ["redis-server", "--port", "@port@"]
+network:
+  internal:
+    main: "@port@"
+volumes:
+  data:
+    mountpoint: /data
+questions:
+  port:
+    query: "What port should Redis listen on?"
+    type: port
+    default: "6379"
