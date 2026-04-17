@@ -1,0 +1,158 @@
+image: matrixdotorg/synapse
+description: Private Matrix homeserver with federation disabled and an admin user created automatically on first boot
+supplies: ["http"]
+command:
+  - sh
+  - /data/start.sh
+environment:
+  SYNAPSE_SERVER_NAME: "@PACKAGE_DNS@"
+  SYNAPSE_REPORT_STATS: "no"
+  ADMIN_USER: "@admin_user@"
+  ADMIN_PASSWORD: "@admin_password@"
+  SYNAPSE_PORT: "@port@"
+network:
+  internal:
+    http: "@port@"
+volumes:
+  data:
+    mountpoint: /data
+    uid: 991
+    gid: 991
+questions:
+  port:
+    query: "What port should Matrix listen on?"
+    type: port
+    default: "8008"
+  dbpass:
+    query: "Database password?"
+    type: secret
+    default: auto
+  registration_secret:
+    query: "Shared secret for user registration?"
+    type: secret
+    default: auto
+  macaroon_secret:
+    query: "Macaroon secret key?"
+    type: secret
+    default: auto
+  form_secret:
+    query: "Form secret?"
+    type: secret
+    default: auto
+  admin_user:
+    query: "Administrator username?"
+    default: "admin"
+  admin_password:
+    query: "Administrator password?"
+    type: secret
+    default: auto
+dependencies:
+  db:
+    package: postgres
+    responses:
+      password: "@dbpass@"
+      user: "synapse"
+      database: "synapse"
+templates:
+  homeserver:
+    volume: data
+    path: homeserver.yaml
+    content: |
+      server_name: "@PACKAGE_DNS@"
+      pid_file: /data/homeserver.pid
+      listeners:
+        - port: @port@
+          tls: false
+          type: http
+          x_forwarded: true
+          resources:
+            - names: [client, federation]
+              compress: false
+      database:
+        name: psycopg2
+        args:
+          user: synapse
+          password: "@dbpass@"
+          database: synapse
+          host: "@dep_db_host@"
+          port: @dep_db_port_sql@
+          cp_min: 5
+          cp_max: 10
+      log_config: "/data/log.config"
+      media_store_path: /data/media_store
+      registration_shared_secret: "@registration_secret@"
+      macaroon_secret_key: "@macaroon_secret@"
+      form_secret: "@form_secret@"
+      report_stats: false
+      signing_key_path: "/data/signing.key"
+      federation_domain_whitelist: []
+      trusted_key_servers: []
+      suppress_key_server_warning: true
+  log:
+    volume: data
+    path: log.config
+    content: |
+      version: 1
+      formatters:
+        precise:
+          format: '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(request)s - %(message)s'
+      handlers:
+        console:
+          class: logging.StreamHandler
+          formatter: precise
+      loggers:
+        synapse.storage.SQL:
+          level: WARNING
+      root:
+        level: WARNING
+        handlers: [console]
+      disable_existing_loggers: false
+  start:
+    volume: data
+    path: start.sh
+    content: |
+      #!/bin/sh
+      set -eu
+      cd /data
+
+      # Generate signing/macaroon keys if the volume is fresh.
+      python -m synapse.app.homeserver \
+        --config-path=/data/homeserver.yaml \
+        --generate-keys
+
+      # Boot Synapse in the background so we can provision the admin
+      # user via register_new_matrix_user on first start. On reboots the
+      # .admin_created marker short-circuits the registration.
+      python -m synapse.app.homeserver \
+        --config-path=/data/homeserver.yaml &
+      SYNAPSE_PID=$!
+
+      if [ ! -f /data/.admin_created ]; then
+        # Retry the registration until Synapse's HTTP API is ready.
+        i=0
+        while [ $i -lt 60 ]; do
+          if register_new_matrix_user \
+              -c /data/homeserver.yaml \
+              -u "$ADMIN_USER" \
+              -p "$ADMIN_PASSWORD" \
+              -a \
+              "http://127.0.0.1:${SYNAPSE_PORT}"; then
+            touch /data/.admin_created
+            break
+          fi
+          i=$((i + 1))
+          sleep 2
+        done
+      fi
+
+      wait "$SYNAPSE_PID"
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@:@port@"
+    type: url
+  "Administrator user":
+    value: "@admin_user@"
+  "Administrator password":
+    value: "@admin_password@"
+  Federation:
+    value: "disabled (empty whitelist, no trusted key servers)"
