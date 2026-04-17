@@ -4,7 +4,7 @@ supplies: ["http"]
 environment:
   MM_SERVICESETTINGS_SITEURL: "https://@PACKAGE_DNS@:@port@"
   MM_SQLSETTINGS_DRIVERNAME: postgres
-  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@dep_db_host@:@dep_db_port_5432@/mattermost?sslmode=disable"
+  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@dep_db_host@:@dep_db_port_sql@/mattermost?sslmode=disable"
 network:
   external:
     "@port@": "8065"

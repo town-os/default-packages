@@ -5,9 +5,10 @@ environment:
   POSTGRES_PASSWORD: "@password@"
   POSTGRES_USER: "@user@"
   POSTGRES_DB: "@database@"
+  PGPORT: "@port@"
 network:
   external:
-    "@port@": "5432"
+    sql: "@port@"
 volumes:
   data:
     mountpoint: /var/lib/postgresql
@@ -21,8 +22,9 @@ questions:
   database:
     query: "What should the default database be named?"
   port:
-    query: "What external port should PostgreSQL listen on?"
+    query: "What port should PostgreSQL listen on?"
     type: port
+    default: "5432"
 post_update:
   - "su - postgres -c 'vacuumdb --all --analyze-in-stages'"
 notes:

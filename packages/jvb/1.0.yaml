@@ -11,8 +11,8 @@ environment:
   JVB_STUN_SERVERS: "stun.l.google.com:19302"
 network:
   external:
-    "@port@": "8080"
-    "@mediaport@": "10000"
+    colibri: "@port@"
+    media: "@mediaport@"
 volumes:
   config:
     mountpoint: /config
@@ -29,6 +29,8 @@ questions:
   port:
     query: "JVB Colibri HTTP port?"
     type: port
+    default: "8080"
   mediaport:
     query: "JVB media UDP port?"
     type: port
+    default: "10000"

@@ -11,8 +11,8 @@ environment:
   JVB_AUTH_PASSWORD: "@jvbpass@"
 network:
   external:
-    "@port@": "5222"
-    "@httpport@": "5280"
+    xmpp: "@port@"
+    bosh: "@httpport@"
 volumes:
   config:
     mountpoint: /config
@@ -30,6 +30,8 @@ questions:
   port:
     query: "XMPP client port?"
     type: port
+    default: "5222"
   httpport:
-    query: "XMPP HTTP port?"
+    query: "XMPP HTTP (BOSH) port?"
     type: port
+    default: "5280"

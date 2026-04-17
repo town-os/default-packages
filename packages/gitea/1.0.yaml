@@ -6,10 +6,13 @@ environment:
   GITEA__server__SSH_DOMAIN: "@PACKAGE_DNS@"
   GITEA__server__ROOT_URL: "https://@PACKAGE_DNS@:@httpport@/"
   GITEA__database__DB_TYPE: sqlite3
+  GITEA__server__HTTP_PORT: "@httpport@"
+  GITEA__server__SSH_PORT: "@sshport@"
+  GITEA__server__SSH_LISTEN_PORT: "@sshport@"
 network:
   internal:
-    "@httpport@": "3000"
-    "@sshport@": "22"
+    http: "@httpport@"
+    ssh: "@sshport@"
 volumes:
   data:
     mountpoint: /data
@@ -19,10 +22,11 @@ questions:
   httpport:
     query: "What port should the web interface listen on?"
     type: port
+    default: "3000"
   sshport:
     query: "What port should SSH listen on?"
     type: port
-    default: 2222
+    default: "2222"
 post_update:
   - "gitea doctor check --fix"
 notes:

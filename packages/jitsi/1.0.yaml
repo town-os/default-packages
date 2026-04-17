@@ -5,8 +5,8 @@ environment:
   ENABLE_HTTP_REDIRECT: "0"
   PUBLIC_URL: "https://@PACKAGE_DNS@:@port@"
   XMPP_SERVER: "@dep_prosody_host@"
-  XMPP_PORT: "@dep_prosody_port_5222@"
-  XMPP_BOSH_URL_BASE: "http://@dep_prosody_host@:@dep_prosody_port_5280@/http-bind"
+  XMPP_PORT: "@dep_prosody_port_xmpp@"
+  XMPP_BOSH_URL_BASE: "http://@dep_prosody_host@:@dep_prosody_port_bosh@/http-bind"
   XMPP_DOMAIN: "meet.jitsi"
   XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
   XMPP_MUC_DOMAIN: "muc.meet.jitsi"
@@ -52,14 +52,14 @@ dependencies:
     package: jicofo
     responses:
       xmpphost: "@dep_prosody_host@"
-      xmppport: "@dep_prosody_port_5222@"
+      xmppport: "@dep_prosody_port_xmpp@"
       jicofopass: "@jicofopass@"
       port: "auto"
   jvb:
     package: jvb
     responses:
       xmpphost: "@dep_prosody_host@"
-      xmppport: "@dep_prosody_port_5222@"
+      xmppport: "@dep_prosody_port_xmpp@"
       jvbpass: "@jvbpass@"
       port: "auto"
       mediaport: "10000"

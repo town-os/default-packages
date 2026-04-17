@@ -68,7 +68,7 @@ templates:
           password: "@dbpass@"
           database: synapse
           host: "@dep_db_host@"
-          port: @dep_db_port_5432@
+          port: @dep_db_port_sql@
           cp_min: 5
           cp_max: 10
       log_config: "/data/log.config"
