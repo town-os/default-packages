@@ -318,12 +318,18 @@ The `POST /packages/rebuild-git` API endpoint pulls latest changes for each git-
 
 Questions define interactive prompts shown during package installation. User responses replace `@name@` template markers throughout the package definition.
 
+Question names (the YAML keys) must start with an alphanumeric character and may contain only alphanumeric characters and underscores -- e.g. `port`, `dbpass`, `registration_secret`. Dashes, dots, spaces, and other punctuation are rejected. Underscores are allowed because question names are used as `@template@` markers and multi-word identifiers like `registration_secret` are common.
+
 ```yaml
 questions:
   port:
     query: "What external port should nginx listen on?"
     type: port
     default: "8080"
+  registration_secret:
+    query: "Shared secret for new-account registration?"
+    type: secret
+    default: auto
 ```
 
 | Field     | Description                                                        |
