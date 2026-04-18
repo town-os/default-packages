@@ -1,9 +1,10 @@
 image: matrixdotorg/synapse
 description: Federated Matrix homeserver with a configurable federation whitelist and UPnP-exposed ports
 supplies: ["http"]
-command:
+entrypoint:
   - sh
   - -c
+command:
   - >-
     python -m synapse.app.homeserver --config-path=/data/homeserver.yaml --generate-keys
     && exec python -m synapse.app.homeserver --config-path=/data/homeserver.yaml

@@ -6,6 +6,17 @@ environment:
   POSTGRES_USER: "@user@"
   POSTGRES_DB: "@database@"
   PGPORT: "@port@"
+  # Accept password auth from any client on the shared podman network. The
+  # stock pg_hba.conf the image generates only trusts 127.0.0.1/::1, so
+  # without this a dependent package (e.g. matrix/synapse) connects as a
+  # non-loopback client and postgres rejects it with "no pg_hba.conf entry".
+  POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+  # Synapse requires the server encoding to be UTF8 with C collation
+  # (matrix-org/synapse#6644). The initdb defaults use the host locale,
+  # which on most distros breaks synapse at first boot; set initdb's
+  # locale knobs here so the cluster is compatible from the very first
+  # time this container initialises its data dir.
+  POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
 network:
   external:
     sql: "@port@"

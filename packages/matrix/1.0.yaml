@@ -1,9 +1,10 @@
 image: matrixdotorg/synapse
 description: Matrix homeserver for decentralized, secure messaging
 supplies: ["http"]
-command:
+entrypoint:
   - sh
   - -c
+command:
   - >-
     python -m synapse.app.homeserver --config-path=/data/homeserver.yaml --generate-keys
     && exec python -m synapse.app.homeserver --config-path=/data/homeserver.yaml

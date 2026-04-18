@@ -1,8 +1,9 @@
 image: matrixdotorg/synapse
 description: Private Matrix homeserver with federation disabled and an admin user created automatically on first boot
 supplies: ["http"]
-command:
+entrypoint:
   - sh
+command:
   - /data/start.sh
 environment:
   SYNAPSE_SERVER_NAME: "@PACKAGE_DNS@"
