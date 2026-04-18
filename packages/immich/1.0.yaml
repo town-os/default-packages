@@ -2,14 +2,23 @@ image: ghcr.io/immich-app/immich-server:release
 description: Self-hosted photo and video backup solution with AI-powered search
 supplies: ["http"]
 environment:
-  DB_HOSTNAME: "@dep_db_host@"
+  # Use short dep-key hostnames (db/redis/ml) rather than the full
+  # container names Town OS emits via @dep_*_host@. Immich's SystemConfig
+  # Dto runs validator.js on machineLearning.urls, and validator.js
+  # rejects hostnames with consecutive hyphens (reserved for IDN
+  # punycode) — a direct clash with Town OS's `parent--dep--key`
+  # container-name scheme. The systemcontroller registers each dep
+  # container as `--network-alias <depKey>` on the shared network, so
+  # `db`, `redis`, and `ml` resolve via podman DNS just like the full
+  # name would.
+  DB_HOSTNAME: "db"
   DB_PORT: "@dep_db_port_sql@"
   DB_USERNAME: "@dbuser@"
   DB_PASSWORD: "@dbpass@"
   DB_DATABASE_NAME: "@dbname@"
-  REDIS_HOSTNAME: "@dep_redis_host@"
+  REDIS_HOSTNAME: "redis"
   REDIS_PORT: "@dep_redis_port_main@"
-  IMMICH_MACHINE_LEARNING_URL: "http://@dep_ml_host@:@dep_ml_port_http@"
+  IMMICH_MACHINE_LEARNING_URL: "http://ml:@dep_ml_port_http@"
   UPLOAD_LOCATION: "/usr/src/app/upload"
   TZ: "UTC"
 network:
