@@ -4,7 +4,14 @@ supplies: ["http"]
 environment:
   MM_SERVICESETTINGS_SITEURL: "https://@PACKAGE_DNS@:@port@"
   MM_SQLSETTINGS_DRIVERNAME: postgres
-  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@dep_db_host@:@dep_db_port_sql@/mattermost?sslmode=disable"
+  # The extra @ between dbpass and the dep host comes from the two-stage
+  # template pipeline: `@dbpass@` resolves at compile time (applyTemplate
+  # which preserves `@@` as `@@`), then `@@@@dep_db_host@` survives into
+  # runtime where ApplyTemplates collapses `@@` → `@` and substitutes the
+  # dep host. Three `@`s would work for a compile-time var (`@@@PACKAGE_DNS@`)
+  # but need four here because the runtime sees the string after the
+  # compile-time pass has emitted the escape.
+  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@@dep_db_host@:@dep_db_port_sql@/mattermost?sslmode=disable"
 network:
   external:
     "@port@": "8065"
