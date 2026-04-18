@@ -70,8 +70,8 @@ templates:
           user: synapse
           password: "@dbpass@"
           database: synapse
-          host: "@dep_db_host@"
-          port: @dep_db_port_sql@
+          host: "{{.Dep.db.Host}}"
+          port: {{index .Dep.db.Ports "sql"}}
           cp_min: 5
           cp_max: 10
       log_config: "/data/log.config"
