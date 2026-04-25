@@ -1,0 +1,36 @@
+image: linuxserver/sonarr
+description: TV series collection manager for Usenet and BitTorrent
+supplies: ["http"]
+environment:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "UTC"
+network:
+  internal:
+    http: "@port@"
+volumes:
+  config:
+    mountpoint: /config
+  tv:
+    mountpoint: /tv
+    quota: "@tvsize@"
+    shareable: true
+  downloads:
+    mountpoint: /downloads
+    quota: "@downloadsize@"
+    shareable: true
+questions:
+  port:
+    query: "What port should Sonarr listen on?"
+    type: port
+    default: "8989"
+  tvsize:
+    query: "How much storage should be allocated for TV shows?"
+    type: bytes
+  downloadsize:
+    query: "How much storage should be allocated for downloads?"
+    type: bytes
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@:@port@"
+    type: url

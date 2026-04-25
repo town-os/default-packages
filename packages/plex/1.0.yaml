@@ -6,7 +6,7 @@ environment:
   ADVERTISE_IP: "https://@PACKAGE_DNS@:@port@"
   PLEX_PREFERENCE_1: "secureConnections=1"
 network:
-  internal:
+  external:
     "@port@": "32400"
 volumes:
   media:
@@ -21,6 +21,19 @@ questions:
   mediasize:
     query: "How much storage should be allocated for media?"
     type: bytes
+dependencies:
+  radarr:
+    package: radarr
+    expose:
+      movies:
+        path: /data/movies
+        readonly: true
+  sonarr:
+    package: sonarr
+    expose:
+      tv:
+        path: /data/tv
+        readonly: true
 notes:
   url:
     value: "https://@PACKAGE_DNS@:@port@/web"

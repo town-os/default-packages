@@ -1,0 +1,36 @@
+image: linuxserver/radarr
+description: Movie collection manager for Usenet and BitTorrent
+supplies: ["http"]
+environment:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "UTC"
+network:
+  internal:
+    http: "@port@"
+volumes:
+  config:
+    mountpoint: /config
+  movies:
+    mountpoint: /movies
+    quota: "@moviesize@"
+    shareable: true
+  downloads:
+    mountpoint: /downloads
+    quota: "@downloadsize@"
+    shareable: true
+questions:
+  port:
+    query: "What port should Radarr listen on?"
+    type: port
+    default: "7878"
+  moviesize:
+    query: "How much storage should be allocated for movies?"
+    type: bytes
+  downloadsize:
+    query: "How much storage should be allocated for downloads?"
+    type: bytes
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@:@port@"
+    type: url
