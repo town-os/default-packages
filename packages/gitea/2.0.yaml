@@ -1,0 +1,50 @@
+image: gitea/gitea
+description: Lightweight self-hosted Git service (local network)
+supplies: ["http"]
+environment:
+  GITEA__server__DOMAIN: "@PACKAGE_DNS@"
+  GITEA__server__SSH_DOMAIN: "@PACKAGE_DNS@"
+  # The shared :443 ingress terminates TLS for gitea.<repo>.<tld> with a
+  # locally-trusted leaf and reverse-proxies to gitea's plain-HTTP port inside
+  # the container, so ROOT_URL is https with no port and PROTOCOL stays the
+  # default "http". ROOT_URL must be port-less — gitea builds every link from it.
+  GITEA__server__ROOT_URL: "https://@PACKAGE_DNS@/"
+  # SSH is raw-forwarded (not HTTP/TLS); advertise the host-side port in clone
+  # URLs while gitea keeps listening on the container default (22).
+  GITEA__server__SSH_PORT: "@sshport@"
+  GITEA__database__DB_TYPE: sqlite3
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS (DANE TLSA published in rolodex for gitea.<repo>.<tld>) and
+    # reverse-proxies to gitea on its default container port 3000. There is no
+    # host port to choose — the service is reached at https://<dns>/.
+    http: "3000"
+    # SSH is a raw TCP protocol, not HTTP — a numeric mapping forwards it
+    # untouched (host @sshport@ -> container 22) on the package's own network
+    # controller, never wrapped in TLS.
+    "@sshport@": "22"
+  # To additionally serve a publicly-trusted (Let's Encrypt) certificate for an
+  # internet-facing name, add the real FQDN here and point its public DNS at
+  # this host; the ingress obtains an ACME cert for it:
+  # domains:
+  #   - git.example.com
+volumes:
+  data:
+    mountpoint: /data
+  log:
+    mountpoint: /data/gitea/log
+questions:
+  sshport:
+    query: "What port should SSH listen on?"
+    type: port
+    default: 2222
+post_update:
+  - "gitea doctor check --fix"
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+  SSH:
+    value: "ssh://git@@@PACKAGE_DNS@:@sshport@"
+    type: url

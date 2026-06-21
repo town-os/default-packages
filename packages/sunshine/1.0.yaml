@@ -1,0 +1,49 @@
+image: lizardbyte/sunshine:latest-ubuntu-24.04
+description: Self-hosted game streaming server compatible with Moonlight clients
+supplies: ["http"]
+network:
+  internal:
+    # Sunshine's web UI serves HTTPS (self-signed) on 47990. Naming the port
+    # "https" routes it to the shared :443 ingress, which terminates TLS with a
+    # locally-trusted leaf (DANE-pinned for sunshine.<repo>.<tld>) and reverse-
+    # proxies to it over https — so the admin UI is reached at https://<dns>/
+    # with a trusted cert and no port. Moonlight's pairing/streaming ports below
+    # stay raw-forwarded so Sunshine's own cert reaches Moonlight directly.
+    https: "47990"
+    "@streamport_start@": "47984"
+    "@udpport1@": "47998"
+    "@udpport2@": "47999"
+    "@udpport3@": "48000"
+volumes:
+  config:
+    mountpoint: /config
+environment:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "@timezone@"
+questions:
+  streamport_start:
+    query: "What port should game streaming use (TCP)?"
+    type: port
+    default: "47984"
+  udpport1:
+    query: "What port should streaming control use (UDP)?"
+    type: port
+    default: "47998"
+  udpport2:
+    query: "What port should streaming audio use (UDP)?"
+    type: port
+    default: "47999"
+  udpport3:
+    query: "What additional streaming port to use (UDP)?"
+    type: port
+    default: "48000"
+  timezone:
+    query: "What timezone should Sunshine use?"
+    default: "UTC"
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+  Info:
+    value: "Create your admin credentials on first visit to the web UI"
