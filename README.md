@@ -257,10 +257,50 @@ The `supplies` field declares what capabilities a package provides. This enables
 
 | Field              | Description                                                            |
 | ------------------ | ---------------------------------------------------------------------- |
-| `network.external` | Port mappings exposed to the host. Keys and values are `"port"` strings. Both may contain `@variable@` templates. |
-| `network.internal` | Port mappings available only between containers on the internal network. |
+| `network.external` | Port mappings exposed directly on the host. Keys are host ports, values are container ports. Both may contain `@variable@` templates. |
+| `network.internal` | Port mappings reachable only from inside the package's own network (and from the shared HTTP ingress). Keys are host-side/forwarded ports, values are container ports. |
+| `network.domains`  | Optional list of additional, internet-facing FQDNs the HTTP ingress should obtain a publicly-trusted (Let's Encrypt / ACME) certificate for. May contain `@variable@` templates. |
 
-Omit `external` or `internal` entirely if unused (do not use `{}`).
+Omit `external`, `internal`, or `domains` entirely if unused (do not use `{}` or `[]`).
+
+A port entry's **key** is either a numeric port string (`"2222": "22"`) or a **semantic name** matching `^[a-zA-Z][a-zA-Z0-9_]*$` (`http: "3000"`). Naming a port lets parents reference it by role (`@dep_KEY_port_http@`) instead of by number, and — for the special name `http` — opts the port into the shared HTTP ingress described below.
+
+#### HTTP ingress (the `http` named port)
+
+Town OS runs a single shared **ingress on port `:443`** that terminates TLS for every package and reverse-proxies to the package's plain-HTTP container port. A package joins the ingress by naming an **internal** port `http`:
+
+```yaml
+network:
+  internal:
+    http: "3000"      # container's plain-HTTP port
+```
+
+When you do this:
+
+- The service is reachable at `https://<PACKAGE_DNS>/` — **no port in the URL.** There is no host port to choose; do not also map the HTTP port under `external`.
+- The ingress serves a **locally-trusted leaf certificate** (issued by the built-in Rolodex CA) for `<PACKAGE_DNS>` (e.g. `gitea.default.home`), and Rolodex **publishes DANE `TLSA` records on `_443`** so DANE-aware clients can pin the certificate.
+- Because the ingress owns `:443`, any URL the app generates must be **port-less HTTPS**. Set the app's public URL accordingly (e.g. gitea's `GITEA__server__ROOT_URL: "https://@PACKAGE_DNS@/"`), and leave the app listening on plain HTTP inside the container.
+
+Non-HTTP protocols (SSH, databases, etc.) must **not** use the `http` name — they are not HTTP and cannot be TLS-terminated by the ingress. Forward them untouched with a numeric mapping instead:
+
+```yaml
+network:
+  internal:
+    http: "3000"          # fronted by the :443 ingress, TLS-terminated
+    "@sshport@": "22"     # raw TCP forward, never wrapped in TLS
+```
+
+#### Internet-facing names (`domains`)
+
+By default the ingress only serves the locally-trusted `<PACKAGE_DNS>` name. To additionally expose a service to the public internet with a **publicly-trusted** certificate, list the real FQDN(s) under `network.domains` and point that name's public DNS at this host. The ingress obtains an ACME (Let's Encrypt) certificate for each listed domain:
+
+```yaml
+network:
+  internal:
+    http: "3000"
+  domains:
+    - git.example.com
+```
 
 ### Volumes
 

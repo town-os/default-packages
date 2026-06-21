@@ -1,0 +1,125 @@
+image: matrixdotorg/synapse
+description: Federated Matrix homeserver served through the shared :443 ingress, with a configurable federation whitelist
+supplies: ["http"]
+entrypoint:
+  - sh
+  - -c
+command:
+  - >-
+    python -m synapse.app.homeserver --config-path=/data/homeserver.yaml --generate-keys
+    && exec python -m synapse.app.homeserver --config-path=/data/homeserver.yaml
+environment:
+  SYNAPSE_SERVER_NAME: "@PACKAGE_DNS@"
+  SYNAPSE_REPORT_STATS: "no"
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS and reverse-proxies to synapse on its container port 8008
+    # (x_forwarded is set on the listener so synapse trusts the proxy). The
+    # client API is reached at https://<dns>/ on the LAN with a locally-trusted
+    # leaf (DANE TLSA published in rolodex for matrix.<repo>.<tld>).
+    http: "8008"
+  # FEDERATION over the :443 ingress: server-to-server traffic must reach a
+  # publicly-trusted certificate. Uncomment `domains` with your real public
+  # FQDN and point its public DNS (and a 443 port-forward on your router) at
+  # this host; the ingress then obtains a Let's Encrypt cert for it and serves
+  # synapse on 443. Publish federation delegation so other servers find it:
+  #   https://<fqdn>/.well-known/matrix/server  ->  {"m.server": "<fqdn>:443"}
+  # With that in place inbound federation no longer needs the old per-package
+  # UPnP port mapping — it arrives over the same trusted :443 ingress.
+  # domains:
+  #   - matrix.example.com
+volumes:
+  data:
+    mountpoint: /data
+    uid: 991
+    gid: 991
+questions:
+  dbpass:
+    query: "Database password?"
+    type: secret
+    default: auto
+  registration_secret:
+    query: "Shared secret for user registration?"
+    type: secret
+    default: auto
+  macaroon_secret:
+    query: "Macaroon secret key?"
+    type: secret
+    default: auto
+  form_secret:
+    query: "Form secret?"
+    type: secret
+    default: auto
+  federation_whitelist:
+    query: "Federation whitelist in YAML-list syntax (e.g. [example.com, matrix.org]). Use [] for an empty list (blocks all federation):"
+    default: "[]"
+dependencies:
+  db:
+    package: postgres
+    responses:
+      password: "@dbpass@"
+      user: "synapse"
+      database: "synapse"
+templates:
+  homeserver:
+    volume: data
+    path: homeserver.yaml
+    content: |
+      server_name: "@PACKAGE_DNS@"
+      pid_file: /data/homeserver.pid
+      listeners:
+        - port: 8008
+          tls: false
+          type: http
+          x_forwarded: true
+          resources:
+            - names: [client, federation]
+              compress: false
+      database:
+        name: psycopg2
+        args:
+          user: synapse
+          password: "@dbpass@"
+          database: synapse
+          host: "{{.Dep.db.Host}}"
+          port: {{index .Dep.db.Ports "sql"}}
+          cp_min: 5
+          cp_max: 10
+      log_config: "/data/log.config"
+      media_store_path: /data/media_store
+      registration_shared_secret: "@registration_secret@"
+      macaroon_secret_key: "@macaroon_secret@"
+      form_secret: "@form_secret@"
+      report_stats: false
+      signing_key_path: "/data/signing.key"
+      federation_domain_whitelist: @federation_whitelist@
+      trusted_key_servers:
+        - server_name: "matrix.org"
+  log:
+    volume: data
+    path: log.config
+    content: |
+      version: 1
+      formatters:
+        precise:
+          format: '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(request)s - %(message)s'
+      handlers:
+        console:
+          class: logging.StreamHandler
+          formatter: precise
+      loggers:
+        synapse.storage.SQL:
+          level: WARNING
+      root:
+        level: WARNING
+        handlers: [console]
+      disable_existing_loggers: false
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+  "Registration shared secret":
+    value: "@registration_secret@"
+  "Federation whitelist":
+    value: "@federation_whitelist@"

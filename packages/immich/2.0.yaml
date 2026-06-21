@@ -1,0 +1,68 @@
+image: ghcr.io/immich-app/immich-server:release
+description: Self-hosted photo and video backup solution with AI-powered search (local network)
+supplies: ["http"]
+environment:
+  # Use short dep-key hostnames (db/redis/ml) rather than the full
+  # container names Town OS emits via @dep_*_host@. Immich's SystemConfig
+  # Dto runs validator.js on machineLearning.urls, and validator.js
+  # rejects hostnames with consecutive hyphens (reserved for IDN
+  # punycode) — a direct clash with Town OS's `parent--dep--key`
+  # container-name scheme. The systemcontroller registers each dep
+  # container as `--network-alias <depKey>` on the shared network, so
+  # `db`, `redis`, and `ml` resolve via podman DNS just like the full
+  # name would.
+  DB_HOSTNAME: "db"
+  DB_PORT: "@dep_db_port_sql@"
+  DB_USERNAME: "@dbuser@"
+  DB_PASSWORD: "@dbpass@"
+  DB_DATABASE_NAME: "@dbname@"
+  REDIS_HOSTNAME: "redis"
+  REDIS_PORT: "@dep_redis_port_main@"
+  IMMICH_MACHINE_LEARNING_URL: "http://ml:@dep_ml_port_http@"
+  UPLOAD_LOCATION: "/usr/src/app/upload"
+  TZ: "UTC"
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS (DANE TLSA published in rolodex for immich.<repo>.<tld>)
+    # and reverse-proxies to immich on its default container port 2283. There
+    # is no host port to choose — the service is reached at https://<dns>/.
+    http: "2283"
+  # To additionally serve a publicly-trusted (Let's Encrypt) certificate for an
+  # internet-facing name, add the real FQDN here and point its public DNS at
+  # this host; the ingress obtains an ACME cert for it:
+  # domains:
+  #   - photos.example.com
+volumes:
+  upload:
+    mountpoint: /usr/src/app/upload
+    quota: "@photosize@"
+questions:
+  dbuser:
+    query: "Database username?"
+    default: "immich"
+  dbname:
+    query: "Database name?"
+    default: "immich"
+  dbpass:
+    query: "Database password?"
+    type: secret
+    default: auto
+  photosize:
+    query: "How much storage should be allocated for photos and videos?"
+    type: bytes
+dependencies:
+  db:
+    package: immich-postgres
+    responses:
+      user: "@dbuser@"
+      database: "@dbname@"
+      password: "@dbpass@"
+  redis:
+    package: redis
+  ml:
+    package: immich-machine-learning
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url

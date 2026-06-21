@@ -1,0 +1,35 @@
+image: plexinc/pms-docker
+description: Media server for streaming movies, TV shows, and music (local network)
+supplies: ["http"]
+environment:
+  ALLOWED_NETWORKS: "127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+  # The shared :443 ingress fronts Plex, so advertise the port-less https URL.
+  ADVERTISE_IP: "https://@PACKAGE_DNS@/"
+  PLEX_PREFERENCE_1: "secureConnections=1"
+network:
+  internal:
+    # Plex serves its own TLS on 32400 (secureConnections=1). Naming the port
+    # "https" routes it to the shared :443 ingress, which terminates TLS with a
+    # locally-trusted leaf (DANE-pinned for plex.<repo>.<tld>) and reverse-
+    # proxies to Plex over https — so the web UI is reached at https://<dns>/web
+    # with a trusted cert and no port.
+    https: "32400"
+  # To additionally serve a publicly-trusted (Let's Encrypt) certificate for an
+  # internet-facing name, add the real FQDN here and point its public DNS at
+  # this host; the ingress obtains an ACME cert for it:
+  # domains:
+  #   - plex.example.com
+volumes:
+  media:
+    mountpoint: /data
+    quota: "@mediasize@"
+  config:
+    mountpoint: /config
+questions:
+  mediasize:
+    query: "How much storage should be allocated for media?"
+    type: bytes
+notes:
+  url:
+    value: "https://@PACKAGE_DNS@/web"
+    type: url
