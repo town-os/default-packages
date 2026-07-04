@@ -6,7 +6,11 @@ environment:
   PUBLIC_URL: "https://@PACKAGE_DNS@:@port@"
   XMPP_SERVER: "@dep_prosody_host@"
   XMPP_PORT: "@dep_prosody_port_xmpp@"
-  XMPP_BOSH_URL_BASE: "http://@dep_prosody_host@:@dep_prosody_port_bosh@/http-bind"
+  # Base URL only (host:port, no path). The jitsi/web nginx template appends
+  # /http-bind and /xmpp-websocket itself; including /http-bind here doubles the
+  # prefix (proxy_pass .../http-bind/xmpp-websocket) and every conference fails
+  # with a 404 on the XMPP websocket.
+  XMPP_BOSH_URL_BASE: "http://@dep_prosody_host@:@dep_prosody_port_bosh@"
   XMPP_DOMAIN: "meet.jitsi"
   XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
   XMPP_MUC_DOMAIN: "muc.meet.jitsi"
