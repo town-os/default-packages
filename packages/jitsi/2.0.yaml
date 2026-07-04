@@ -43,20 +43,12 @@ questions:
     query: "JVB authentication password?"
     type: secret
     default: auto
-  xmppport:
-    query: "Internal XMPP port?"
-    type: port
-  boshport:
-    query: "Internal XMPP HTTP port?"
-    type: port
 dependencies:
   prosody:
     package: prosody
     responses:
       jicofopass: "@jicofopass@"
       jvbpass: "@jvbpass@"
-      port: "@xmppport@"
-      httpport: "@boshport@"
   jicofo:
     package: jicofo
     responses:

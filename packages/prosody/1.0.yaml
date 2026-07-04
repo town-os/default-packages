@@ -10,9 +10,17 @@ environment:
   JICOFO_AUTH_PASSWORD: "@jicofopass@"
   JVB_AUTH_PASSWORD: "@jvbpass@"
 network:
-  external:
-    xmpp: "@port@"
-    bosh: "@httpport@"
+  # The jitsi/prosody image hard-codes its c2s (XMPP client) listener to 5222 and
+  # its BOSH/http-bind listener to 5280; neither can be moved by env. These ports
+  # are therefore pinned literals, NOT `type: port` questions -- a port question
+  # auto-generates a random port on an empty response (its `default` is only a UI
+  # pre-fill, not a fallback), which would hand jicofo/jvb/web a port prosody
+  # never listens on and break every conference with "connection refused". They
+  # are `internal` because every consumer (jicofo, jvb, web) reaches prosody by
+  # container name over the shared podman network; no host-side binding is needed.
+  internal:
+    xmpp: "5222"
+    bosh: "5280"
 volumes:
   config:
     mountpoint: /config
@@ -27,11 +35,3 @@ questions:
     query: "JVB XMPP authentication password?"
     type: secret
     default: auto
-  port:
-    query: "XMPP client port?"
-    type: port
-    default: "5222"
-  httpport:
-    query: "XMPP HTTP (BOSH) port?"
-    type: port
-    default: "5280"
