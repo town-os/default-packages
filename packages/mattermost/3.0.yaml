@@ -1,0 +1,145 @@
+# Mattermost publishes amd64-only container images -- every tag of
+# mattermost/mattermost-team-edition carries a single linux/amd64 manifest -- so
+# the image-based 2.0 package only runs on aarch64 under emulation, badly.
+#
+# Mattermost does ship official linux-arm64 *tarballs* at releases.mattermost.com,
+# so this version runs the upstream binary directly on a multi-arch Docker Official
+# base image and picks the tarball matching the host architecture at first start.
+# Both sources stay first-party: Docker Library for the base, Mattermost for the app.
+#
+# buildpack-deps:curl is the smallest Docker Official Image that already carries
+# curl + ca-certificates, which is all the bootstrap needs.
+image: buildpack-deps:curl
+description: Open-source messaging platform for team collaboration (native amd64/arm64)
+supplies: ["http"]
+environment:
+  # Consumed by the bootstrap in `command` below. Template markers are not
+  # substituted into command/entrypoint -- only into environment values -- so the
+  # version has to reach the script through the environment.
+  MM_VERSION: "@version@"
+  # The shared :443 ingress terminates TLS for mattermost.<repo>.<tld> and
+  # reverse-proxies to mattermost's plain-HTTP port inside the container, so
+  # SITEURL is https with no port. Mattermost builds links from SITEURL.
+  MM_SERVICESETTINGS_SITEURL: "https://@PACKAGE_DNS@/"
+  MM_SQLSETTINGS_DRIVERNAME: postgres
+  # The extra @ between dbpass and the dep host comes from the two-stage
+  # template pipeline: `@dbpass@` resolves at compile time (applyTemplate
+  # which preserves `@@` as `@@`), then `@@@@dep_db_host@` survives into
+  # runtime where ApplyTemplates collapses `@@` → `@` and substitutes the
+  # dep host. Three `@`s would work for a compile-time var (`@@@PACKAGE_DNS@`)
+  # but need four here because the runtime sees the string after the
+  # compile-time pass has emitted the escape.
+  MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:@dbpass@@@@dep_db_host@:@dep_db_port_sql@/mattermost?sslmode=disable"
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS (DANE TLSA published in rolodex for mattermost.<repo>.<tld>)
+    # and reverse-proxies to mattermost on its default container port 8065.
+    # There is no host port to choose — the service is reached at https://<dns>/.
+    http: "8065"
+  # To additionally serve a publicly-trusted (Let's Encrypt) certificate for an
+  # internet-facing name, add the real FQDN here and point its public DNS at
+  # this host; the ingress obtains an ACME cert for it:
+  # domains:
+  #   - chat.example.com
+volumes:
+  # Unlike 2.0, the application itself lives in a volume rather than baked into
+  # the image, so the tarball is fetched once and survives restarts. The volumes
+  # below nest inside this one.
+  app:
+    mountpoint: /mattermost
+    uid: 2000
+    gid: 2000
+  data:
+    mountpoint: /mattermost/data
+    uid: 2000
+    gid: 2000
+  logs:
+    mountpoint: /mattermost/logs
+    uid: 2000
+    gid: 2000
+  config:
+    mountpoint: /mattermost/config
+    uid: 2000
+    gid: 2000
+  plugins:
+    mountpoint: /mattermost/plugins
+    uid: 2000
+    gid: 2000
+  client-plugins:
+    mountpoint: /mattermost/client/plugins
+    uid: 2000
+    gid: 2000
+questions:
+  version:
+    query: "Which Mattermost version should be installed?"
+    default: "11.9.0"
+  dbpass:
+    query: "Database password?"
+    type: secret
+    default: auto
+dependencies:
+  db:
+    package: postgres
+    responses:
+      password: "@dbpass@"
+      user: "mattermost"
+      database: "mattermost"
+      port: "5432"
+templates:
+  config:
+    volume: config
+    path: config.json
+    content: |
+      {
+        "SqlSettings": {
+          "DriverName": "postgres"
+        }
+      }
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+entrypoint:
+  - sh
+  - -c
+command:
+  - |
+    set -e
+    case "$(uname -m)" in
+      aarch64|arm64) MM_ARCH=arm64 ;;
+      x86_64|amd64)  MM_ARCH=amd64 ;;
+      *) echo "unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+    esac
+    # The upstream image bakes these in: mime.types for attachment content-type
+    # detection, and pdftotext/unrtf/wvText/tidy so search can index the contents
+    # of uploaded PDFs and Office documents. They live in the container filesystem
+    # rather than a volume, so this re-runs whenever the container is recreated
+    # (~20s) but not on a plain restart.
+    if [ ! -x /usr/bin/pdftotext ]; then
+      echo "installing document-extraction dependencies"
+      apt-get update -qq
+      DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        media-types mailcap unrtf wv poppler-utils tidy
+      rm -rf /var/lib/apt/lists/*
+    fi
+    # Stamp the architecture alongside the version so that moving a volume
+    # between hosts of different arch re-fetches rather than silently exec'ing
+    # a binary for the wrong machine.
+    STAMP="${MM_VERSION}-${MM_ARCH}"
+    if [ "$(cat /mattermost/.version 2>/dev/null)" != "$STAMP" ]; then
+      echo "installing mattermost ${MM_VERSION} (${MM_ARCH})"
+      # config/ is excluded because the tarball ships its own config.json, which
+      # would otherwise clobber the rendered template on install and the user's
+      # saved settings on every upgrade. logs/ is excluded for the same reason.
+      curl -fsSL "https://releases.mattermost.com/${MM_VERSION}/mattermost-team-${MM_VERSION}-linux-${MM_ARCH}.tar.gz" \
+        | tar -xz -C / --exclude 'mattermost/config/*' --exclude 'mattermost/logs/*'
+      echo "$STAMP" > /mattermost/.version
+      # tar runs as root; hand the tree back to the uid the server runs as.
+      chown -R 2000:2000 /mattermost
+    fi
+    # Mattermost resolves some paths relative to the working directory (it does
+    # mkdir ./client/plugins at startup), which the official image handled with a
+    # WORKDIR the base image does not set.
+    cd /mattermost
+    exec setpriv --reuid=2000 --regid=2000 --clear-groups ./bin/mattermost server
