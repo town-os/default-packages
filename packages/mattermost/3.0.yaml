@@ -96,50 +96,59 @@ templates:
           "DriverName": "postgres"
         }
       }
+  # The bootstrap lives in a file rather than inline in `command` because Town OS
+  # renders `command` into a systemd ExecStart= line, and systemd stops parsing at
+  # the first newline -- an inline multi-line script leaves its quoting unbalanced
+  # and the unit fails to load with "bad-setting", so the container is never
+  # created. Keeping ExecStart to a single argv also avoids systemd expanding the
+  # $VAR and ${VAR} references in the script before podman ever sees them.
+  bootstrap:
+    volume: app
+    path: bootstrap.sh
+    content: |
+      set -e
+      case "$(uname -m)" in
+        aarch64|arm64) MM_ARCH=arm64 ;;
+        x86_64|amd64)  MM_ARCH=amd64 ;;
+        *) echo "unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+      esac
+      # The upstream image bakes these in: mime.types for attachment content-type
+      # detection, and pdftotext/unrtf/wvText/tidy so search can index the contents
+      # of uploaded PDFs and Office documents. They live in the container filesystem
+      # rather than a volume, so this re-runs whenever the container is recreated
+      # (~20s) but not on a plain restart.
+      if [ ! -x /usr/bin/pdftotext ]; then
+        echo "installing document-extraction dependencies"
+        apt-get update -qq
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+          media-types mailcap unrtf wv poppler-utils tidy
+        rm -rf /var/lib/apt/lists/*
+      fi
+      # Stamp the architecture alongside the version so that moving a volume
+      # between hosts of different arch re-fetches rather than silently exec'ing
+      # a binary for the wrong machine.
+      STAMP="${MM_VERSION}-${MM_ARCH}"
+      if [ "$(cat /mattermost/.version 2>/dev/null)" != "$STAMP" ]; then
+        echo "installing mattermost ${MM_VERSION} (${MM_ARCH})"
+        # config/ is excluded because the tarball ships its own config.json, which
+        # would otherwise clobber the rendered template on install and the user's
+        # saved settings on every upgrade. logs/ is excluded for the same reason.
+        curl -fsSL "https://releases.mattermost.com/${MM_VERSION}/mattermost-team-${MM_VERSION}-linux-${MM_ARCH}.tar.gz" \
+          | tar -xz -C / --exclude 'mattermost/config/*' --exclude 'mattermost/logs/*'
+        echo "$STAMP" > /mattermost/.version
+        # tar runs as root; hand the tree back to the uid the server runs as.
+        chown -R 2000:2000 /mattermost
+      fi
+      # Mattermost resolves some paths relative to the working directory (it does
+      # mkdir ./client/plugins at startup), which the official image handled with a
+      # WORKDIR the base image does not set.
+      cd /mattermost
+      exec setpriv --reuid=2000 --regid=2000 --clear-groups ./bin/mattermost server
 notes:
   URL:
     value: "https://@PACKAGE_DNS@/"
     type: url
 entrypoint:
   - sh
-  - -c
 command:
-  - |
-    set -e
-    case "$(uname -m)" in
-      aarch64|arm64) MM_ARCH=arm64 ;;
-      x86_64|amd64)  MM_ARCH=amd64 ;;
-      *) echo "unsupported architecture: $(uname -m)" >&2; exit 1 ;;
-    esac
-    # The upstream image bakes these in: mime.types for attachment content-type
-    # detection, and pdftotext/unrtf/wvText/tidy so search can index the contents
-    # of uploaded PDFs and Office documents. They live in the container filesystem
-    # rather than a volume, so this re-runs whenever the container is recreated
-    # (~20s) but not on a plain restart.
-    if [ ! -x /usr/bin/pdftotext ]; then
-      echo "installing document-extraction dependencies"
-      apt-get update -qq
-      DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        media-types mailcap unrtf wv poppler-utils tidy
-      rm -rf /var/lib/apt/lists/*
-    fi
-    # Stamp the architecture alongside the version so that moving a volume
-    # between hosts of different arch re-fetches rather than silently exec'ing
-    # a binary for the wrong machine.
-    STAMP="${MM_VERSION}-${MM_ARCH}"
-    if [ "$(cat /mattermost/.version 2>/dev/null)" != "$STAMP" ]; then
-      echo "installing mattermost ${MM_VERSION} (${MM_ARCH})"
-      # config/ is excluded because the tarball ships its own config.json, which
-      # would otherwise clobber the rendered template on install and the user's
-      # saved settings on every upgrade. logs/ is excluded for the same reason.
-      curl -fsSL "https://releases.mattermost.com/${MM_VERSION}/mattermost-team-${MM_VERSION}-linux-${MM_ARCH}.tar.gz" \
-        | tar -xz -C / --exclude 'mattermost/config/*' --exclude 'mattermost/logs/*'
-      echo "$STAMP" > /mattermost/.version
-      # tar runs as root; hand the tree back to the uid the server runs as.
-      chown -R 2000:2000 /mattermost
-    fi
-    # Mattermost resolves some paths relative to the working directory (it does
-    # mkdir ./client/plugins at startup), which the official image handled with a
-    # WORKDIR the base image does not set.
-    cd /mattermost
-    exec setpriv --reuid=2000 --regid=2000 --clear-groups ./bin/mattermost server
+  - /mattermost/bootstrap.sh
