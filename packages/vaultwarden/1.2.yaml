@@ -1,0 +1,77 @@
+# Vaultwarden is an independent reimplementation of the Bitwarden server API in
+# Rust. It speaks to the official Bitwarden clients (browser, mobile, desktop,
+# CLI) but is a fraction of the size of Bitwarden's own server, needs no license
+# or installation ID, and stores everything in a single SQLite file. It is not
+# affiliated with Bitwarden, Inc. For the vendor's own server, see the
+# `bitwarden` package instead.
+image: ghcr.io/dani-garcia/vaultwarden
+description: Bitwarden-compatible password manager server, lightweight and self-contained
+supplies: ["http"]
+environment:
+  # DOMAIN must be the URL a browser actually reaches the vault at -- the
+  # port-less https name the shared ingress serves -- and NOT the plain-HTTP
+  # address the ingress dials inside the container. Vaultwarden has no other way
+  # to learn it is fronted by TLS: this string becomes the WebAuthn origin/RP ID
+  # and the base of every attachment and email link, so an http:// value here
+  # silently breaks passkey/U2F two-factor and mangles download links.
+  # Startup fails outright if the scheme is missing.
+  DOMAIN: "https://@PACKAGE_DNS@"
+  # Leave this on for a fresh vault -- with registration closed there is no way to
+  # create the first account. It is only worth turning off when installing onto a
+  # /data volume whose accounts already exist.
+  #
+  # It governs the vault's initial state only. Once a setting is saved in /admin,
+  # vaultwarden writes /data/config.json and merges it over the environment on
+  # every subsequent boot, so the admin panel -- not this answer -- owns
+  # registration from that point on.
+  SIGNUPS_ALLOWED: "@signups@"
+  # Enables the /admin panel, which is disabled entirely when this is unset.
+  # Vaultwarden also accepts an Argon2 PHC hash here and warns that a plain token
+  # is weaker, but hashing requires running `vaultwarden hash` interactively; the
+  # auto-generated value is a 256-bit random string, and /admin is only reachable
+  # from the local network unless a public domain is added below.
+  ADMIN_TOKEN: "@admintoken@"
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS (DANE TLSA published in rolodex for vaultwarden.<repo>.<tld>)
+    # and reverse-proxies to vaultwarden on the container port its image sets via
+    # ROCKET_PORT. There is no host port to choose -- the vault is reached at
+    # https://<dns>/.
+    #
+    # One port is enough: since 1.29 websocket notifications ride the main HTTP
+    # port (and the separate 3012 listener was removed in 1.31), so live sync to
+    # open clients works over this same connection.
+    http: "80"
+  # To reach the vault from outside the house -- which is the point of a password
+  # manager on a phone -- add the real FQDN here and point its public DNS at this
+  # host; the ingress obtains a publicly-trusted (Let's Encrypt) certificate for
+  # it. Set SIGNUPS_ALLOWED to false before doing so.
+  # domains:
+  #   - vault.example.com
+volumes:
+  # Holds db.sqlite3, attachments, sends, the RSA keypair that signs client JWTs,
+  # and config.json. Losing it loses every vault -- back this volume up.
+  data:
+    mountpoint: /data
+questions:
+  signups:
+    query: "Allow new users to register accounts?"
+    type: boolean
+    default: "true"
+  admintoken:
+    query: "Admin panel token (used to log in at /admin)"
+    type: secret
+    default: auto
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+  Admin:
+    value: "https://@PACKAGE_DNS@/admin"
+    type: url
+  Admin token:
+    value: "@admintoken@"
+  Server URL for clients:
+    value: "https://@PACKAGE_DNS@"
+    type: url
