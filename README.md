@@ -372,11 +372,12 @@ questions:
     default: auto
 ```
 
-| Field     | Description                                                        |
-| --------- | ------------------------------------------------------------------ |
-| `query`   | **Required.** The prompt text shown to the user.                   |
-| `type`    | Optional validation type (see table below). Omit for free-form text. |
-| `default` | Optional default value suggested to the user.                      |
+| Field      | Description                                                        |
+| ---------- | ------------------------------------------------------------------ |
+| `query`    | **Required.** The prompt text shown to the user.                   |
+| `type`     | Optional validation type (see table below). Omit for free-form text. |
+| `default`  | Optional default value suggested to the user.                      |
+| `optional` | Set `true` to let the question be left blank (see below). Every other question must be answered. |
 
 #### Question types
 
@@ -395,6 +396,29 @@ questions:
 Auto-generation is triggered when the user provides an empty response or `"auto"`. For `secret` questions, values are always auto-generated if not explicitly provided, making them suitable for passwords and encryption keys. For `port` questions, the auto-generated port is verified to not conflict with other installed packages.
 
 Do not use empty `type:` or `type: string` -- simply omit the `type` field for untyped questions.
+
+#### Optional questions
+
+By default every question must be answered with a non-empty value. A setting the application can genuinely do without -- an SMTP relay, an API key -- is declared `optional`:
+
+```yaml
+environment:
+  SMTP_HOST: "@smtp_host@"
+  SMTP_PORT: "@smtp_port@"
+questions:
+  smtp_host:
+    query: "SMTP server hostname"
+    optional: true
+  smtp_port:
+    query: "SMTP server port"
+    type: port
+    optional: true
+    default: "587"
+```
+
+Left blank, an optional question substitutes the **empty string** at its `@marker@` sites, so the application sees the variable empty rather than set to a placeholder somebody invented. It is never auto-generated: a blank optional `secret` stays blank instead of becoming a random string the application would try to use.
+
+`optional` composes with `type`. An answered optional port is still validated as a port; a blank one compiles away to nothing. It is meaningless on a `boolean`, which is a checkbox and always resolves to one of its two values.
 
 #### Boolean questions
 
