@@ -389,11 +389,30 @@ questions:
 | `archive`  | Any non-empty string (archive filename)                    |                                                              |
 | `duration` | Human-readable duration (e.g. `30s`, `5m`, `2h`, `1d`)    |                                                              |
 | `secret`   | Any non-empty string                                       | 256-bit hex string via `crypto/rand` (64 hex characters)     |
+| `boolean`  | `true`/`false`, `t`/`f`, `1`/`0` (`yes`/`no` are rejected) | The declared `default`, or `false` when none is declared      |
 | _(omitted)_ | Any string (no validation)                                |                                                              |
 
 Auto-generation is triggered when the user provides an empty response or `"auto"`. For `secret` questions, values are always auto-generated if not explicitly provided, making them suitable for passwords and encryption keys. For `port` questions, the auto-generated port is verified to not conflict with other installed packages.
 
 Do not use empty `type:` or `type: string` -- simply omit the `type` field for untyped questions.
+
+#### Boolean questions
+
+A `boolean` question is shown as a checkbox rather than a text field. Whatever spelling the user supplies is normalized to the lowercase string `true` or `false` before substitution, so a `@marker@` in an environment value always renders one canonical form -- which is what most applications expect to parse:
+
+```yaml
+environment:
+  SIGNUPS_ALLOWED: "@signups@"
+questions:
+  signups:
+    query: "Allow new users to register accounts?"
+    type: boolean
+    default: "true"
+```
+
+Quote the `default` (`"true"`, not `true`) to keep it a string, consistent with every other question type.
+
+An unchecked box submits nothing, and a dependency's boolean question is often left unanswered by its parent; both resolve to the declared `default`, or to `false` if the package declares none. An explicit `false` response still beats a `default` of `"true"`, so a default-on option can be turned off. A `default` that is not a valid boolean fails the install rather than quietly installing with the option off.
 
 ### Notes
 

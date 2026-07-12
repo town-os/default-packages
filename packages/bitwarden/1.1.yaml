@@ -1,0 +1,126 @@
+# Bitwarden's own server, in the single-container "lite" packaging the vendor
+# ships for self-hosters (formerly the "unified" deployment). It runs the real
+# API, Identity, Icons, Notifications and Admin services under supervisord behind
+# an in-container nginx. Heavier than the `vaultwarden` package -- an idle
+# instance wants roughly a gigabyte of RAM -- and it requires a free installation
+# ID and key from https://bitwarden.com/host, but it is the vendor's own code.
+#
+# The image is published on GHCR, not Docker Hub; the Docker Hub bitwarden/*
+# repositories do not carry it.
+image: ghcr.io/bitwarden/lite
+description: Official Bitwarden self-hosted password manager (single-container lite deployment)
+supplies: ["http"]
+environment:
+  # The hostname clients reach the vault at. The container's entrypoint derives
+  # globalSettings__baseServiceUri__vault as https://$BW_DOMAIN from this, which
+  # is exactly what the shared :443 ingress serves -- port-less https -- so the
+  # links the server hands back to clients resolve.
+  BW_DOMAIN: "@PACKAGE_DNS@"
+  # The ingress owns TLS. Turned on, the container generates its own self-signed
+  # cert and 301s every plain-HTTP request to https://<domain>:8443 -- a port the
+  # ingress never dials. Off, its nginx just serves the app on 8080 in the clear,
+  # which is what the ingress wants.
+  #
+  # The app still needs to know the outside world reached it over TLS: its /admin
+  # login redirect is absolute, and with no X-Forwarded-Proto on the request it
+  # points at http://, which a browser on an https page will refuse. Bitwarden
+  # honours the header when the proxy sets it (verified against 2026.6.2), and
+  # there is no BW_* knob to force the scheme, so /admin depends on the ingress
+  # forwarding X-Forwarded-Proto. The vault itself is unaffected -- it builds its
+  # URLs from BW_DOMAIN below, not from the request.
+  BW_ENABLE_SSL: "false"
+  # SQLite keeps the whole deployment to one container and one volume, which is
+  # the case the lite packaging exists for. The file lands at
+  # /etc/bitwarden/vault.db (BW_DB_FILE's default), inside the data volume below.
+  # For a separate database, set this to postgresql and add BW_DB_SERVER /
+  # BW_DB_DATABASE / BW_DB_USERNAME / BW_DB_PASSWORD pointing at a dependency.
+  BW_DB_PROVIDER: "sqlite"
+  # Free, from https://bitwarden.com/host -- and genuinely required: the server
+  # throws "Installation Id must be set for self-hosted installations" while
+  # wiring up its push service and never finishes starting if this is missing or
+  # is not a valid GUID. The pair identifies this install to the relay that
+  # delivers notifications to mobile clients.
+  BW_INSTALLATION_ID: "@installation_id@"
+  BW_INSTALLATION_KEY: "@installation_key@"
+  # Left unset, the entrypoint mints a fresh random value for each of these on
+  # *every* container start, so a restart silently invalidates the tokens the
+  # running services minted before it. Pinning them keeps sessions coherent
+  # across restarts and upgrades. Unlike the identity certificate below, nothing
+  # on disk is encrypted with them -- a changed value costs a re-login, not data.
+  globalSettings__internalIdentityKey: "@identity_key@"
+  globalSettings__oidcIdentityClientKey: "@oidc_key@"
+  globalSettings__duo__aKey: "@duo_key@"
+  # Accounts that may sign in to the /admin portal. Note that portal login mails
+  # a one-time code, so it stays unusable until SMTP is configured (add
+  # globalSettings__mail__smtp__host / __port / __username / __password).
+  adminSettings__admins: "@admin_email@"
+  # The boolean question normalizes to the literal "true"/"false" that the .NET
+  # configuration binder needs to parse this into a bool.
+  globalSettings__disableUserRegistration: "@disable_registration@"
+  # The entrypoint runs as root to lay down its config and then drops to this
+  # uid, chowning /etc/bitwarden and /var/log/bitwarden on the way.
+  PUID: "1000"
+  PGID: "1000"
+  # globalSettings__identityServer__certificatePassword is deliberately left at
+  # the image default. The entrypoint generates identity.pfx once, encrypted with
+  # whatever this is at the time, and then reuses that file forever -- so wiring
+  # it to an auto-generated secret would mint a fresh password on any reinstall
+  # that re-asks the questions, and the surviving pfx in the volume would no
+  # longer open. The pfx only signs tokens between the container's own services.
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS (DANE TLSA published in rolodex for bitwarden.<repo>.<tld>)
+    # and reverse-proxies to the container's nginx on BW_PORT_HTTP's default
+    # 8080. There is no host port to choose -- the vault is at https://<dns>/.
+    http: "8080"
+  # To reach the vault from outside the house -- which is the point of a password
+  # manager on a phone -- add the real FQDN here and point its public DNS at this
+  # host; the ingress obtains a publicly-trusted (Let's Encrypt) certificate for
+  # it. Set the registration question to true before doing so.
+  # domains:
+  #   - vault.example.com
+volumes:
+  # vault.db, attachments, sends, the data-protection keys and the identity
+  # certificate all live here. Losing it loses every vault -- back this up.
+  data:
+    mountpoint: /etc/bitwarden
+    uid: 1000
+    gid: 1000
+  logs:
+    mountpoint: /var/log/bitwarden
+    uid: 1000
+    gid: 1000
+questions:
+  installation_id:
+    query: "Installation ID from https://bitwarden.com/host (free, requires an email)"
+  installation_key:
+    query: "Installation key from https://bitwarden.com/host"
+    type: secret
+  admin_email:
+    query: "Email address allowed to use the /admin portal"
+  disable_registration:
+    query: "Block new users from registering accounts? (check once your accounts exist)"
+    type: boolean
+    default: "false"
+  identity_key:
+    query: "Internal identity signing key (generated; keep it stable across restarts)"
+    type: secret
+    default: auto
+  oidc_key:
+    query: "Internal OIDC client key (generated)"
+    type: secret
+    default: auto
+  duo_key:
+    query: "Duo two-factor application key (generated)"
+    type: secret
+    default: auto
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+  Admin:
+    value: "https://@PACKAGE_DNS@/admin"
+    type: url
+  Clients:
+    value: "In the official Bitwarden apps, tap Settings on the login screen and set the self-hosted server URL to https://@PACKAGE_DNS@ before signing in."
