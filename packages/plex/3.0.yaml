@@ -1,5 +1,5 @@
 # 3.0 changes one thing about 2.1: where the plex.tv account token comes from.
-# 2.1 made the operator run scripts/plex-auth.sh in a terminal, copy the token it
+# 2.1 made the operator run a shell script in a terminal, copy the token it
 # printed, and paste it into the install dialog. The `oauth` question type runs
 # that same plex.tv PIN flow from the dialog itself, so the token is obtained by
 # clicking Connect and approving in the browser. Everything downstream -- the
