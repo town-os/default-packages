@@ -1,0 +1,147 @@
+# 3.0 changes one thing about 2.1: where the plex.tv account token comes from.
+# 2.1 made the operator run scripts/plex-auth.sh in a terminal, copy the token it
+# printed, and paste it into the install dialog. The `oauth` question type runs
+# that same plex.tv PIN flow from the dialog itself, so the token is obtained by
+# clicking Connect and approving in the browser. Everything downstream -- the
+# bootstrap that mints a fresh claim token moments before Plex starts -- is
+# unchanged, because the flow yields the same durable account token the script did.
+image: plexinc/pms-docker
+description: Media server for streaming movies, TV shows, and music (local network)
+supplies: ["http"]
+environment:
+  ALLOWED_NETWORKS: "127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+  # The shared :443 ingress fronts Plex, so advertise the port-less https URL.
+  ADVERTISE_IP: "https://@PACKAGE_DNS@/"
+  PLEX_PREFERENCE_1: "secureConnections=1"
+  # A plex.tv account token, used once to claim the server. Consumed by the
+  # bootstrap below, which is why it has to travel through the environment:
+  # template markers are not substituted into command/entrypoint.
+  PLEX_TOKEN: "@plextoken@"
+network:
+  internal:
+    # Named "http", not "https": Plex only serves TLS on 32400 once it has been
+    # claimed and has fetched a cert from plex.tv, so an unclaimed server is
+    # plaintext-only and a TLS dial to it gets EOF. "http" routes the port to the
+    # shared :443 ingress, which terminates TLS with a locally-trusted leaf
+    # (DANE-pinned for plex.<repo>.<tld>) and reverse-proxies over the internal
+    # network -- the web UI is at https://<dns>/web with a trusted cert and no
+    # port. The hop to Plex is plaintext but never leaves the container network.
+    http: "32400"
+  # To additionally serve a publicly-trusted (Let's Encrypt) certificate for an
+  # internet-facing name, add the real FQDN here and point its public DNS at
+  # this host; the ingress obtains an ACME cert for it:
+  # domains:
+  #   - plex.example.com
+volumes:
+  media:
+    mountpoint: /data
+    quota: "@mediasize@"
+  config:
+    mountpoint: /config
+questions:
+  plextoken:
+    query: "Plex account"
+    type: oauth
+    # plex.tv's PIN flow: ask for a pin, send the user to app.plex.tv to approve
+    # it, then poll the pin until authToken stops being null. The token it hands
+    # back is an account token and does not expire, so a reinstall reuses it.
+    oauth:
+      start:
+        method: POST
+        # strong=true asks for a long, non-guessable code -- the short 4-character
+        # form is meant for typing into a TV and is brute-forceable.
+        url: "https://plex.tv/api/v2/pins?strong=true"
+        headers:
+          accept: "application/json"
+          # {{client_id}} is generated per flow by Town OS. Plex ties the pin to
+          # it, so the same identifier has to be sent on both calls.
+          X-Plex-Client-Identifier: "{{client_id}}"
+          X-Plex-Product: "Town OS"
+      extract:
+        id: id
+        code: code
+      approve: "https://app.plex.tv/auth#?clientID={{client_id}}&code={{code}}&context%5Bdevice%5D%5Bproduct%5D=Town%20OS"
+      poll:
+        url: "https://plex.tv/api/v2/pins/{{id}}"
+        headers:
+          accept: "application/json"
+          X-Plex-Client-Identifier: "{{client_id}}"
+      token: authToken
+      interval: 2s
+      timeout: 10m
+  mediasize:
+    query: "How much storage should be allocated for media?"
+    type: bytes
+templates:
+  # Lives in a file rather than inline in `command` because Town OS renders
+  # `command` into a systemd ExecStart= line, which stops parsing at the first
+  # newline; an inline multi-line script leaves its quoting unbalanced and the
+  # unit fails to load. Keeping ExecStart to a single argv also stops systemd
+  # expanding the $VAR references before podman ever sees them.
+  bootstrap:
+    volume: config
+    path: bootstrap.sh
+    content: |
+      set -e
+      PREFS="/config/Library/Application Support/Plex Media Server/Preferences.xml"
+
+      # Claiming is a one-time event per config volume: once done, PlexOnlineToken
+      # is written to Preferences.xml and survives every restart and upgrade. Skip
+      # the whole dance if it is already there -- no plex.tv call, no token needed.
+      if ! grep -q 'PlexOnlineToken=' "$PREFS" 2>/dev/null; then
+        TOKEN="${PLEX_TOKEN:-}"
+        if [ -n "$TOKEN" ]; then
+          # Cache the account token in the volume. Responses are stored per
+          # package *version*, so without this a version bump would have to ask
+          # for it again.
+          (umask 077; printf '%s' "$TOKEN" > /config/.plex-token)
+        else
+          TOKEN="$(cat /config/.plex-token 2>/dev/null || true)"
+        fi
+
+        case "$TOKEN" in
+          "")
+            echo "plex: no account token supplied; starting unclaimed" >&2
+            ;;
+          claim-*)
+            # Already a claim token: use it as-is. Note these expire 4 minutes
+            # after they are generated, so this path can lose the race with a
+            # cold image pull. Prefer an account token.
+            export PLEX_CLAIM="$TOKEN"
+            ;;
+          *)
+            # Mint the claim token HERE, moments before Plex starts, rather than
+            # at install time. A claim token dies 4 minutes after it is generated,
+            # and the image pull sits between answering the question and this
+            # point -- on a slow link that window lapses and first-run silently
+            # proceeds unclaimed, which is the "not authorized" failure 2.0 hit.
+            #
+            # Parsed with sed, not jq: pms-docker ships curl but no jq. Splitting
+            # on commas and anchoring at ^ keeps the match to a top-level key; the
+            # optional leading brace is needed because "token" is the object's
+            # first key, so it shares a line with the opening brace.
+            PLEX_CLAIM="$(curl -fsS \
+              "https://plex.tv/api/claim/token.json?X-Plex-Token=$TOKEN" \
+              -H 'accept: application/json' \
+              | tr ',' '\n' \
+              | sed -n 's/^{\{0,1\}"token":"\([^"]*\)".*/\1/p' \
+              | head -1)"
+            if [ -n "$PLEX_CLAIM" ]; then
+              export PLEX_CLAIM
+            else
+              echo "plex: could not mint a claim token; starting unclaimed" >&2
+            fi
+            ;;
+        esac
+      fi
+
+      # Hand off to the image's s6 supervisor, which reads PLEX_CLAIM on first run.
+      exec /init
+notes:
+  url:
+    value: "https://@PACKAGE_DNS@/web"
+    type: url
+entrypoint:
+  - sh
+command:
+  - /config/bootstrap.sh

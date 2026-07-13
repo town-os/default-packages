@@ -391,6 +391,7 @@ questions:
 | `duration` | Human-readable duration (e.g. `30s`, `5m`, `2h`, `1d`)    |                                                              |
 | `secret`   | Any non-empty string                                       | 256-bit hex string via `crypto/rand` (64 hex characters)     |
 | `boolean`  | `true`/`false`, `t`/`f`, `1`/`0` (`yes`/`no` are rejected) | The declared `default`, or `false` when none is declared      |
+| `oauth`    | Any non-empty string (the token the flow returned)          |                                                              |
 | _(omitted)_ | Any string (no validation)                                |                                                              |
 
 Auto-generation is triggered when the user provides an empty response or `"auto"`. For `secret` questions, values are always auto-generated if not explicitly provided, making them suitable for passwords and encryption keys. For `port` questions, the auto-generated port is verified to not conflict with other installed packages.
@@ -437,6 +438,56 @@ questions:
 Quote the `default` (`"true"`, not `true`) to keep it a string, consistent with every other question type.
 
 An unchecked box submits nothing, and a dependency's boolean question is often left unanswered by its parent; both resolve to the declared `default`, or to `false` if the package declares none. An explicit `false` response still beats a `default` of `"true"`, so a default-on option can be turned off. A `default` that is not a valid boolean fails the install rather than quietly installing with the option off.
+
+#### OAuth questions
+
+Some applications are configured with a token that only their vendor can issue -- a Plex account token, a GitHub personal token. An `oauth` question replaces "go run this script, then paste what it prints" with a **Connect** button in the install dialog: Town OS runs a device flow against URLs the package names, the user approves in a browser tab, and the token that comes back becomes the answer.
+
+There is no provider registry. The package describes the whole flow, so any vendor with a device-style flow works without a change to Town OS:
+
+```yaml
+environment:
+  PLEX_TOKEN: "@plextoken@"
+questions:
+  plextoken:
+    query: "Plex account"
+    type: oauth
+    oauth:
+      start:
+        method: POST
+        url: "https://plex.tv/api/v2/pins?strong=true"
+        headers:
+          accept: "application/json"
+          X-Plex-Client-Identifier: "{{client_id}}"
+      extract:
+        id: id
+        code: code
+      approve: "https://app.plex.tv/auth#?clientID={{client_id}}&code={{code}}"
+      poll:
+        url: "https://plex.tv/api/v2/pins/{{id}}"
+        headers:
+          X-Plex-Client-Identifier: "{{client_id}}"
+      token: authToken
+      interval: 2s
+      timeout: 10m
+```
+
+| Field       | Meaning                                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------------------- |
+| `start`     | Request that opens the flow. `method` (default `GET`), `url`, optional `headers` and `form` body.            |
+| `extract`   | JSON fields to pull out of `start`'s response and expose to the templates below, as `name: json_field`.      |
+| `approve`   | URL the user opens to approve. Opened in a new tab, and also shown as a link in case a popup blocker eats it. |
+| `user_code` | Optional template for a short code the user must type on the approval page. GitHub uses one; Plex does not.   |
+| `poll`      | Request repeated until the user approves. Same shape as `start`.                                              |
+| `token`     | JSON field in `poll`'s response holding the token. Absent or `null` means "not approved yet".                 |
+| `interval`  | How often to poll (default `5s`). Honor the provider's documented rate limit.                                 |
+| `timeout`   | How long to keep polling before giving up (default `5m`).                                                     |
+
+`{{...}}` placeholders in URLs, headers, and form values are substituted with `{{client_id}}` -- a random identifier Town OS generates per flow and sends on every step -- and with anything named in `extract`. A JSON number extracted from the start response reaches the poll URL as digits (`1234567`), not as `1.234567e+06`.
+
+The token is a credential, so it is stored and displayed exactly like a `secret`: masked in the package info panel, copyable but never printed. It is also cached like every other response, so reinstalling or upgrading reuses it instead of sending the user back to the provider.
+
+The URLs must be `https` and must not resolve to a loopback, private, or link-local address -- a package cannot use the flow to make the system controller dial the host's own network.
 
 ### Notes
 
