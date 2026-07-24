@@ -1,0 +1,202 @@
+# Mastodon: a federated (ActivityPub) social network server. It talks to
+# postgres and redis (pulled in as dependencies) and needs three cooperating
+# processes: the Puma web server, a Sidekiq background worker, and a Node
+# streaming server. This package runs the first two; see the notes below on each.
+#
+# One container for web + Sidekiq. Both are the same Ruby image and, crucially,
+# both read and write the same on-disk media store (public/system): Puma
+# processes local uploads, Sidekiq fetches and stores remote media, and Puma
+# serves all of it. Town OS gives each *package* its own volumes with no way to
+# share a filesystem between two packages, so splitting Sidekiq into its own
+# package would put remote media on a disk the web server cannot see. Running
+# both in this one container keeps them on a single shared volume. The bootstrap
+# supervises the pair and exits if either dies, so Town OS restarts the set.
+#
+# No streaming server. Mastodon's live-timeline feature is a separate Node
+# service on its own port. The shared :443 ingress is a single upstream per
+# package and cannot path-route /api/v1/streaming to a second container, so a
+# streaming service would be unreachable from browsers. Without it, timelines
+# refresh on navigation instead of updating live; posting, federation,
+# notifications, and every API all work normally.
+#
+# First boot runs the schema migration (a couple of minutes on an empty database)
+# and creates the administrator, so the web port answers later than a plain image
+# would. See bootstrap.sh below.
+image: ghcr.io/mastodon/mastodon:v4.3.8
+description: Self-hosted federated social network server (ActivityPub / fediverse)
+supplies: ["http"]
+environment:
+  RAILS_ENV: production
+  # No nginx sits in front inside the container, so Puma serves the compiled
+  # asset bundles itself. Without this every /packs/ request 404s and the UI is
+  # unstyled and non-functional.
+  RAILS_SERVE_STATIC_FILES: "true"
+  # Puma and Sidekiq each open their own connection pool against postgres; this
+  # must comfortably exceed Sidekiq's worker concurrency (5) and Puma's thread
+  # count, or jobs and requests stall waiting for a connection.
+  DB_POOL: "15"
+  # The shared :443 ingress terminates TLS for mastodon.<repo>.<tld> and
+  # reverse-proxies to Puma's plain-HTTP port 3000. Mastodon builds every
+  # federation URL, handle, and link from LOCAL_DOMAIN, and it is baked into
+  # stored data on first use -- it must be the final port-less public hostname
+  # and must not change afterward.
+  LOCAL_DOMAIN: "@PACKAGE_DNS@"
+  # postgres and redis are co-dependencies on the shared podman network, reached
+  # by their dependency-key aliases (see immich for the same pattern). Ports are
+  # fixed to the values passed to those dependencies below.
+  DB_HOST: "db"
+  DB_PORT: "5432"
+  DB_NAME: "mastodon_production"
+  DB_USER: "mastodon"
+  DB_PASS: "@dbpass@"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  # Mastodon 4.3 refuses to start until all five of these are set. SECRET_KEY_BASE
+  # and OTP_SECRET sign sessions and one-time passwords; the three
+  # ACTIVE_RECORD_ENCRYPTION_* values key the at-rest encryption of sensitive
+  # columns. All are independent random strings, so each is generated on its own.
+  # Changing any of them after data exists makes that data unreadable, which is
+  # why they live in cached secret responses rather than being regenerated.
+  SECRET_KEY_BASE: "@secret_key_base@"
+  OTP_SECRET: "@otp_secret@"
+  ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: "@ar_primary_key@"
+  ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: "@ar_deterministic_key@"
+  ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: "@ar_key_salt@"
+  # Consumed by bootstrap.sh to create the first administrator. Template markers
+  # are only substituted into environment values, so the script reads them here.
+  ADMIN_USER: "@admin_user@"
+  ADMIN_EMAIL: "@admin_email@"
+  ADMIN_PASSWORD: "@admin_password@"
+network:
+  internal:
+    # Naming this port "http" routes it to the shared :443 ingress, which
+    # terminates TLS (DANE TLSA published in rolodex for mastodon.<repo>.<tld>)
+    # and reverse-proxies to Puma on its default container port 3000. The service
+    # is reached at https://<dns>/ with no host port to choose.
+    http: "3000"
+  # To also serve a publicly-trusted (Let's Encrypt) certificate for an
+  # internet-facing name, add the real FQDN here and point its public DNS at this
+  # host. Federation with other servers needs a name they can resolve and reach:
+  # domains:
+  #   - social.example.com
+volumes:
+  # Uploaded and cached media (avatars, attachments, local and remote media).
+  # Both processes in this container share it, which is the whole reason they are
+  # colocated.
+  system:
+    mountpoint: /opt/mastodon/public/system
+    quota: "@mediasize@"
+    uid: 991
+    gid: 991
+questions:
+  dbpass:
+    query: "Database password?"
+    type: secret
+    default: auto
+  secret_key_base:
+    query: "Rails secret key base?"
+    type: secret
+    default: auto
+  otp_secret:
+    query: "OTP secret?"
+    type: secret
+    default: auto
+  ar_primary_key:
+    query: "ActiveRecord encryption primary key?"
+    type: secret
+    default: auto
+  ar_deterministic_key:
+    query: "ActiveRecord encryption deterministic key?"
+    type: secret
+    default: auto
+  ar_key_salt:
+    query: "ActiveRecord encryption key derivation salt?"
+    type: secret
+    default: auto
+  admin_user:
+    # Mastodon reserves admin/administrator/root/support/help/webmaster/mod/
+    # moderator, so account creation rejects those -- the default must be a name
+    # that is not on that list.
+    query: "Administrator username?"
+    default: "owner"
+  admin_email:
+    # tootctl validates deliverability (an MX lookup on the domain), so this must
+    # be a real, reachable address -- a made-up local address is rejected.
+    query: "Administrator email address?"
+  admin_password:
+    query: "Administrator password?"
+    type: secret
+    default: auto
+  mediasize:
+    query: "How much storage should be allocated for media?"
+    type: bytes
+dependencies:
+  db:
+    package: postgres
+    responses:
+      password: "@dbpass@"
+      user: "mastodon"
+      database: "mastodon_production"
+      port: "5432"
+  redis:
+    package: redis
+    responses:
+      port: "6379"
+templates:
+  # The bootstrap lives in a file rather than inline in `command` because Town OS
+  # renders `command` into a systemd ExecStart= line, which stops at the first
+  # newline; a multi-line inline script leaves the unit unparseable. It is
+  # rendered into the media volume so it persists, and Town OS never overwrites
+  # an existing file on reconcile. It requires bash (wait -n), which the image
+  # provides, so the entrypoint below is bash rather than sh.
+  bootstrap:
+    volume: system
+    path: bootstrap.sh
+    content: |
+      set -e
+      cd /opt/mastodon
+      # Apply migrations, building the whole schema on a fresh database. Retried
+      # because Town OS does not guarantee postgres is accepting connections
+      # before this container starts. The result of db:migrate (not a piped
+      # command) is what the loop tests, so a real failure keeps retrying.
+      n=0
+      until bundle exec rails db:migrate; do
+        n=$((n+1))
+        [ "$n" -ge 40 ] && echo "db:migrate did not succeed after $n attempts" >&2 && exit 1
+        echo "database not ready yet, retrying ($n)"
+        sleep 3
+      done
+      # Create the administrator exactly once. tootctl assigns a random password;
+      # the chosen one is set immediately afterward so it can be shown in the info
+      # panel. Guarded by an existence check so a password the user later changes
+      # in the web UI is never reverted on a restart.
+      if [ "$(bundle exec rails runner 'print(Account.find_local(ENV["ADMIN_USER"]) ? 1 : 0)')" = "0" ]; then
+        bundle exec bin/tootctl accounts create "$ADMIN_USER" --email "$ADMIN_EMAIL" --confirmed --role Owner
+        bundle exec rails runner 'u=Account.find_local(ENV["ADMIN_USER"]).user; u.password=ENV["ADMIN_PASSWORD"]; u.password_confirmation=ENV["ADMIN_PASSWORD"]; u.save!'
+        echo "administrator @${ADMIN_USER} created"
+      fi
+      # Run the Sidekiq worker and the Puma web server side by side, both against
+      # the shared media volume mounted here.
+      bundle exec sidekiq &
+      bundle exec puma -C config/puma.rb &
+      # If either process exits, tear the whole container down so Town OS restarts
+      # both together rather than leaving a half-running install.
+      wait -n
+      echo "a mastodon process exited; stopping the container so it is restarted" >&2
+      kill 0 2>/dev/null
+      exit 1
+notes:
+  URL:
+    value: "https://@PACKAGE_DNS@/"
+    type: url
+  "Admin username":
+    value: "@admin_user@"
+  "Admin email":
+    value: "@admin_email@"
+    type: email
+  "Admin password":
+    value: "@admin_password@"
+entrypoint:
+  - bash
+command:
+  - /opt/mastodon/public/system/bootstrap.sh

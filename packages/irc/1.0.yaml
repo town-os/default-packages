@@ -1,0 +1,106 @@
+# Ergo (formerly Oragono) is a modern IRC server that bundles the services an
+# old-school setup needed a separate daemon for -- NickServ account
+# registration, ChanServ, history/playback, SASL -- into one self-contained Go
+# binary with no external database. That makes it the right fit for a
+# single-container package: no postgres, no redis, just a config file and a
+# datastore file in one volume.
+#
+# The upstream image's entrypoint (/ircd-bin/run.sh) generates a config from
+# /ircd-bin/default.yaml on first boot, but it hardcodes the server name
+# (ergo.test) and prints a *random* oper password only to the container log,
+# where the installer can never retrieve it. This package replaces that
+# entrypoint with a bootstrap that renders the same default config but stamps in
+# the real server name (@PACKAGE_DNS@), the network name, and an oper password
+# the installer chose (and can read back from the info panel).
+image: ghcr.io/ergochat/ergo:v2.19.0
+description: Modern self-hosted IRC server with built-in accounts, history, and SASL (Ergo)
+supplies: ["messaging"]
+environment:
+  # Consumed by bootstrap.sh below. Template markers are only substituted into
+  # environment values, never into command/entrypoint, so everything the script
+  # needs has to arrive through the environment.
+  NETWORK_NAME: "@network_name@"
+  SERVER_NAME: "@PACKAGE_DNS@"
+  OPER_PASSWORD: "@oper_password@"
+network:
+  external:
+    # IRC is raw TCP, not HTTP, so it cannot go through the shared :443 ingress
+    # (which only TLS-terminates HTTP). Both ports are forwarded untouched: 6667
+    # plaintext and 6697 TLS (Ergo generates a self-signed cert via `mkcerts`).
+    "@plainport@": "6667"
+    "@tlsport@": "6697"
+volumes:
+  # Ergo's WorkingDir is /ircd; the datastore (ircd.db), the rendered config
+  # (ircd.yaml), and the self-signed TLS cert (fullchain.pem/privkey.pem) all
+  # live here relative to the cwd, so a single volume persists everything.
+  data:
+    mountpoint: /ircd
+questions:
+  network_name:
+    query: "IRC network name"
+    default: "TownNet"
+  oper_password:
+    query: "Operator password for the admin account"
+    type: secret
+    default: auto
+  plainport:
+    query: "What external port should serve plaintext IRC?"
+    type: port
+    default: "6667"
+  tlsport:
+    query: "What external port should serve IRC over TLS?"
+    type: port
+    default: "6697"
+templates:
+  # The bootstrap lives in a file rather than inline in `command` because Town OS
+  # renders `command` into a systemd ExecStart= line, which stops at the first
+  # newline; a multi-line inline script would leave the unit unparseable. Keeping
+  # ExecStart to a single argv also stops systemd from expanding $VAR references
+  # in the script before the shell inside the container sees them.
+  bootstrap:
+    volume: data
+    path: bootstrap.sh
+    content: |
+      set -e
+      CONF=/ircd/ircd.yaml
+      # Only render on first boot. On later starts the operator's edits to
+      # ircd.yaml (and Town OS's own re-render rule of never overwriting an
+      # existing file) are both respected by leaving the file alone.
+      if [ ! -f "$CONF" ]; then
+        # Ergo opers authenticate against a bcrypt hash, never a plaintext
+        # password, so hash the chosen password the same way `ergo genpasswd`
+        # would for a hand-written config.
+        HASH=$(printf '%s' "$OPER_PASSWORD" | /ircd-bin/ergo genpasswd)
+        # Start from the image's bundled default config and stamp in this
+        # install's identity. The `path: languages` fixup mirrors upstream
+        # run.sh: the default points at a relative languages dir that only
+        # resolves from /ircd-bin. ErgoTest and ergo.test each appear exactly
+        # once in the default, so the substitutions are unambiguous. The oper
+        # password hash placeholder appears on the live oper line and in two
+        # comments; replacing all three is harmless.
+        awk '{gsub(/path: languages/,"path: /ircd-bin/languages")}1' /ircd-bin/default.yaml \
+          | sed "s|^\( *name:\) ErgoTest|\1 ${NETWORK_NAME}|" \
+          | sed "s|^\( *name:\) ergo.test|\1 ${SERVER_NAME}|" \
+          | awk -v h="$HASH" '{gsub(/\$2a\$04\$0123456789abcdef0123456789abcdef0123456789abcdef01234/, h)}1' \
+          > "$CONF"
+      fi
+      cd /ircd
+      # Idempotent: mkcerts only writes fullchain.pem/privkey.pem if they are
+      # missing, so it is a no-op on every boot after the first.
+      /ircd-bin/ergo mkcerts
+      exec /ircd-bin/ergo run
+notes:
+  Server:
+    value: "@LOCAL_EXTERNAL_HOST@"
+  "Plaintext port":
+    value: "@plainport@"
+  "TLS port":
+    value: "@tlsport@"
+  "Operator account":
+    value: "admin"
+  "Operator password":
+    value: "@oper_password@"
+entrypoint:
+  - sh
+command:
+  - /ircd/bootstrap.sh
